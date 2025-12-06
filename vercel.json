@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    { "source": "/admin/(.*)", "destination": "/" },
+    { "source": "/quiz/(.*)", "destination": "/" },
+    { "source": "/quiz-setup", "destination": "/" },
+    { "source": "/(.*)", "destination": "/" }
+  ]
+}
