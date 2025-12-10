@@ -129,7 +129,7 @@ export default function MainLayout() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-[#f4f4f6]">
       <Navbar />
       <main className="flex-1 container mx-auto px-6 py-6">
         {/* Provide imageMap to nested routes if they call useOutletContext */}

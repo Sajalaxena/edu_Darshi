@@ -1,90 +1,144 @@
 // src/pages/PlanDetails.jsx
-import React, { useMemo, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { Star, Crown, RocketLaunch, CheckCircle, XCircle } from "phosphor-react";
 
+/* All features (master list) */
+const ALL_FEATURES = [
+  "Webinars (live + recordings)",
+  "Solutions Repository",
+  "Weekly Opportunity Alerts",
+  "Starter Study Resources",
+  "Community Access",
+  "Exclusive Workshops",
+  "Internship Opportunities",
+  "Complete Solutions Library",
+  "Personalized Alerts",
+  "Preparation Guides",
+  "Adaptive Mock Tests",
+  "Dedicated Mentor",
+  "Career Portfolio Support",
+  "Interview Preparation",
+];
+
+/* Which features each plan includes */
 const PLANS = [
   {
     id: "free",
     name: "Free Plan",
     tagline: "Foundation features to get started at zero cost",
-    bullets: [
-      "EduDarshi Webinars (live + select recordings)",
-      "Solutions Repository (limited access)",
-      "Weekly Opportunity Alerts (national level)",
-      "Starter Study Resources: sample notes, practice questions, exam tips (limited)",
-      "Basic community access (browse discussions and mentor highlights)",
+    includes: [
+      "Webinars (live + recordings)",
+      "Solutions Repository",
+      "Weekly Opportunity Alerts",
+      "Starter Study Resources",
+      "Community Access",
     ],
-    details:
-      "EduDarshi Webinars (live + select recordings): Attend expert-led sessions on exam strategies, subject refreshers, and career pathways. Access a rotating library of recordings for catch-up and revision.",
   },
   {
     id: "premium",
     name: "Premium Plan",
-    tagline: "Includes everything in the Free Plan, plus major upgrades",
-    bullets: [
-      "Unlimited webinars + exclusive workshops and curated internship opportunities",
-      "Complete solutions library for recent and past exams",
-      "Personalized weekly alerts (by subject/interest)",
-      "Focused notes & preparation guides (choose your subjects)",
-      "Adaptive mock tests with performance analytics",
+    tagline: "Free features +   Major upgrades",
+    includes: [
+      "Webinars (live + recordings)",
+      "Solutions Repository",
+      "Weekly Opportunity Alerts",
+      "Starter Study Resources",
+      "Community Access",
+      "Exclusive Workshops",
+      "Internship Opportunities",
+      "Complete Solutions Library",
+      "Personalized Alerts",
+      "Preparation Guides",
+      "Adaptive Mock Tests",
     ],
-    details:
-      "Unlimited webinars + exclusive workshops, complete solutions, personalized alerts and adaptive mocks with analytics.",
   },
   {
     id: "elite",
     name: "Elite Plan",
-    tagline: "Concierge-level, end-to-end preparation and placement support",
-    bullets: [
-      "All-access webinars, exclusive workshops, curated internships, recordings",
-      "On-demand expert discussions and one-to-one application guidance",
-      "Dedicated mentor, priority doubt resolution, career portfolio support",
-      "Unlimited mock tests, analytics, interview practice and placement support",
+    tagline: "Concierge-level, full preparation & placement support",
+    includes: [
+      "Webinars (live + recordings)",
+      "Solutions Repository",
+      "Weekly Opportunity Alerts",
+      "Starter Study Resources",
+      "Community Access",
+      "Exclusive Workshops",
+      "Internship Opportunities",
+      "Complete Solutions Library",
+      "Personalized Alerts",
+      "Preparation Guides",
+      "Adaptive Mock Tests",
+      "Dedicated Mentor",
+      "Career Portfolio Support",
+      "Interview Preparation",
     ],
-    details:
-      "Full concierge support: dedicated mentor, priority doubt resolution, expert feedback sessions, and placement & scholarship assistance.",
   },
 ];
+
+/* Visual metadata */
+const VISUALS = {
+  free: {
+    gradient: "linear-gradient(135deg,#E8F8FF,#F6FCFF)",
+    accent: "#0EA5E9",
+    icon: <Star size={28} weight="duotone" />,
+    price: "₹0",
+  },
+  premium: {
+    gradient: "linear-gradient(135deg,#F7F0FF,#FBF7FF)",
+    accent: "#7C3AED",
+    icon: <Crown size={28} weight="duotone" />,
+    price: "₹499",
+  },
+  elite: {
+    gradient: "linear-gradient(135deg,#E8FFF1,#F7FFFA)",
+    accent: "#10B981",
+    icon: <RocketLaunch size={28} weight="duotone" />,
+    price: "₹999",
+  },
+};
 
 export default function PlanDetails() {
   const { id: paramId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
 
-  // pick id from route param or location.state (safer)
   const selectedId =
     paramId || (location && location.state && location.state.selected) || null;
 
   const refs = useRef({});
+  PLANS.forEach((p) => {
+    refs.current[p.id] = refs.current[p.id] || React.createRef();
+  });
+
   const [highlightedId, setHighlightedId] = useState(null);
 
-  // build refs for each plan
-  useEffect(() => {
-    PLANS.forEach((p) => {
-      if (!refs.current[p.id]) refs.current[p.id] = React.createRef();
-    });
-  }, []);
-
-  // when selectedId changes, scroll + highlight
   useEffect(() => {
     if (!selectedId) return;
     const elRef = refs.current[selectedId];
-    if (!elRef) return;
+    if (!elRef || !elRef.current) return;
 
-    // small delay so layout finishes
     const t = setTimeout(() => {
-      const el = elRef.current;
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "center" });
-        // apply highlight
-        setHighlightedId(selectedId);
-        // remove highlight after 2200ms
-        setTimeout(() => setHighlightedId(null), 2200);
-      }
+      elRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+      setHighlightedId(selectedId);
+      const r = setTimeout(() => setHighlightedId(null), 2200);
+      return () => clearTimeout(r);
     }, 120);
-
     return () => clearTimeout(t);
   }, [selectedId]);
+
+  function handleCardClick(planId) {
+    const elRef = refs.current[planId];
+    if (elRef && elRef.current) {
+      elRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+    setHighlightedId(planId);
+    setTimeout(() => setHighlightedId(null), 2200);
+  }
+
+  // Replace with your real Google Form if you have one
+  const GOOGLE_FORM_URL =
+    "https://docs.google.com/forms/d/e/1FAIpQLSfPLACEHOLDER/viewform";
 
   return (
     <section className="container mx-auto px-6 py-12">
@@ -96,103 +150,120 @@ export default function PlanDetails() {
           ← Back
         </button>
 
-        <h1
-          className="text-3xl font-bold mb-4"
-          style={{ color: "var(--brand)" }}
-        >
+        <h1 className="text-3xl font-bold mb-4" style={{ color: "var(--brand)" }}>
           Our Plans — Full Details
         </h1>
 
         <p className="text-slate-700 mb-8">
-          Browse all subscription plans below. The plan you selected is
-          highlighted.
+          Browse all subscription plans below. The plan you selected is highlighted.
         </p>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        {/* grid of cards */}
+        <div className="grid md:grid-cols-3 gap-6 mb-8">
           {PLANS.map((p) => {
-            const isHighlighted = highlightedId === p.id;
+            const visual = VISUALS[p.id] || VISUALS.free;
+            const isHighlighted = highlightedId === p.id || selectedId === p.id;
+
             return (
               <article
                 key={p.id}
                 id={`plan-${p.id}`}
                 ref={refs.current[p.id]}
-                className={`p-5 rounded-lg border transition-shadow duration-300 ${
-                  isHighlighted
-                    ? "plan-highlight border-blue-300 shadow-2xl"
-                    : "border-slate-200 bg-white"
+                onClick={() => handleCardClick(p.id)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") handleCardClick(p.id);
+                }}
+                className={`rounded-xl overflow-hidden transition-transform duration-300 focus:outline-none ${
+                  isHighlighted ? "ring-4 ring-blue-200 scale-[1.01]" : "hover:-translate-y-1"
                 }`}
+                style={{
+                  boxShadow: isHighlighted
+                    ? "0 18px 50px rgba(14,165,233,0.10)"
+                    : "0 8px 24px rgba(2,6,23,0.04)",
+                  background: "white",
+                }}
               >
-                <h2 className="text-xl font-semibold mb-1">{p.name}</h2>
-                <div className="text-sm text-slate-500 mb-3">{p.tagline}</div>
+                {/* HEADER - fixed height and vertically centered */}
+                <div
+                  className="p-5 flex items-center gap-4"
+                  style={{
+                    background: visual.gradient,
+                    minHeight: 170, // <- fixed header height so all match
+                    alignItems: "center",
+                  }}
+                >
+                  <div
+                    className="w-14 h-14 rounded-xl grid place-items-center text-white"
+                    style={{
+                      background: "rgba(255,255,255,0.12)",
+                      boxShadow: "inset 0 -6px 14px rgba(255,255,255,0.06)",
+                      color: visual.accent,
+                    }}
+                    aria-hidden
+                  >
+                    {visual.icon}
+                  </div>
 
-                <ul className="list-disc pl-5 text-slate-700 space-y-1 mb-3">
-                  {p.bullets.map((b, idx) => (
-                    <li key={idx} className="text-sm">
-                      {b}
-                    </li>
-                  ))}
-                </ul>
+                  <div className="flex-1 pr-4">
+                    <div className="text-lg font-semibold">{p.name}</div>
+                    <div className="text-sm text-slate-700 mt-1">{p.tagline}</div>
+                  </div>
 
-                <p className="text-sm text-slate-700 mb-4">{p.details}</p>
+                  <div className="text-right">
+                    <div className="text-2xl font-extrabold" style={{ color: visual.accent }}>
+                      {visual.price}
+                    </div>
+                    <div className="text-sm text-slate-600 mt-1">/month</div>
+                  </div>
+                </div>
 
-                <div className="flex gap-2">
-                  <button
-                    onClick={() =>
-                      alert(
-                        "Buy flow will be added here (Razorpay). Selected plan: " +
+                {/* BODY */}
+                <div className="bg-white p-5 border-t border-slate-100">
+                  <ul className="space-y-3 mt-2">
+                    {ALL_FEATURES.map((feature) => {
+                      const included = p.includes.includes(feature);
+                      return (
+                        <li key={feature} className="flex items-center gap-3 text-sm">
+                          {included ? (
+                            <CheckCircle size={20} color="#10B981" weight="duotone" />
+                          ) : (
+                            <XCircle size={20} color="#EF4444" weight="duotone" />
+                          )}
+
+                          <span className={included ? "text-gray-800" : "text-gray-400 line-through"}>
+                            {feature}
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+
+                  <div className="mt-6 flex justify-center">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        // open Google Form in new tab and optionally prefill plan via query params
+                        const url = `${GOOGLE_FORM_URL}?usp=pp_url&entry.XXXXX=${encodeURIComponent(
                           p.id
-                      )
-                    }
-                    className="btn-primary"
-                  >
-                    Buy Now
-                  </button>
-                  <button
-                    onClick={() => navigate(-1)}
-                    className="btn-secondary"
-                  >
-                    Close
-                  </button>
+                        )}`;
+                        window.open(url, "_blank", "noopener,noreferrer");
+                      }}
+                      className="btn-primary"
+                      aria-label={`Buy ${p.name}`}
+                      style={{ minWidth: 160 }}
+                    >
+                      Buy Now
+                    </button>
+                  </div>
                 </div>
               </article>
             );
           })}
         </div>
 
-        {/* Extra expanded view for the selected plan (optional) */}
-        {selectedId && (
-          <div className="mt-10 bg-white p-6 rounded-lg border border-blue-100 shadow-sm">
-            <h3 className="text-2xl font-semibold mb-3">
-              {PLANS.find((p) => p.id === selectedId)?.name || "Selected Plan"}{" "}
-              — Deep details
-            </h3>
-
-            <p className="text-slate-700 mb-4">
-              {PLANS.find((p) => p.id === selectedId)?.details}
-            </p>
-
-            <h4 className="font-semibold mb-2">More inclusions</h4>
-            <ul className="list-disc pl-5 text-slate-700 space-y-1">
-              {(PLANS.find((p) => p.id === selectedId)?.bullets || []).map(
-                (b, i) => (
-                  <li key={i}>{b}</li>
-                )
-              )}
-            </ul>
-
-            <div className="mt-4 flex justify-end gap-3">
-              <button
-                onClick={() => alert("Buy flow will be added here")}
-                className="btn-primary"
-              >
-                Buy Now
-              </button>
-              <button onClick={() => navigate(-1)} className="btn-secondary">
-                Back
-              </button>
-            </div>
-          </div>
-        )}
+        {/* optional expanded details removed per your request */}
       </div>
     </section>
   );

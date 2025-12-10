@@ -1,107 +1,34 @@
-import React, { useState, useEffect } from "react";
-import { Moon, Sun } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+// src/components/Navbar.jsx
+import React from "react";
+import { Link, NavLink } from "react-router-dom";
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
-  const [dark, setDark] = useState(false);
-
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", dark);
-  }, [dark]);
-
   return (
-    <header className="sticky top-0 z-50">
-      <nav className="navbar-blur">
-        <div className="container mx-auto px-6 flex items-center justify-between py-4">
-          <div className="flex items-center gap-6">
-            <div
-              className="text-2xl font-extrabold"
-              style={{ color: "var(--brand)" }}
-            >
-              EduDarshi
-            </div>
+    <header className="bg-white/90 backdrop-blur-sm sticky top-0 z-40 border-b" >
+      <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+        <Link to="/" className="flex items-center gap-3">
+          <div style={{ width:44, height:44 }} className="rounded-md bg-gradient-to-br from-blue-500 to-indigo-600 grid place-items-center text-white font-bold">
+            ED
           </div>
-
-          {/* desktop */}
-          <div className="hidden md:flex items-center gap-6">
-            <a
-              className="nav-link text-sm font-medium text-slate-800 dark:text-slate-100"
-              href="/home"
-            >
-              Home
-            </a>
-            <a
-              className="nav-link text-sm font-medium text-slate-800 dark:text-slate-100"
-              href="#programs"
-            >
-              Programs
-            </a>
-            <a
-              className="nav-link text-sm font-medium text-slate-800 dark:text-slate-100"
-              href="#mentors"
-            >
-              Mentorship
-            </a>
-            {/* <a
-              className="nav-link text-sm font-medium text-slate-800 dark:text-slate-100"
-              href="/quiz-setup"
-            >
-              Quiz
-            </a> */}
-            <a
-              className="nav-link text-sm font-medium text-slate-800 dark:text-slate-100"
-              href="#contact"
-            >
-              Contact
-            </a>
-
-            <button
-              onClick={() => setDark(!dark)}
-              className="p-2 rounded-md border border-transparent hover:bg-gray-100 dark:hover:bg-gray-800"
-              aria-label="toggle theme"
-            >
-              {dark ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
+          <div>
+            <div className="font-semibold text-lg" style={{color:"var(--brand-900)"}}>EduDarshi</div>
+            <div className="text-xs text-muted -mt-1">Mentorship & Exams</div>
           </div>
+        </Link>
 
-          {/* mobile */}
-          <div className="md:hidden flex items-center gap-3">
-            <button onClick={() => setDark(!dark)} className="p-2 rounded-md">
-              {dark ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
-            <button onClick={() => setOpen(!open)} className="p-2 text-xl">
-              ☰
-            </button>
-          </div>
+        <nav className="hidden md:flex items-center gap-6">
+          <NavLink to="/" className={({isActive}) => isActive ? "font-medium text-slate-900" : "text-slate-600"}>Home</NavLink>
+          <NavLink to="/programs" className={({isActive}) => isActive ? "font-medium text-slate-900" : "text-slate-600"}>Programs</NavLink>
+          <NavLink to="/mentorship" className={({isActive}) => isActive ? "font-medium text-slate-900" : "text-slate-600"}>Mentorship</NavLink>
+          <NavLink to="/quiz-home" className={({isActive}) => isActive ? "font-medium text-slate-900" : "text-slate-600"}>Quiz</NavLink>
+          <NavLink to="/contact" className={({isActive}) => isActive ? "font-medium text-slate-900" : "text-slate-600"}>Contact</NavLink>
+        </nav>
+
+        <div className="flex items-center gap-3">
+          <button className="btn-secondary hidden md:inline">Sign in</button>
+          <button className="btn-primary">Get Started</button>
         </div>
-
-        <AnimatePresence>
-          {open && (
-            <motion.div
-              initial={{ opacity: 0, y: -6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              className="md:hidden"
-            >
-              <div className="px-6 pb-6 flex flex-col gap-2">
-                <a href="#" className="py-2">
-                  Home
-                </a>
-                <a href="#programs" className="py-2">
-                  Programs
-                </a>
-                <a href="#mentors" className="py-2">
-                  Mentorship
-                </a>
-                <a href="#contact" className="py-2">
-                  Contact
-                </a>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </nav>
+      </div>
     </header>
   );
 }

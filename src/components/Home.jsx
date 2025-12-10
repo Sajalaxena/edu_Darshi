@@ -12,14 +12,16 @@ import NewsWebinarsSection from "./NewsWebinarsSection";
 export default function Home() {
   return (
     <>
+     <div >
       <Hero />
       <NewsWebinarsSection />
       <WhyChoose />
+      <PricingCard />
       <MentorCard />
       <ReviewCard />
-      <PricingCard />
       <FAQ />
       <ContactSection />
+      </div>
     </>
   );
 }
