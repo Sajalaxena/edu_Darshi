@@ -18,15 +18,16 @@ export default function Navbar() {
 
         <nav className="hidden md:flex items-center gap-6">
           <NavLink to="/" className={({isActive}) => isActive ? "font-medium text-slate-900" : "text-slate-600"}>Home</NavLink>
-          <NavLink to="/programs" className={({isActive}) => isActive ? "font-medium text-slate-900" : "text-slate-600"}>Programs</NavLink>
-          <NavLink to="/mentorship" className={({isActive}) => isActive ? "font-medium text-slate-900" : "text-slate-600"}>Mentorship</NavLink>
-          <NavLink to="/quiz-home" className={({isActive}) => isActive ? "font-medium text-slate-900" : "text-slate-600"}>Quiz</NavLink>
+          <NavLink to="/plans" className={({isActive}) => isActive ? "font-medium text-slate-900" : "text-slate-600"}>Programs</NavLink>
+          <NavLink to="/gallery" className={({isActive}) => isActive ? "font-medium text-slate-900" : "text-slate-600"}>Gallery</NavLink>
+          <NavLink to="/blogs" className={({isActive}) => isActive ? "font-medium text-slate-900" : "text-slate-600"}>Blog</NavLink>
+          {/* <NavLink to="/quiz-home" className={({isActive}) => isActive ? "font-medium text-slate-900" : "text-slate-600"}>Quiz</NavLink> */}
           <NavLink to="/contact" className={({isActive}) => isActive ? "font-medium text-slate-900" : "text-slate-600"}>Contact</NavLink>
         </nav>
 
         <div className="flex items-center gap-3">
-          <button className="btn-secondary hidden md:inline">Sign in</button>
-          <button className="btn-primary">Get Started</button>
+          {/* <button className="btn-secondary hidden md:inline">Sign in</button> */}
+          {/* <button className="btn-primary">Get Started</button> */}
         </div>
       </div>
     </header>

@@ -16,6 +16,10 @@ import MainLayout from "./components/MainLayout";
 import WhyChooseDetails from "./pages/WhyChooseDetails";
 import PlanDetails from "./pages/PlanDetails";
 import RisingStars from "./pages/RisingStars";
+import Blogs from "./pages/Blogs";
+import BlogDetails from "./pages/BlogDetails";
+import WebinarGallery from "./components/WebinarGallery";
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -29,14 +33,18 @@ export default function App() {
           <Route path="home" element={<Home />} /> {/* optional */}
           <Route path="quiz-setup" element={<QuizSetup />} />
           <Route path="quiz" element={<QuizPage />} />
-          {/* Add more public routes as needed */}
           <Route path="news" element={<AllNews />} />
           <Route path="webinars" element={<AllWebinars />} />
           <Route path="qotd" element={<QOTDPage />} />
           <Route path="why-choose-us" element={<WhyChooseDetails />} />
           <Route path="plans/:id?" element={<PlanDetails />} />
-          <Route path="all-webinars" element={<AllWebinars />} />
           <Route path="rising-stars" element={<RisingStars />} />
+
+          {/* <-- HERE: use relative child paths (no leading slash) */}
+          <Route path="blogs" element={<Blogs />} />
+          <Route path="blogs/:id" element={<BlogDetails />} />
+          <Route path="gallery" element={<WebinarGallery />} />
+
         </Route>
       </Routes>
     </BrowserRouter>

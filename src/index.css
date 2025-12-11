@@ -157,3 +157,9 @@ body {
     rgba(6, 12, 34, 0.6) 100%
   );
 }
+
+
+/* add to global.css or apply inline */
+.btn-primary {
+  @apply bg-gradient-to-r from-blue-600 to-indigo-500 text-white font-semibold;
+}

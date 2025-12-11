@@ -122,7 +122,7 @@ background: "#e3f2fd",
 
   }}
 >
-  <Avatar name={r.name} src={r.avatar} />
+  {/* <Avatar name={r.name} src={r.avatar} /> */}
 
   <div className="flex-1 flex flex-col justify-center">
     <div className="text-base font-semibold" style={{ color: "var(--brand-deep)" }}>

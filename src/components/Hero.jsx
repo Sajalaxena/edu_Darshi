@@ -29,7 +29,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="hero-bg my-10 py-8 rounded-xl">
+    <section className=" my-10 py-8 rounded-xl">
       <div className="grid md:grid-cols-2 gap-8 items-center container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
