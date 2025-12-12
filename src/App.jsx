@@ -19,7 +19,8 @@ import RisingStars from "./pages/RisingStars";
 import Blogs from "./pages/Blogs";
 import BlogDetails from "./pages/BlogDetails";
 import WebinarGallery from "./components/WebinarGallery";
-
+import MentorsPage from "./pages/MentorsPage";
+import MentorDetailPage from "./pages/MentorDetailPage";
 export default function App() {
   return (
     <BrowserRouter>
@@ -39,7 +40,8 @@ export default function App() {
           <Route path="why-choose-us" element={<WhyChooseDetails />} />
           <Route path="plans/:id?" element={<PlanDetails />} />
           <Route path="rising-stars" element={<RisingStars />} />
-
+<Route path="mentors" element={<MentorsPage />} />
+<Route path="mentors/:id" element={<MentorDetailPage />} />
           {/* <-- HERE: use relative child paths (no leading slash) */}
           <Route path="blogs" element={<Blogs />} />
           <Route path="blogs/:id" element={<BlogDetails />} />
