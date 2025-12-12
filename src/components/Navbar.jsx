@@ -29,7 +29,7 @@ export default function Navbar() {
     { to: "/plans", label: "Programs" },
     { to: "/gallery", label: "Gallery" },
     { to: "/blogs", label: "Blog" },
-    { to: "/contact", label: "Contact" },
+    { to: "/mentors", label: "Mentors" },
   ];
 
   return (
