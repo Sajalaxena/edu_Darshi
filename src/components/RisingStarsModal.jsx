@@ -30,7 +30,7 @@ export default function RisingStarsModal({
     document.body.style.overflow = "hidden";
 
     // put focus on close button for keyboard users
-    setTimeout(() => {
+    const t = setTimeout(() => {
       if (closeRef.current) closeRef.current.focus();
     }, 60);
 
@@ -41,6 +41,7 @@ export default function RisingStarsModal({
     return () => {
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = lastBodyOverflow.current || "";
+      clearTimeout(t);
     };
   }, [open, onClose]);
 
@@ -67,7 +68,7 @@ export default function RisingStarsModal({
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 8, scale: 0.98 }}
         transition={{ duration: 0.18 }}
-        className="relative z-10 w-full max-w-4xl rounded-xl shadow-xl bg-white"
+        className="relative z-10 w-full max-w-md sm:max-w-3xl md:max-w-4xl rounded-xl shadow-xl bg-white"
         style={{
           // ensure we don't overflow viewport; body locked so inner scroll is fine
           maxHeight: "90vh",
@@ -78,12 +79,12 @@ export default function RisingStarsModal({
       >
         {/* header (sticky) */}
         <div
-          className="flex items-start justify-between p-4 sm:p-5 border-b bg-white"
+          className="flex items-start justify-between px-4 py-3 sm:px-5 sm:py-4 border-b bg-white"
           style={{ flex: "0 0 auto" }}
         >
           <div>
-            <h3 className="text-lg sm:text-xl font-semibold">Our Rising Stars</h3>
-            <p className="text-sm text-slate-500">
+            <h3 className="text-base sm:text-lg font-semibold">Our Rising Stars</h3>
+            <p className="text-xs sm:text-sm text-slate-500">
               Celebrating student wins — click show more for full list
             </p>
           </div>
@@ -104,15 +105,17 @@ export default function RisingStarsModal({
         </div>
 
         {/* body: scrollable content area */}
-        <div
-          className="p-4 sm:p-5 overflow-auto"
-          style={{ flex: "1 1 auto" }}
-        >
+        <div className="p-3 sm:p-5 overflow-auto" style={{ flex: "1 1 auto" }}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {students.length === 0 && (
+              <div className="text-center text-slate-500 p-6">No rising stars to show.</div>
+            )}
+
             {students.slice(0, 3).map((s) => (
               <article
-                key={s.id}
+                key={s.id || s.name}
                 className="flex flex-col items-center text-center p-3 rounded-lg border"
+                style={{ background: "linear-gradient(180deg, #ffffff, #fbfbfd)" }}
               >
                 {s.image ? (
                   <img
@@ -124,8 +127,8 @@ export default function RisingStarsModal({
                   <div className="w-24 h-24 rounded-full bg-slate-100 mb-3" />
                 )}
 
-                <div className="font-semibold">{s.name}</div>
-                <div className="text-xs text-slate-500 mt-1">{s.exam}</div>
+                <div className="font-semibold text-sm sm:text-base">{s.name}</div>
+                <div className="text-xs sm:text-sm text-slate-500 mt-1">{s.exam}</div>
                 <p className="text-sm text-slate-600 mt-2 line-clamp-4">
                   {s.brief}
                 </p>
@@ -136,7 +139,7 @@ export default function RisingStarsModal({
 
         {/* footer: actions */}
         <div
-          className="flex items-center justify-between px-4 py-3 sm:px-5 sm:py-4 border-t bg-white"
+          className="flex items-center justify-between px-3 py-3 sm:px-5 sm:py-4 border-t bg-white"
           style={{ flex: "0 0 auto" }}
         >
           <label className="inline-flex items-center gap-2 text-sm text-slate-600">
@@ -150,9 +153,9 @@ export default function RisingStarsModal({
             Don’t show again
           </label>
 
-          <div className="flex gap-3">
+          <div className="flex gap-2">
             <button
-              className="btn-secondary px-3 py-2 rounded-md"
+              className="btn-secondary px-3 py-2 rounded-md text-sm"
               onClick={() => {
                 onClose();
                 navigate("/rising-stars");
@@ -162,7 +165,7 @@ export default function RisingStarsModal({
             </button>
 
             <button
-              className="btn-primary px-3 py-2 rounded-md"
+              className="btn-primary px-3 py-2 rounded-md text-sm"
               onClick={() => {
                 onClose();
               }}
