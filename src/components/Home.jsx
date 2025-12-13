@@ -8,6 +8,7 @@ import PricingCard from "./PricingCard";
 import FAQ from "./FAQ";
 import ContactSection from "./ContactSection";
 import NewsWebinarsSection from "./NewsWebinarsSection";
+import TopInstitutes from "./TopInstitutes";
 
 export default function Home() {
   return (
@@ -16,10 +17,12 @@ export default function Home() {
       <Hero />
       <NewsWebinarsSection />
       <WhyChoose />
-      <PricingCard />
+      <TopInstitutes />
       <MentorCard />
       <ReviewCard />
+     <PricingCard />
       <FAQ />
+      
       <ContactSection />
       </div>
     </>

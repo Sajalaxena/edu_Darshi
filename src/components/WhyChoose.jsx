@@ -3,107 +3,99 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
-/**
- * Improved clickable cards:
- * - clear visual affordance (hover lift + CTA)
- * - smaller title and tighter spacing for compact look
- * - navigates to /why-choose-us#<sectionId> so details page can auto-scroll
- */
-
 const items = [
   {
-    id: "career-counselling",
-    title: "Career Counselling",
-    desc: "Tailored plans based on your goals and progress.",
+    id: "open-access",
+    number: "1",
+ 
+    title: "An open access to the world’s best.",
+    desc: "From Design to AI, there are thousands of top experts you can access anytime.",
   },
   {
-    id: "exams-prep",
-    title: "Academia & Industry Exams / Job Prep",
-    desc: "Mentors from top institutes with proven track records.",
+    id: "personalized-advice",
+    number: "2",
+    title: "Personalized advice to accelerate your success.",
+    desc: "1:1 mentorship sessions with tailored insights to fast-track your learning.",
   },
   {
-    id: "workshops-internships",
-    title: "Job-Oriented Workshops & Internships",
-    desc: "Clear milestones and practice materials for your target exam.",
+    id: "achieve-goals",
+    number: "3",
+    title: "Achieve your long-term goals, easily.",
+    desc: "Work with mentors through consistent sessions to achieve long-term outcomes.",
   },
 ];
 
 export default function WhyChoose() {
   const navigate = useNavigate();
-
-  function openDetail(sectionId) {
-    // navigate to details page and include hash for scrolling
-    navigate(`/why-choose-us#${sectionId}`);
-  }
+  const openDetail = (id) => navigate(`/why-choose-us#${id}`);
 
   return (
-    <section className="my-12 container mx-auto px-6">
-      <h2
-        className="text-3xl font-semibold mb-6 text-center"
-        style={{ color: "var(--brand)" }}
-      >
+    <section className="relative py-20 container mx-auto px-6">
+      {/* Faint gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-50/30 to-white pointer-events-none" />
+
+      <h2 className="text-4xl font-bold text-center mb-16" style={{ color: "var(--brand)" }}>
         Why Choose Us
       </h2>
 
-      <div className="grid md:grid-cols-3 gap-6">
-        {items.map((it, i) => (
-          <motion.button
-            key={it.id}
-            onClick={() => openDetail(it.id)}
-            initial={{ opacity: 0, y: 12 }}
+      <div className="grid md:grid-cols-3 gap-10 relative z-10">
+        {items.map((item, i) => (
+          <motion.div
+            key={item.id}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.06 }}
-            // visual/click affordance
-            className="group relative text-left rounded-xl p-6 bg-white border border-slate-100 shadow-sm hover:shadow-lg transition-transform transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-300"
-            aria-label={`Open details: ${it.title}`}
+            transition={{ delay: i * 0.1 }}
+            whileHover={{ y: -8 }}
+            className="relative p-[2px] rounded-2xl bg-gradient-to-br from-indigo-200/40 to-blue-100/20 shadow-lg"
           >
-            <div className="flex items-start gap-4">
-              {/* small decorative icon */}
-              <div className="flex-shrink-0 w-10 h-10 rounded-md bg-blue-50 grid place-items-center">
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  aria-hidden
+            {/* Inner card (glassmorphism) */}
+            <div className="bg-white/70 backdrop-blur-md rounded-2xl p-7 shadow-lg flex flex-col h-full cursor-pointer"
+              onClick={() => openDetail(item.id)}
+            >
+              {/* Animated number badge */}
+              <motion.div
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+                className="w-14 h-14 rounded-full grid place-items-center text-lg font-semibold mb-6 shadow-md"
+                style={{
+                  background:
+                    i === 0
+                      ? "linear-gradient(135deg, #ffe2e6, #ffd6d9)"
+                      : i === 1
+                      ? "linear-gradient(135deg, #e8d5ff, #f3e8ff)"
+                      : "linear-gradient(135deg, #dce9ff, #e6f0ff)",
+                  color:
+                    i === 0 ? "#ff4f61" : i === 1 ? "#a855f7" : "#3b82f6",
+                }}
+              >
+                {item.number}
+              </motion.div>
+
+              {/* Icon */}
+              <div className="text-indigo-600 mb-4">{item.icon}</div>
+
+              {/* Title */}
+              <h3 className="text-xl font-semibold text-slate-900 leading-snug">
+                {item.title}
+              </h3>
+
+              {/* Description */}
+              <p className="mt-3 text-slate-600 leading-relaxed text-[0.95rem] flex-grow">
+                {item.desc}
+              </p>
+
+              {/* CTA */}
+              <div className="mt-6 flex justify-between items-center">
+                <span className="text-sm text-slate-400">Learn more</span>
+                <motion.span
+                  whileHover={{ x: 6 }}
+                  className="text-blue-600 text-sm font-semibold"
                 >
-                  <path
-                    d="M12 2v20"
-                    stroke="#2563EB"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                  <path
-                    d="M5 9h14"
-                    stroke="#2563EB"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </div>
-
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold text-slate-900 leading-tight">
-                  {it.title}
-                </h3>
-
-                <p className="text-sm text-slate-500 mt-2 leading-relaxed">
-                  {it.desc}
-                </p>
+                  Read more →
+                </motion.span>
               </div>
             </div>
-
-            {/* CTA that appears visibly on the right/bottom for clarity */}
-            <div className="mt-4 flex justify-between items-center">
-              <div className="text-xs text-slate-400">
-                Learn more about this
-              </div>
-
-              <div className="text-sm font-medium text-blue-600 opacity-90 group-hover:translate-x-1 transition-transform">
-                Read more →
-              </div>
-            </div>
-          </motion.button>
+          </motion.div>
         ))}
       </div>
     </section>

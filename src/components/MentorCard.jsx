@@ -127,14 +127,15 @@ export default function MentorCard({ mentor, onOpen }) {
 
   return (
     <section className="container mx-auto px-6 my-12">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-semibold text-center" style={{ color: "var(--brand)" }}>
+      <h2 className="text-4xl font-bold text-center mb-16" style={{ color: "var(--brand)" }}>
           Our Top Mentors
         </h2>
+      <div className="flex items-center justify-between mb-6">
+        
         {/* optional: link to /mentors page */}
-        <a href="/mentors" className="text-sm text-indigo-600 hover:underline">
+        {/* <a href="/mentors" className="text-sm text-indigo-600 hover:underline">
           View all
-        </a>
+        </a> */}
       </div>
 
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">

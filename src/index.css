@@ -163,3 +163,12 @@ body {
 .btn-primary {
   @apply bg-gradient-to-r from-blue-600 to-indigo-500 text-white font-semibold;
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
