@@ -2,8 +2,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Star, Crown, RocketLaunch, CheckCircle, XCircle } from "phosphor-react";
+import BackgroundFXPlans from "../components/BackgroundFXPlans";
 
-/* All features (master list) */
+/* All features */
 const ALL_FEATURES = [
   "Webinars (live + recordings)",
   "Solutions Repository",
@@ -21,12 +22,11 @@ const ALL_FEATURES = [
   "Interview Preparation",
 ];
 
-/* Which features each plan includes */
+/* Plans data */
 const PLANS = [
   {
     id: "free",
     name: "Free Plan",
-    tagline: "Foundation features to get started at zero cost",
     includes: [
       "Webinars (live + recordings)",
       "Solutions Repository",
@@ -38,7 +38,6 @@ const PLANS = [
   {
     id: "premium",
     name: "Premium Plan",
-    tagline: "Free features +   Major upgrades",
     includes: [
       "Webinars (live + recordings)",
       "Solutions Repository",
@@ -56,7 +55,6 @@ const PLANS = [
   {
     id: "elite",
     name: "Elite Plan",
-    tagline: "Concierge-level, full preparation & placement support",
     includes: [
       "Webinars (live + recordings)",
       "Solutions Repository",
@@ -76,25 +74,22 @@ const PLANS = [
   },
 ];
 
-/* Visual metadata */
+/* Icons + prices */
 const VISUALS = {
   free: {
-    gradient: "linear-gradient(135deg,#E8F8FF,#F6FCFF)",
-    accent: "#0EA5E9",
-    icon: <Star size={28} weight="duotone" />,
+    accent: "#3B82F6",
     price: "₹0",
+    icon: <Star size={32} weight="duotone" />,
   },
   premium: {
-    gradient: "linear-gradient(135deg,#F7F0FF,#FBF7FF)",
-    accent: "#7C3AED",
-    icon: <Crown size={28} weight="duotone" />,
+    accent: "#A855F7",
     price: "₹499",
+    icon: <Crown size={32} weight="duotone" />,
   },
   elite: {
-    gradient: "linear-gradient(135deg,#E8FFF1,#F7FFFA)",
     accent: "#10B981",
-    icon: <RocketLaunch size={28} weight="duotone" />,
     price: "₹999",
+    icon: <RocketLaunch size={32} weight="duotone" />,
   },
 };
 
@@ -104,7 +99,7 @@ export default function PlanDetails() {
   const navigate = useNavigate();
 
   const selectedId =
-    paramId || (location && location.state && location.state.selected) || null;
+    paramId || (location.state && location.state.selected) || null;
 
   const refs = useRef({});
   PLANS.forEach((p) => {
@@ -115,156 +110,131 @@ export default function PlanDetails() {
 
   useEffect(() => {
     if (!selectedId) return;
-    const elRef = refs.current[selectedId];
-    if (!elRef || !elRef.current) return;
-
-    const t = setTimeout(() => {
-      elRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
-      setHighlightedId(selectedId);
-      const r = setTimeout(() => setHighlightedId(null), 2200);
-      return () => clearTimeout(r);
-    }, 120);
-    return () => clearTimeout(t);
+    const el = refs.current[selectedId].current;
+    if (el) {
+      setTimeout(() => {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        setHighlightedId(selectedId);
+        setTimeout(() => setHighlightedId(null), 2000);
+      }, 150);
+    }
   }, [selectedId]);
 
-  function handleCardClick(planId) {
-    const elRef = refs.current[planId];
-    if (elRef && elRef.current) {
-      elRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-    setHighlightedId(planId);
-    setTimeout(() => setHighlightedId(null), 2200);
-  }
-
-  // Replace with your real Google Form if you have one
   const GOOGLE_FORM_URL =
     "https://docs.google.com/forms/d/e/1FAIpQLSfPLACEHOLDER/viewform";
 
   return (
-    <section className="container mx-auto px-6 py-12">
-      <div className="max-w-6xl mx-auto">
+<div className="relative min-h-screen bg-transparent overflow-hidden">
+      {/* Background Animation */}
+      <BackgroundFXPlans />
+
+      {/* Content */}
+      <section className="relative z-10 container mx-auto px-6 py-12 bg-transparent">
         <button
           onClick={() => navigate(-1)}
-          className="mb-4 text-sm text-slate-600 hover:underline"
+          className="mb-4 text-sm text-slate-300 hover:underline"
         >
           ← Back
         </button>
 
-        <h1 className="text-3xl font-bold mb-4" style={{ color: "var(--brand)" }}>
+        <h1 className="text-3xl font-bold text-white mb-4">
           Our Plans — Full Details
         </h1>
-
-        <p className="text-slate-700 mb-8">
-          Browse all subscription plans below. The plan you selected is highlighted.
+        <p className="text-slate-300 mb-8">
+          Browse all subscription plans below. Click a plan to highlight it.
         </p>
 
-        {/* grid of cards */}
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
+        {/* Cards Grid */}
+        <div className="grid md:grid-cols-3 gap-8">
           {PLANS.map((p) => {
-            const visual = VISUALS[p.id] || VISUALS.free;
-            const isHighlighted = highlightedId === p.id || selectedId === p.id;
+            const visual = VISUALS[p.id];
+            const isHighlighted =
+              highlightedId === p.id || selectedId === p.id;
 
             return (
               <article
                 key={p.id}
-                id={`plan-${p.id}`}
                 ref={refs.current[p.id]}
-                onClick={() => handleCardClick(p.id)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") handleCardClick(p.id);
-                }}
-                className={`rounded-xl overflow-hidden transition-transform duration-300 focus:outline-none ${
-                  isHighlighted ? "ring-4 ring-blue-200 scale-[1.01]" : "hover:-translate-y-1"
-                }`}
-                style={{
-                  boxShadow: isHighlighted
-                    ? "0 18px 50px rgba(14,165,233,0.10)"
-                    : "0 8px 24px rgba(2,6,23,0.04)",
-                  background: "white",
-                }}
+                onClick={() => setHighlightedId(p.id)}
+                className={`rounded-3xl p-8 backdrop-blur-2xl 
+                  bg-white/10 border border-white/20 
+                  shadow-[0_0_35px_rgba(0,0,0,0.25)]
+                  transition duration-300 cursor-pointer
+                  ${
+                    isHighlighted
+                      ? "scale-[1.04] ring-2 ring-indigo-400 shadow-xl"
+                      : "hover:scale-[1.03]"
+                  }
+                `}
               >
-                {/* HEADER - fixed height and vertically centered */}
-                <div
-                  className="p-5 flex items-center gap-4"
-                  style={{
-                    background: visual.gradient,
-                    minHeight: 170, // <- fixed header height so all match
-                    alignItems: "center",
-                  }}
-                >
+                {/* Header */}
+                <div className="flex flex-col items-center text-center">
                   <div
-                    className="w-14 h-14 rounded-xl grid place-items-center text-white"
+                    className="w-16 h-16 rounded-2xl grid place-items-center mb-4"
                     style={{
                       background: "rgba(255,255,255,0.12)",
-                      boxShadow: "inset 0 -6px 14px rgba(255,255,255,0.06)",
+                      backdropFilter: "blur(20px)",
                       color: visual.accent,
                     }}
-                    aria-hidden
                   >
                     {visual.icon}
                   </div>
 
-                  <div className="flex-1 pr-4">
-                    <div className="text-lg font-semibold">{p.name}</div>
-                    <div className="text-sm text-slate-700 mt-1">{p.tagline}</div>
-                  </div>
+                  <h3 className="text-xl font-semibold text-white">
+                    {p.name}
+                  </h3>
 
-                  <div className="text-right">
-                    <div className="text-2xl font-extrabold" style={{ color: visual.accent }}>
-                      {visual.price}
-                    </div>
-                    <div className="text-sm text-slate-600 mt-1">/month</div>
-                  </div>
+                  <p
+                    className="text-3xl font-extrabold mt-2"
+                    style={{ color: visual.accent }}
+                  >
+                    {visual.price}
+                  </p>
                 </div>
 
-                {/* BODY */}
-                <div className="bg-white p-5 border-t border-slate-100">
-                  <ul className="space-y-3 mt-2">
-                    {ALL_FEATURES.map((feature) => {
-                      const included = p.includes.includes(feature);
-                      return (
-                        <li key={feature} className="flex items-center gap-3 text-sm">
-                          {included ? (
-                            <CheckCircle size={20} color="#10B981" weight="duotone" />
-                          ) : (
-                            <XCircle size={20} color="#EF4444" weight="duotone" />
-                          )}
+                {/* Features */}
+                <ul className="mt-6 space-y-3 text-sm text-white/90">
+                  {ALL_FEATURES.map((feature) => {
+                    const included = p.includes.includes(feature);
+                    return (
+                      <li
+                        key={feature}
+                        className="flex items-center gap-3"
+                      >
+                        {included ? (
+                          <CheckCircle size={20} color="#22c55e" />
+                        ) : (
+                          <XCircle size={20} color="#ef4444" />
+                        )}
+                        <span
+                          className={
+                            included ? "" : "opacity-50 line-through"
+                          }
+                        >
+                          {feature}
+                        </span>
+                      </li>
+                    );
+                  })}
+                </ul>
 
-                          <span className={included ? "text-gray-800" : "text-gray-400 line-through"}>
-                            {feature}
-                          </span>
-                        </li>
-                      );
-                    })}
-                  </ul>
-
-                  <div className="mt-6 flex justify-center">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        // open Google Form in new tab and optionally prefill plan via query params
-                        const url = `${GOOGLE_FORM_URL}?usp=pp_url&entry.XXXXX=${encodeURIComponent(
-                          p.id
-                        )}`;
-                        window.open(url, "_blank", "noopener,noreferrer");
-                      }}
-                      className="btn-primary"
-                      aria-label={`Buy ${p.name}`}
-                      style={{ minWidth: 160 }}
-                    >
-                      Buy Now
-                    </button>
-                  </div>
-                </div>
+                {/* Buy Button */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    window.open(GOOGLE_FORM_URL, "_blank");
+                  }}
+                  className="mt-6 w-full py-3 rounded-xl font-semibold 
+                             text-white bg-indigo-600/80 hover:bg-indigo-700 
+                             transition"
+                >
+                  Buy Now
+                </button>
               </article>
             );
           })}
         </div>
-
-        {/* optional expanded details removed per your request */}
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }

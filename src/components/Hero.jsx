@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import hero1 from "../assets/Hero1.png";
 import hero2 from "../assets/Hero2.png";
 import QuestionOfDayCard from "./QuestionOfDayCard";
+import BackgroundFX from "./BackgroundFX";
 const quotes = [
   "Education is the most powerful weapon which you can use to change the world.",
   "Arise, awake, and stop not until the goal is reached.",
@@ -30,6 +31,7 @@ export default function Hero() {
 
   return (
     <section className=" my-10 py-8 rounded-xl">
+       <BackgroundFX />
       <div className="grid md:grid-cols-2 gap-8 items-center container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

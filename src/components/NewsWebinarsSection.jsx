@@ -65,6 +65,7 @@ export default function NewsWebinarsCompact() {
   return (
     <>
       <section className="container mx-auto px-6 my-8">
+
         <div className="grid md:grid-cols-2 gap-6">
           {/* Research & News */}
           <motion.div variants={listParent} initial="hidden" animate="visible" className="rounded-xl overflow-hidden bg-gradient-to-b from-sky-50 to-white border">
