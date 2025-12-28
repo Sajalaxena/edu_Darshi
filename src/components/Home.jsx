@@ -13,17 +13,17 @@ import TopInstitutes from "./TopInstitutes";
 export default function Home() {
   return (
     <>
-     <div >
-      <Hero />
-      <NewsWebinarsSection />
-      <WhyChoose />
-      <TopInstitutes />
-      <MentorCard />
-      <ReviewCard />
-     <PricingCard />
-      <FAQ />
-      
-      <ContactSection />
+      <div>
+        <Hero />
+        <NewsWebinarsSection />
+        <WhyChoose />
+        <TopInstitutes />
+        <MentorCard />
+        <ReviewCard />
+        <PricingCard />
+        <FAQ />
+
+        <ContactSection />
       </div>
     </>
   );

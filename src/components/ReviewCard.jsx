@@ -1,177 +1,149 @@
-// src/components/ReviewsSection.jsx
 import React from "react";
 import { motion } from "framer-motion";
 import { Star } from "phosphor-react";
 
-/**
- * Modern Student Reviews section
- * - uses small avatar (image or initials)
- * - shows name, short role/exam, date & verified badge
- * - humanized review text
- * - clear rating with filled/outline stars (phosphor)
- */
+/* ---------------- DATA ---------------- */
 
 const reviews = [
   {
     name: "Aman Singh",
-    role: "NEET - 2024 (Ranked Top 1200)",
+    role: "IIT-JAM Mathematics | PhD Aspirant",
     date: "Apr 2024",
-    text:
-      "Mentors at EduDarshi broke down tough NEET problems into simple steps. Weekly mocks and timely feedback helped me improve edges I didn't even know I had. Highly recommended.",
+    text: "I prepared for IIT-JAM Mathematics with EduDarshi mentors. The problem-solving approach, weekly mock analysis, and clear strategy for high-weight topics helped me improve accuracy and speed. The guidance also helped me plan my PhD applications with confidence.",
     rating: 5,
-    avatar: null, // use null to show initials
   },
   {
     name: "Riya Patel",
-    role: "JEE Advanced Aspirant - Top Ranker",
+    role: "CSIR-NET/JRF Qualified | Research Aspirant",
     date: "Feb 2024",
-    text:
-      "Structured guidance and a clear study roadmap — the doubt sessions were short and laser-focused. The mentors gave practical tips for exam writing and time management.",
-    rating: 4,
-    avatar: null,
+    text: "The NET/JRF preparation was very structured. Concept-wise tests, doubt-focused sessions, and mentor feedback on answer presentation made a big difference. I also received guidance on choosing research areas and shortlisting institutes for PhD.",
+    rating: 5,
   },
   {
-    name: "Vikram Joshi",
-    role: "B.Sc Entrance - Cleared",
-    date: "Dec 2023",
-    text:
-      "Very good practice papers and solution walkthroughs. The mentor's feedback on my approach helped me improve accuracy under time pressure.",
+    name: "Sneha Kulkarni",
+    role: "PhD Admission (India & Abroad) | Postdoc Aspirant",
+    date: "Jan 2024",
+    text: "Beyond exam preparation, EduDarshi mentors helped me with SOP writing, CV structuring, and interview preparation for PhD admissions. The one-to-one feedback on my research proposal and mock interviews was extremely valuable.",
     rating: 5,
-    avatar: null,
   },
 ];
 
-function Avatar({ name, src, size = 56 }) {
-  if (src) {
-    return (
-      <img
-        src={src}
-        alt={name}
-        className="rounded-full object-cover"
-        style={{ width: size, height: size }}
-      />
-    );
-  }
-  const initials = name
-    .split(" ")
-    .map((s) => s[0])
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
+/* ---------------- HELPERS ---------------- */
+
+function Stars({ value }) {
   return (
-    <div
-      className="rounded-full grid place-items-center font-semibold text-white"
-      style={{
-        width: size,
-        height: size,
-        background:
-          "linear-gradient(135deg, rgba(17,89,255,0.95), rgba(6,182,212,0.85))",
-        boxShadow: "0 6px 20px rgba(17,89,255,0.10)",
-      }}
-      aria-hidden
-    >
-      {initials}
+    <div className="flex items-center">
+      {[1, 2, 3, 4, 5].map((i) => (
+        <Star
+          key={i}
+          size={14}
+          weight={i <= value ? "fill" : "regular"}
+          color="#FBBF24"
+          className="mr-1"
+        />
+      ))}
     </div>
   );
 }
 
-function Stars({ value = 5, size = 14 }) {
-  const stars = [];
-  for (let i = 1; i <= 5; i++) {
-    stars.push(
-      <Star
-        key={i}
-        size={size}
-        weight={i <= value ? "fill" : "regular"}
-        color="#FBBF24"
-        style={{ marginRight: 4 }}
-        aria-hidden
-      />
-    );
-  }
-  return <div className="flex items-center">{stars}</div>;
-}
+/* ---------------- COMPONENT ---------------- */
 
 export default function ReviewsSection() {
   return (
-    <section className="my-12 container mx-auto px-6">
-      <h2
-        className="text-3xl font-semibold mb-8 text-center"
-        style={{ color: "var(--brand)" }}
-      >
-        Student Reviews
-      </h2>
+    <section className="relative py-20 overflow-hidden bg-gradient-to-b from-blue-50 via-indigo-50 to-white">
+      {/* Background glow */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden isolate">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] h-[380px] bg-blue-200/30 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 w-[320px] h-[320px] bg-indigo-200/30 rounded-full blur-3xl" />
+      </div>
 
-      <div className="grid md:grid-cols-3 gap-6">
-        {reviews.map((r, i) => (
-          <motion.article
-            key={r.name}
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.08, duration: 0.36 }}
-            className="bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition-shadow duration-200"
-            aria-label={`Review by ${r.name}`}
-          >
-            {/* small colorful header bar */}
-           <div
-  className="p-4 flex gap-4 items-center"
-  style={{
-background: "#e3f2fd",
-    minHeight: "150px",   // ⭐ Keeps all header heights equal
-        borderBottom: "1px solid #dce9f9",
+      <div className="relative z-10 container mx-auto px-6">
+        <h2
+          className="text-3xl md:text-4xl font-bold text-center mb-14"
+          style={{ color: "var(--brand)" }}
+        >
+          Student Reviews
+        </h2>
 
-  }}
->
-  {/* <Avatar name={r.name} src={r.avatar} /> */}
+        <div className="grid gap-6 md:grid-cols-3">
+          {reviews.map((r, i) => (
+            <motion.article
+              key={r.name}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.08, duration: 0.4 }}
+              className="bg-white rounded-2xl border border-blue-100 shadow-sm hover:shadow-lg transition-shadow overflow-hidden flex flex-col"
+            >
+              {/* CARD HEADER */}
+              <div
+                className="relative p-5 flex items-center justify-between"
+                style={{
+                  minHeight: "140px",
+                  background:
+                    "linear-gradient(135deg, rgba(219,234,254,0.95), rgba(199,210,254,0.9))",
+                  borderBottom: "1px solid rgba(99,102,241,0.15)",
+                }}
+              >
+                <div
+                  className="absolute inset-x-0 top-0 h-[2px]"
+                  style={{
+                    background:
+                      "linear-gradient(90deg, transparent, rgba(37,99,235,0.4), transparent)",
+                  }}
+                />
 
-  <div className="flex-1 flex flex-col justify-center">
-    <div className="text-base font-semibold" style={{ color: "var(--brand-deep)" }}>
-      {r.name}
-    </div>
-    <div className="text-sm text-slate-500 leading-tight">{r.role}</div>
-  </div>
-
-  <div style={{ textAlign: "right", minWidth: 84 }}>
-    <div className="text-sm font-semibold" style={{ color: "var(--brand)" }}>
-      {r.date}
-    </div>
-    <div className="text-xs text-slate-400">Verified</div>
-  </div>
-</div>
-
-
-            {/* body */}
-            <div className="p-5">
-              <div className="text-slate-700 italic text-sm leading-relaxed" style={{ minHeight: 72 }}>
-                “{r.text}”
-              </div>
-
-              <div className="mt-4 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <Stars value={r.rating} />
-                  <div className="text-sm text-slate-500">({r.rating}.0)</div>
+                <div>
+                  <div
+                    className="text-base font-semibold"
+                    style={{ color: "var(--brand-deep)" }}
+                  >
+                    {r.name}
+                  </div>
+                  <div className="text-sm text-slate-600">{r.role}</div>
                 </div>
 
-                <div className="text-sm">
+                <div className="text-right">
+                  <div
+                    className="text-sm font-semibold"
+                    style={{ color: "var(--brand)" }}
+                  >
+                    {r.date}
+                  </div>
+                  <div className="text-xs text-slate-400">Verified</div>
+                </div>
+              </div>
+
+              {/* CARD BODY */}
+              <div className="p-5 flex flex-col flex-1">
+                {/* Fixed-height text */}
+                <p className="italic text-slate-700 text-sm leading-relaxed min-h-[140px]">
+                  “{r.text}”
+                </p>
+
+                {/* Footer pinned */}
+                <div className="mt-auto pt-5 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Stars value={r.rating} />
+                    <span className="text-sm text-slate-500">
+                      ({r.rating}.0)
+                    </span>
+                  </div>
+
                   <button
-                    className="text-xs font-semibold px-3 py-1 rounded-md"
+                    className="text-xs font-semibold px-4 py-1.5 rounded-md text-white shadow"
                     style={{
-                      background: "linear-gradient(90deg,var(--brand),var(--brand-deep))",
-                      color: "white",
-                      boxShadow: "0 8px 22px rgba(17,89,255,0.12)",
-                    }}
-                    onClick={() => {
-                      // placeholder: open review detail or CTA
-                      alert(`Thanks for your interest — this would open ${r.name}'s full review.`);
+                      background:
+                        "linear-gradient(90deg, var(--brand), var(--brand-deep))",
+                      boxShadow: "0 8px 22px rgba(37,99,235,0.18)",
                     }}
                   >
                     Read More
                   </button>
                 </div>
               </div>
-            </div>
-          </motion.article>
-        ))}
+            </motion.article>
+          ))}
+        </div>
       </div>
     </section>
   );

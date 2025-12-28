@@ -2,6 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import mentorsData from "../components/data/mentorsData"; // adjust path if needed
+import { useNavigate } from "react-router-dom";
 
 /**
  * MentorCard
@@ -17,6 +18,8 @@ import mentorsData from "../components/data/mentorsData"; // adjust path if need
 
 function SingleCard({ mentor, onOpen }) {
   // defensive guards
+  const navigate = useNavigate();
+
   const m = mentor || {};
   const id = m.id || "unknown";
   const gradient =
@@ -76,7 +79,9 @@ function SingleCard({ mentor, onOpen }) {
 
           {/* handle case where no qualifications present */}
           {(m.qualifications || []).length === 0 && (
-            <li className="text-sm text-slate-500">Qualifications not listed</li>
+            <li className="text-sm text-slate-500">
+              Qualifications not listed
+            </li>
           )}
         </ul>
 
@@ -93,11 +98,13 @@ function SingleCard({ mentor, onOpen }) {
           </div>
 
           <button
-            onClick={() =>
-              typeof onOpen === "function"
-                ? onOpen(m)
-                : alert(`Open mentor: ${m.name || "unknown"}`)
-            }
+            onClick={() => {
+              if (typeof onOpen === "function") {
+                onOpen(m);
+              } else {
+                navigate("/mentors");
+              }
+            }}
             className="px-4 py-2 bg-indigo-600 text-white rounded-md text-sm shadow hover:bg-indigo-700"
           >
             View Details
@@ -127,11 +134,13 @@ export default function MentorCard({ mentor, onOpen }) {
 
   return (
     <section className="container mx-auto px-6 my-12">
-      <h2 className="text-4xl font-bold text-center mb-16" style={{ color: "var(--brand)" }}>
-          Our Top Mentors
-        </h2>
+      <h2
+        className="text-4xl font-bold text-center mb-16"
+        style={{ color: "var(--brand)" }}
+      >
+        Our Top Mentors
+      </h2>
       <div className="flex items-center justify-between mb-6">
-        
         {/* optional: link to /mentors page */}
         {/* <a href="/mentors" className="text-sm text-indigo-600 hover:underline">
           View all

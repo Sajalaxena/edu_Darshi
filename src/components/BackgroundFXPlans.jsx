@@ -1,67 +1,47 @@
 // src/components/BackgroundFXPlans.jsx
 import React from "react";
-import { motion, useViewportScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
+
+const SYMBOLS = ["σ", "λ", "θ", "μ", "Δ", "α", "∑"];
 
 export default function BackgroundFXPlans() {
-  const { scrollY } = useViewportScroll();
-  const y1 = useTransform(scrollY, [0, 300], [0, 20]);
-  const y2 = useTransform(scrollY, [0, 300], [0, -15]);
-
   return (
-    <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
-      {/* Soft dual gradient */}
+    <div className="absolute inset-0 -z-10 overflow-hidden">
+      {/* BASE BLUE GRADIENT */}
       <div
-        className="absolute inset-0 opacity-[0.55]"
+        className="absolute inset-0"
         style={{
-          background:
-            "radial-gradient(circle at 20% 30%, rgba(99,102,241,0.22), transparent 60%), radial-gradient(circle at 85% 70%, rgba(56,189,248,0.20), transparent 60%)",
+          background: `
+            radial-gradient(circle at 20% 20%, #dbeafe 0%, transparent 60%),
+            radial-gradient(circle at 80% 30%, #e0e7ff 0%, transparent 60%),
+            linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%)
+          `,
         }}
       />
 
-      {/* Blurred glow circles */}
-      <motion.div
-        style={{ y: y1 }}
-        className="absolute w-[440px] h-[440px] bg-indigo-300/20 blur-[150px] rounded-full top-[12%] left-[5%]"
-      />
-      <motion.div
-        style={{ y: y2 }}
-        className="absolute w-[380px] h-[380px] bg-blue-300/20 blur-[140px] rounded-full top-[55%] right-[10%]"
-      />
-
-      {/* Floating premium icons */}
-      {[
-        { icon: "⭐", top: "18%", left: "22%" },
-        { icon: "₹", top: "40%", left: "72%" },
-        { icon: "👑", top: "65%", left: "30%" },
-        { icon: "🚀", top: "78%", left: "80%" },
-      ].map((i, idx) => (
+      {/* FLOATING MATH SYMBOLS */}
+      {SYMBOLS.map((s, i) => (
         <motion.div
-          key={idx}
-          initial={{ opacity: 0.18, y: 0 }}
+          key={i}
+          className="absolute text-blue-300/30 font-semibold select-none"
+          style={{
+            fontSize: `${28 + i * 6}px`,
+            top: `${10 + i * 12}%`,
+            left: `${(i * 17) % 90}%`,
+          }}
           animate={{
-            opacity: [0.18, 0.32, 0.18],
             y: [0, -14, 0],
+            opacity: [0.25, 0.45, 0.25],
           }}
           transition={{
-            duration: 7 + idx * 2,
+            duration: 8 + i,
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="absolute text-4xl md:text-5xl"
-          style={{ top: i.top, left: i.left }}
         >
-          {i.icon}
+          {s}
         </motion.div>
       ))}
-
-      {/* Noise texture overlay */}
-      <div
-        className="absolute inset-0 opacity-[0.13] mix-blend-overlay"
-        style={{
-          backgroundImage:
-            "url('https://grainy-gradients.vercel.app/noise.svg')",
-        }}
-      />
     </div>
   );
 }

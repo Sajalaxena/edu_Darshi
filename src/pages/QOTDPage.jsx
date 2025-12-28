@@ -3,263 +3,212 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
-/* Simple QOTD bank */
+/* ================= JAM / GATE MATH QOTD BANK ================= */
+
 const QOTD_BANK = [
   {
-    id: "q-2026-01",
-    title: "What is the hardest substance available on earth?",
-    options: ["Gold", "Iron", "Diamond", "Platinum"],
+    id: "jam-01",
+    title: "Let A be a 2×2 matrix with determinant 5. What is det(2A⁻¹)?",
+    options: ["1/5", "2/5", "4/5", "8/5"],
     answerIndex: 2,
     explanation: [
-      "Diamond has the highest known hardness on the Mohs scale.",
-      "It is an allotrope of carbon with a tetrahedral crystal structure.",
+      "det(A⁻¹) = 1 / det(A) = 1/5",
+      "det(2A⁻¹) = 2² · det(A⁻¹) = 4 × (1/5) = 4/5",
     ],
-    youtube: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    youtube: "https://www.youtube.com/watch?v=example",
     date: "2026-01-10",
   },
   {
-    id: "q-2026-02",
-    title: "Which organ produces insulin in the human body?",
-    options: ["Liver", "Pancreas", "Kidney", "Spleen"],
-    answerIndex: 1,
+    id: "gate-02",
+    title: "If f(x) = |x| is differentiable at x = a, then a must be",
+    options: ["a > 0", "a < 0", "a = 0", "a ≠ 0"],
+    answerIndex: 3,
     explanation: [
-      "The pancreas has beta cells in the islets of Langerhans which secrete insulin.",
+      "|x| is differentiable everywhere except at x = 0",
+      "Hence differentiable for all a ≠ 0",
     ],
-    youtube: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    youtube: "https://www.youtube.com/watch?v=example",
     date: "2026-01-11",
   },
   {
-    id: "q-2026-03",
-    title: "Which planet is known as the Red Planet?",
-    options: ["Venus", "Earth", "Mars", "Jupiter"],
+    id: "jam-03",
+    title:
+      "Let X be a random variable with P(X=1)=P(X=−1)=1/2. Then E(X²) equals",
+    options: ["0", "1/2", "1", "2"],
     answerIndex: 2,
-    explanation: ["Mars appears red due to iron oxide (rust) on its surface."],
-    youtube: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    explanation: ["X² = 1 for both outcomes", "So E(X²) = 1"],
+    youtube: "https://www.youtube.com/watch?v=example",
     date: "2026-01-12",
   },
 ];
+
+/* ================= COMPONENT ================= */
 
 export default function QOTDPage() {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(QOTD_BANK.length - 1);
   const [selected, setSelected] = useState(null);
-  const [result, setResult] = useState(null); // { correct: bool, question }
+  const [result, setResult] = useState(null);
 
-  useEffect(() => {
-    setSelected(null);
-  }, [currentIndex]);
-
-  // For debugging: show state in console when result changes
-  useEffect(() => {
-    if (result) console.log("Result set:", result);
-  }, [result]);
-
-  function closePage() {
-    navigate(-1);
-  }
+  useEffect(() => setSelected(null), [currentIndex]);
 
   function submitAnswer() {
-    console.log("Submitting answer, selected:", selected);
-    if (selected === null) {
-      alert("Select an answer first.");
-      return;
-    }
+    if (selected === null) return alert("Please select an option.");
     const q = QOTD_BANK[currentIndex];
-    const correct = selected === q.answerIndex;
-    setResult({ correct, question: q });
+    setResult({
+      correct: selected === q.answerIndex,
+      question: q,
+    });
   }
 
-  function closeResultAndExit() {
+  function closeAll() {
     setResult(null);
-    // navigate to home as requested
     navigate("/", { replace: true });
   }
 
   const currentQ = QOTD_BANK[currentIndex];
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-      {/* background overlay */}
-      <div className="absolute inset-0 bg-black/40" onClick={closePage} />
-
-      {/* Main QOTD modal */}
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 p-3">
       <motion.div
-        initial={{ opacity: 0, y: 8, scale: 0.995 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        className="relative z-[10000] max-w-4xl w-full bg-white rounded-xl shadow-xl overflow-hidden"
-        onClick={(e) => e.stopPropagation()}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="
+          relative bg-white w-full max-w-5xl rounded-xl shadow-xl
+          max-h-[95vh] overflow-hidden
+          flex flex-col
+        "
       >
-        <div className="flex items-start justify-between p-4 border-b">
+        {/* HEADER */}
+        <div className="flex justify-between items-center p-4 border-b">
           <div>
             <h2 className="text-lg font-semibold">Question of the Day</h2>
-            <div className="text-sm text-slate-500">
-              Try it and check the solution video after submit
-            </div>
+            <p className="text-sm text-slate-500">JAM & GATE Mathematics</p>
           </div>
-          <button onClick={closePage} className="text-slate-600">
-            ✕
-          </button>
+          <button onClick={closeAll}>✕</button>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-4 p-4">
-          {/* Left: question area */}
-          <div className="md:col-span-2">
-            <div className="p-4">
-              <div className="text-sm text-slate-500 mb-2">
-                Date: {currentQ.date}
-              </div>
-              <h3 className="text-xl font-semibold">{currentQ.title}</h3>
+        {/* BODY */}
+        <div className="flex flex-col md:flex-row flex-1 overflow-hidden">
+          {/* QUESTION */}
+          <div className="flex-1 p-5 overflow-auto">
+            <div className="text-xs text-slate-500 mb-2">{currentQ.date}</div>
 
-              <div className="mt-4 space-y-3">
-                {currentQ.options.map((opt, idx) => {
-                  const checked = selected === idx;
-                  return (
-                    <label
-                      key={idx}
-                      className={`block cursor-pointer rounded-md p-3 border ${
-                        checked
-                          ? "border-blue-600 bg-blue-50"
-                          : "border-slate-200 bg-white"
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        name="qotd"
-                        checked={checked}
-                        onChange={() => setSelected(idx)}
-                        className="mr-3"
-                      />
-                      <span>{opt}</span>
-                    </label>
-                  );
-                })}
-              </div>
+            <h3 className="text-lg md:text-xl font-semibold">
+              {currentQ.title}
+            </h3>
 
-              <div className="mt-4 flex items-center gap-3">
-                <button onClick={submitAnswer} className="btn-primary">
-                  Submit Answer
-                </button>
-                <button
-                  onClick={() => navigate("/", { replace: true })}
-                  className="btn-secondary"
+            <div className="mt-4 space-y-3">
+              {currentQ.options.map((opt, idx) => (
+                <label
+                  key={idx}
+                  className={`block p-3 rounded-md border cursor-pointer text-sm
+                    ${
+                      selected === idx
+                        ? "border-blue-600 bg-blue-50"
+                        : "border-slate-200"
+                    }`}
                 >
-                  Close
-                </button>
-              </div>
+                  <input
+                    type="radio"
+                    className="mr-2"
+                    checked={selected === idx}
+                    onChange={() => setSelected(idx)}
+                  />
+                  {opt}
+                </label>
+              ))}
+            </div>
+
+            <div className="mt-5 flex flex-wrap gap-3">
+              <button className="btn-primary" onClick={submitAnswer}>
+                Submit
+              </button>
+              <button className="btn-secondary" onClick={closeAll}>
+                Close
+              </button>
             </div>
           </div>
 
-          {/* Right: previous questions */}
-          <aside className="space-y-3">
-            <div className="text-sm font-medium">Previous Questions</div>
-            <div className="space-y-2 max-h-[52vh] overflow-auto pr-2">
-              {QOTD_BANK.slice()
-                .reverse()
-                .map((q, idx) => {
-                  const realIndex = QOTD_BANK.length - 1 - idx;
-                  const isCurrent = realIndex === currentIndex;
-                  return (
-                    <button
-                      key={q.id}
-                      onClick={() => setCurrentIndex(realIndex)}
-                      className={`w-full text-left p-3 rounded-md ${
-                        isCurrent
-                          ? "bg-blue-50 border border-blue-100"
+          {/* PREVIOUS QUESTIONS */}
+          <aside
+            className="
+              w-full md:w-[280px]
+              border-t md:border-t-0 md:border-l
+              p-4 overflow-auto
+            "
+          >
+            <div className="text-sm font-semibold mb-3">Previous Questions</div>
+
+            <div className="space-y-2">
+              {[...QOTD_BANK].reverse().map((q, idx) => {
+                const realIndex = QOTD_BANK.length - 1 - idx;
+                return (
+                  <button
+                    key={q.id}
+                    onClick={() => setCurrentIndex(realIndex)}
+                    className={`w-full text-left p-3 rounded-md text-sm
+                      ${
+                        realIndex === currentIndex
+                          ? "bg-blue-50 border border-blue-200"
                           : "bg-white border border-slate-100"
                       }`}
-                    >
-                      <div className="font-medium text-sm line-clamp-2">
-                        {q.title}
-                      </div>
-                      <div className="text-xs text-slate-500 mt-1">
-                        {q.date}
-                      </div>
-                    </button>
-                  );
-                })}
+                  >
+                    {q.title}
+                  </button>
+                );
+              })}
             </div>
           </aside>
         </div>
       </motion.div>
 
-      {/* === Inline Result Panel ===
-          This is rendered inside the same file (no external import) so we avoid import path issues.
-          It mounts immediately when `result` is set.
-      */}
+      {/* RESULT MODAL */}
       {result && (
-        <div
-          id="qotd-result"
-          className="fixed inset-0 z-[11000] flex items-center justify-center p-4 pointer-events-none"
-        >
-          {/* semi-transparent overlay sits above the page overlay but below the result box */}
-          <div
-            className="absolute inset-0 bg-black/30 pointer-events-auto"
-            onClick={closeResultAndExit}
-          />
-
+        <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/30 p-4">
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            className="relative z-[11001] max-w-md w-full bg-white rounded-lg shadow-lg p-6 pointer-events-auto"
-            onClick={(e) => e.stopPropagation()}
+            className="bg-white rounded-lg p-6 max-w-md w-full"
           >
-            <button
-              className="absolute right-3 top-3"
-              onClick={closeResultAndExit}
+            <h3
+              className={`text-2xl font-bold ${
+                result.correct ? "text-green-600" : "text-red-500"
+              }`}
             >
-              ✕
-            </button>
+              {result.correct ? "Correct 🎉" : "Incorrect"}
+            </h3>
 
-            <div className="text-center">
-              {result.correct ? (
-                <>
-                  <div
-                    className="text-3xl font-bold"
-                    style={{ color: "var(--brand)" }}
-                  >
-                    🎉 Correct!
-                  </div>
-                  <div className="mt-2 text-sm text-slate-600">
-                    Great job — you got it right.
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="text-3xl font-bold text-rose-500">
-                    ✖ Incorrect
-                  </div>
-                  <div className="mt-2 text-sm text-slate-600">
-                    Correct answer:{" "}
-                    <strong>
-                      {result.question.options[result.question.answerIndex]}
-                    </strong>
-                    .
-                  </div>
-                </>
-              )}
+            {!result.correct && (
+              <p className="mt-2 text-sm">
+                Correct answer:{" "}
+                <strong>
+                  {result.question.options[result.question.answerIndex]}
+                </strong>
+              </p>
+            )}
 
-              <div className="mt-4 text-left">
-                <h4 className="font-semibold">Explanation</h4>
-                <ul className="list-disc pl-5 mt-2 text-sm space-y-1">
-                  {result.question.explanation.map((p, i) => (
-                    <li key={i}>{p}</li>
-                  ))}
-                </ul>
-              </div>
+            <div className="mt-4">
+              <h4 className="font-semibold">Explanation</h4>
+              <ul className="list-disc pl-5 mt-2 text-sm space-y-1">
+                {result.question.explanation.map((e, i) => (
+                  <li key={i}>{e}</li>
+                ))}
+              </ul>
+            </div>
 
-              <div className="mt-4 flex gap-3 justify-center">
-                <a
-                  href={result.question.youtube}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="btn-primary"
-                >
-                  Watch Solution
-                </a>
-                <button className="btn-secondary" onClick={closeResultAndExit}>
-                  Close
-                </button>
-              </div>
+            <div className="mt-5 flex gap-3">
+              <a
+                href={result.question.youtube}
+                target="_blank"
+                rel="noreferrer"
+                className="btn-primary"
+              >
+                Watch Solution
+              </a>
+              <button className="btn-secondary" onClick={closeAll}>
+                Close
+              </button>
             </div>
           </motion.div>
         </div>

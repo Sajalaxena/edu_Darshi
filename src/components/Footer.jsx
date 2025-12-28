@@ -14,7 +14,6 @@ export default function Footer() {
       <div className="container mx-auto px-6 py-10">
         {/* Top Section */}
         <div className="grid md:grid-cols-3 gap-10">
-          
           {/* Brand */}
           <div>
             <div className="font-bold text-2xl tracking-wide">EduDarshi</div>
@@ -28,11 +27,36 @@ export default function Footer() {
           <div>
             <div className="font-semibold mb-2 text-lg">Quick Links</div>
             <ul className="text-sm text-white/80 space-y-2">
-              <li><a href="/about" className="hover:text-blue-300 transition">About</a></li>
-              <li><a href="/programs" className="hover:text-blue-300 transition">Programs</a></li>
-              <li><a href="/contact" className="hover:text-blue-300 transition">Contact</a></li>
-              <li><a href="/webinars" className="hover:text-blue-300 transition">Webinars</a></li>
-              <li><a href="/blogs" className="hover:text-blue-300 transition">Blogs</a></li>
+              <li>
+                <a href="/about" className="hover:text-blue-300 transition">
+                  About
+                </a>
+              </li>
+              <li>
+                <a href="/programs" className="hover:text-blue-300 transition">
+                  Programs
+                </a>
+              </li>
+              <li>
+                <a href="/contact" className="hover:text-blue-300 transition">
+                  Contact
+                </a>
+              </li>
+              <li>
+                <a href="/webinars" className="hover:text-blue-300 transition">
+                  Webinars
+                </a>
+              </li>
+              <li>
+                <a href="/blogs" className="hover:text-blue-300 transition">
+                  Blogs
+                </a>
+              </li>
+              <li>
+                <a href="/careers" className="hover:text-blue-300 transition">
+                  Careers
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -41,7 +65,6 @@ export default function Footer() {
             <div className="font-semibold mb-3 text-lg">Follow Us</div>
 
             <div className="flex items-center gap-4 mt-2">
-
               {/* Instagram */}
               <a
                 href="https://www.instagram.com/edudarshi_official"
@@ -89,7 +112,6 @@ export default function Footer() {
               >
                 <FaWhatsapp size={22} />
               </a>
-
             </div>
           </div>
         </div>

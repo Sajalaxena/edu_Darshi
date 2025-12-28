@@ -22,8 +22,8 @@ export default function QuestionOfDayCard() {
       className="card p-4 mt-6 max-w-xl"
     >
       <div className="flex items-start justify-between">
-        <div>
-          <h4 className="font-semibold">Question of the Day</h4>
+        <div className="font-semibold qotd-blink text-lg md:text-xl">
+          <h4>Question of the Day</h4>
           <p className="text-sm text-slate-600 mt-2 mr-8">
             Click to try today's short challenge — submit your answer and view a
             short solution video.

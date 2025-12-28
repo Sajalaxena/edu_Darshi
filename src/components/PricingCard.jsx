@@ -20,7 +20,7 @@ const plans = [
   },
   {
     id: "premium",
-    name: "Premium Plan",
+    name: "Basic Plan",
     price: "₹499",
     icon: <Crown size={36} weight="fill" className="text-purple-500" />,
     gradient: "linear-gradient(135deg,#F3E8FF,#EDE9FE)", // Soft purple
@@ -35,11 +35,9 @@ const plans = [
   },
   {
     id: "elite",
-    name: "Elite Plan",
+    name: "Personalised Plan",
     price: "₹999",
-    icon: (
-      <RocketLaunch size={36} weight="fill" className="text-green-500" />
-    ),
+    icon: <RocketLaunch size={36} weight="fill" className="text-green-500" />,
     gradient: "linear-gradient(135deg,#DCFCE7,#ECFDF5)", // Soft green
     short: ["All Premium Features", "Dedicated Mentor", "Priority Support"],
     front: [
@@ -59,7 +57,7 @@ export default function PricingSection() {
   return (
     <section className="my-16 container mx-auto px-6">
       <h2 className="text-3xl font-bold text-center mb-10 text-blue-600">
-        Our Plans
+        Our Services
       </h2>
 
       <div className="grid gap-16 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-items-center">
