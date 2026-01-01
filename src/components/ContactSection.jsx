@@ -110,7 +110,7 @@ export default function ContactSectionModern() {
             className="text-3xl md:text-4xl font-extrabold"
             style={{ color: "#1E40AF" }}
           >
-            Need a Free Demo or Guidance?
+            Need Guidance Contact Us?
           </h2>
           <p className="text-slate-600 mt-2 max-w-2xl mx-auto">
             Fill the form and our team will get back within 24 hours. Tell us

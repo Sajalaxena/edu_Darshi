@@ -8,6 +8,9 @@ export default function AdminSidebar() {
     { to: "/admin/transactions", label: "Transaction Details" },
     { to: "/admin/mentors", label: "Add Mentors" },
     { to: "/admin/reviews", label: "Add Reviews" },
+    { to: "/admin/previous-paper/add", label: "Add Previous Paper" },
+    { to: "/admin/research-news", label: "Research & News" },
+    { to: "/admin/webinars", label: "Upcoming Webinars" },
   ];
 
   return (

@@ -51,7 +51,7 @@ export default function TopInstitutesSlider() {
             initial={{ x: 0 }}
             animate={{ x: "-50%" }}
             transition={{
-              duration: 25,
+              duration: 15,
               repeat: Infinity,
               ease: "linear",
             }}

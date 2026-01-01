@@ -1,7 +1,7 @@
 // src/pages/PreviousPapersPage.jsx
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
-/* ------------------ DATA ------------------ */
+/* ------------------ EXAMS ------------------ */
 
 const EXAMS = [
   "All",
@@ -12,74 +12,74 @@ const EXAMS = [
   "PhD Entrance",
 ];
 
-const PAPERS = [
-  {
-    id: "jam-2023-math",
-    exam: "IIT-JAM",
-    subject: "Mathematics",
-    year: 2023,
-    paperPdf: "/papers/jam-2023-math.pdf",
-    solutionVideo: "https://www.youtube.com/watch?v=XXXX",
-  },
-  {
-    id: "jam-2022-math",
-    exam: "IIT-JAM",
-    subject: "Mathematics",
-    year: 2022,
-    paperPdf: "/papers/jam-2022-math.pdf",
-    solutionVideo: "https://www.youtube.com/watch?v=XXXX",
-  },
-  {
-    id: "gate-2023-math",
-    exam: "GATE",
-    subject: "Mathematics",
-    year: 2023,
-    paperPdf: "/papers/gate-2023-math.pdf",
-    solutionVideo: "https://www.youtube.com/watch?v=XXXX",
-  },
-  {
-    id: "net-2023-math",
-    exam: "CSIR-NET/JRF",
-    subject: "Mathematics",
-    year: 2023,
-    paperPdf: "/papers/net-2023-math.pdf",
-    solutionVideo: "https://www.youtube.com/watch?v=XXXX",
-  },
-];
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
+/* ------------------ HELPERS ------------------ */
+function normalizeDriveLink(url = "") {
+  if (!url) return "#";
+
+  // Extract fileId from Google Drive URL
+  const match = url.match(/\/d\/([^/]+)/);
+  if (!match) return url;
+
+  const fileId = match[1];
+  return `https://drive.google.com/file/d/${fileId}/preview`;
+}
 
 /* ------------------ COMPONENT ------------------ */
-
 export default function PreviousPapersPage() {
+  const [papers, setPapers] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
   const [activeExam, setActiveExam] = useState("All");
 
-  const filteredPapers = useMemo(() => {
-    return PAPERS.filter((p) => {
-      const matchesExam = activeExam === "All" || p.exam === activeExam;
+  /* -------- FETCH PAPERS -------- */
+  useEffect(() => {
+    async function fetchPapers() {
+      try {
+        const res = await fetch(`${API_BASE}/previous-papers`);
+        const json = await res.json();
+        setPapers(json.data || []);
+      } catch (err) {
+        console.error("Failed to fetch papers", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchPapers();
+  }, []);
 
-      const matchesSearch =
+  /* -------- FILTER LOGIC -------- */
+  const filteredPapers = useMemo(() => {
+    return papers.filter((p) => {
+      const examMatch =
+        activeExam === "All" ||
+        p.exam.toLowerCase().includes(activeExam.toLowerCase()) ||
+        activeExam.toLowerCase().includes(p.exam.toLowerCase());
+
+      const searchMatch =
         p.exam.toLowerCase().includes(query.toLowerCase()) ||
-        p.subject.toLowerCase().includes(query.toLowerCase()) ||
+        (p.subject || "").toLowerCase().includes(query.toLowerCase()) ||
         String(p.year).includes(query);
 
-      return matchesExam && matchesSearch;
+      return examMatch && searchMatch;
     });
-  }, [query, activeExam]);
+  }, [papers, query, activeExam]);
 
   return (
     <section className="min-h-screen bg-slate-50">
       <div className="container mx-auto px-6 py-16">
         {/* HEADER */}
         <div className="text-center max-w-2xl mx-auto">
-          <h1 className="text-4xl font-bold" style={{ color: "var(--brand)" }}>
+          <h1 className="text-4xl font-bold text-blue-600">
             Previous Year Papers
           </h1>
           <p className="mt-2 text-slate-600">
-            Download official papers and watch detailed solution walkthroughs
+            Download question papers & watch solution walkthroughs
           </p>
         </div>
 
-        {/* SEARCH BAR */}
+        {/* SEARCH */}
         <div className="mt-10 max-w-3xl mx-auto relative">
           <input
             type="text"
@@ -87,25 +87,24 @@ export default function PreviousPapersPage() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="w-full px-6 py-4 rounded-2xl border border-slate-200
-                       shadow-sm text-base focus:outline-none
-                       focus:ring-2 focus:ring-blue-500"
+                       shadow-sm focus:ring-2 focus:ring-blue-500 outline-none"
           />
-          <span className="absolute right-5 top-1/2 -translate-y-1/2 text-blue-600 text-xl">
+          <span className="absolute right-5 top-1/2 -translate-y-1/2 text-blue-600">
             🔍
           </span>
         </div>
 
-        {/* EXAM FILTER PILLS */}
+        {/* EXAM FILTER */}
         <div className="mt-8 flex gap-3 justify-center flex-wrap">
           {EXAMS.map((exam) => (
             <button
               key={exam}
               onClick={() => setActiveExam(exam)}
-              className={`px-6 py-2 rounded-full text-sm font-medium transition
+              className={`px-5 py-2 rounded-full text-sm font-medium transition
                 ${
                   activeExam === exam
                     ? "bg-indigo-600 text-white shadow"
-                    : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-100"
+                    : "bg-white border border-slate-200 hover:bg-slate-100"
                 }`}
             >
               {exam}
@@ -113,9 +112,15 @@ export default function PreviousPapersPage() {
           ))}
         </div>
 
-        {/* PAPERS GRID */}
+        {/* GRID */}
         <div className="mt-14 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {filteredPapers.length === 0 && (
+          {loading && (
+            <div className="col-span-full text-center text-slate-500">
+              Loading papers...
+            </div>
+          )}
+
+          {!loading && filteredPapers.length === 0 && (
             <div className="col-span-full text-center text-slate-500">
               No papers found.
             </div>
@@ -123,40 +128,45 @@ export default function PreviousPapersPage() {
 
           {filteredPapers.map((p) => (
             <div
-              key={p.id}
+              key={p._id}
               className="bg-white rounded-2xl border border-slate-200
                          shadow-sm hover:shadow-md transition p-6"
             >
               <div className="text-sm text-slate-500">
-                {p.exam} · {p.subject}
+                {p.exam} · {p.subject || "General"}
               </div>
 
-              <h3 className="mt-1 text-lg font-semibold text-slate-900">
+              <h3 className="mt-1 text-lg font-semibold">
                 {p.year} Question Paper
               </h3>
 
+              {/* BUTTONS */}
               <div className="mt-6 flex gap-3">
+                {/* PDF */}
                 <a
-                  href={p.paperPdf}
+                  href={normalizeDriveLink(p.paperPdfLink)}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex-1 text-center px-4 py-2 rounded-lg
-                             border border-slate-200 text-sm font-medium
-                             hover:bg-slate-50"
+                  className="flex-1 h-10 flex items-center justify-center
+                             rounded-lg border border-slate-200
+                             text-sm font-medium hover:bg-slate-50"
                 >
-                  📄 Question Paper
+                  📄 Paper
                 </a>
 
-                <a
-                  href={p.solutionVideo}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex-1 text-center px-4 py-2 rounded-lg
-                             bg-indigo-600 text-white text-sm font-medium
-                             hover:bg-indigo-700"
-                >
-                  ▶ Solution
-                </a>
+                {/* SOLUTION */}
+                {p.solutionYoutubeLink && (
+                  <a
+                    href={p.solutionYoutubeLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-[120px] h-10 flex items-center justify-center
+                               rounded-lg bg-indigo-600 text-white
+                               text-sm font-medium hover:bg-indigo-700"
+                  >
+                    ▶ Solution
+                  </a>
+                )}
               </div>
             </div>
           ))}
