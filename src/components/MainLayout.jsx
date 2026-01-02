@@ -3,7 +3,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import RisingStarsModal from "./RisingStarsModal";
+import EduDarshiIntroModal from "./EduDarshiIntroModal";
 
 /**
  * Robust image loader:
@@ -70,57 +70,15 @@ export default function MainLayout() {
     loadImages();
   }, [loadImages]);
 
-  // rising-star data using filenames; we'll replace image refs with resolved URLs
-  const BASE_STUDENTS = [
-    {
-      id: "s1",
-      name: "Anita Sharma",
-      exam: "NEET - 2025 (AIR 102)",
-      brief: "Scored 680/720. Focused on concept clarity & timed practice.",
-      imageFile: "student1.jpg",
-    },
-    {
-      id: "s2",
-      name: "Rohit Verma",
-      exam: "JEE Advanced - 2025 (Rank 1200)",
-      brief: "Strong problem-solving routine, weekly mock evaluation.",
-      imageFile: "student2.jpg",
-    },
-    {
-      id: "s3",
-      name: "Priya N",
-      exam: "GATE - 2025 (Top 500)",
-      brief: "Focused project work + mentor-led doubt sessions.",
-      imageFile: "student3.jpg",
-    },
-  ];
 
-  // derive final students list that includes resolved image URL (or null)
-  const STUDENTS = BASE_STUDENTS.map((s) => ({
-    ...s,
-    image: imagesLoaded ? imageMap[s.imageFile] || null : null,
-  }));
 
   // modal + don't-show-again
-  const [openStars, setOpenStars] = useState(false);
-  const [dontShowAgain, setDontShowAgain] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const hide = localStorage.getItem("hideRisingStars");
-    if (hide === "1") return;
-    // show modal after small delay; only once images are loaded (so avatars visible)
-    const wait = setTimeout(() => {
-      // ensure we show only when images have been attempted to load (imagesLoaded true)
-      if (imagesLoaded) setOpenStars(true);
-      else {
-        // fallback: if images are not loaded in 1.2s, still open modal without images
-        const fallback = setTimeout(() => setOpenStars(true), 1200);
-        return () => clearTimeout(fallback);
-      }
-    }, 600);
-
-    return () => clearTimeout(wait);
-  }, [imagesLoaded]);
+    const hide = localStorage.getItem("hideIntroModal");
+    if (!hide) setOpen(true);
+  }, []);
 
   function onDontShowAgainToggle(val) {
     setDontShowAgain(val);
@@ -138,11 +96,8 @@ export default function MainLayout() {
       <Footer />
 
       {/* Rising Stars modal (global) */}
-      <RisingStarsModal
-        open={openStars}
-        onClose={() => setOpenStars(false)}
-        students={STUDENTS}
-        onDontShowAgainToggle={onDontShowAgainToggle}
+      <EduDarshiIntroModal
+       open={open} onClose={() => setOpen(false)}
       />
     </div>
   );
