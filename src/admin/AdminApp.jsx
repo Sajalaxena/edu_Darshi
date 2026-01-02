@@ -11,6 +11,7 @@ import { isAuthenticated, logout } from "./auth";
 import AddPreviousPaper from "./pages/AddPreviousPaper";  
 import AdminResearchNews from "./pages/AdminResearchNews";
 import AdminWebinars from "./pages/AdminUpcomingWebinars";
+import AdminBlogs from "./pages/AdminBlogs";
 import "./admin.css";
 function Protected({ children }) {
   // if not logged in, redirect to the nested "login" route
@@ -56,7 +57,8 @@ export default function AdminApp() {
                   <Route path="reviews" element={<AddReviews />} />
                   <Route path="previous-paper/add" element={<AddPreviousPaper />} />
                 <Route path="research-news" element={<AdminResearchNews />} />
-                <Route path="webinars" element={<AdminWebinars />} />
+                      <Route path="webinars" element={<AdminWebinars />} />
+                  <Route path="blogs" element={<AdminBlogs />} />
 
                   {/* default when /admin is visited -> go to queries */}
                   <Route path="" element={<ClientQueries />} />

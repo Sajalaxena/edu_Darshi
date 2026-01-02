@@ -11,6 +11,7 @@ export default function AdminSidebar() {
     { to: "/admin/previous-paper/add", label: "Add Previous Paper" },
     { to: "/admin/research-news", label: "Research & News" },
     { to: "/admin/webinars", label: "Upcoming Webinars" },
+    { to: "/admin/blogs", label: "Blogs" },
   ];
 
   return (
