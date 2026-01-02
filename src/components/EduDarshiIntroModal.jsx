@@ -37,21 +37,38 @@ export default function EduDarshiIntroModal({ open, onClose }) {
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 20, scale: 0.96 }}
         transition={{ duration: 0.2 }}
-        className="relative z-10 w-full max-w-5xl bg-white rounded-2xl shadow-2xl overflow-hidden grid md:grid-cols-2"
+className="relative z-10 w-full max-w-5xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col md:grid md:grid-cols-2"
         onClick={(e) => e.stopPropagation()}
       >
         {/* LEFT – Branding */}
-        <div className="hidden md:flex flex-col justify-center items-center text-white p-10 bg-gradient-to-br from-indigo-600 to-blue-700">
-          <img
-            src="/logo.png"
-            alt="EduDarshi"
-            className="w-28 h-28 mb-6"
-          />
-          <h2 className="text-3xl font-bold">EduDarshi</h2>
-          <p className="mt-2 text-blue-100 text-center">
-            Guiding students to clarity, confidence & success
-          </p>
-        </div>
+      {/* LEFT / TOP – Branding */}
+<div
+  className="
+    flex md:flex
+    md:flex-col
+    flex-row
+    items-center
+    justify-center
+    gap-4
+    text-white
+    p-6 md:p-10
+    bg-gradient-to-br from-indigo-600 to-blue-700
+  "
+>
+  <img
+    src="/logo.png"
+    alt="EduDarshi"
+    className="w-16 h-16 md:w-28 md:h-28"
+  />
+
+  <div className="text-center md:text-center">
+    <h2 className="text-xl md:text-3xl font-bold">EduDarshi</h2>
+    <p className="mt-1 text-blue-100 text-xs md:text-base">
+      Guiding students to clarity, confidence & success
+    </p>
+  </div>
+</div>
+
 
         {/* RIGHT – Content */}
         <div className="p-6 sm:p-8 flex flex-col justify-between">
