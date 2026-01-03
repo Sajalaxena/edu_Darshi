@@ -65,7 +65,7 @@ export default function AdminBlogs() {
   /* ---------------- DELETE BLOG ---------------- */
   const deleteBlog = async (id) => {
     if (!confirm("Delete this blog?")) return;
-    await fetch(`${API_BASE}/blogs/${id}`, { method: "DELETE" });
+    await fetch(`${API_BASE}/blogs/admin/${id}`, { method: "DELETE" });
     fetchBlogs();
   };
 
