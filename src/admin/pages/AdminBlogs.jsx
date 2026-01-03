@@ -12,9 +12,10 @@ export default function AdminBlogs() {
     title: "",
     category: "",
     summary: "",
-    imageUrl: "",
     author: "",
     content: "",
+    image: null,          // FILE
+    imagePreview: null,   // PREVIEW URL
   });
 
   /* ---------------- FETCH BLOGS ---------------- */
@@ -30,24 +31,32 @@ export default function AdminBlogs() {
 
   /* ---------------- CREATE BLOG ---------------- */
   const createBlog = async () => {
-    if (!form.title || !form.summary || !form.content) {
-      alert("Title, summary and content are required");
+    if (!form.title || !form.summary || !form.content || !form.image) {
+      alert("Title, summary, content and image are required");
       return;
     }
 
-    await fetch(`${API_BASE}/blogs`, {
+    const fd = new FormData();
+    fd.append("title", form.title);
+    fd.append("summary", form.summary);
+    fd.append("content", form.content);
+    fd.append("author", form.author);
+    fd.append("category", form.category);
+    fd.append("image", form.image); // FILE
+
+    await fetch(`${API_BASE}/blogs/admin/upload`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
+      body: fd, // DO NOT SET CONTENT-TYPE
     });
 
     setForm({
       title: "",
       category: "",
       summary: "",
-      imageUrl: "",
       author: "",
       content: "",
+      image: null,
+      imagePreview: null,
     });
 
     fetchBlogs();
@@ -77,6 +86,7 @@ export default function AdminBlogs() {
 
       {/* ---------- FORM ---------- */}
       <div className="bg-white rounded-2xl border p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+
         <input
           placeholder="Blog title"
           className="input"
@@ -98,12 +108,27 @@ export default function AdminBlogs() {
           onChange={(e) => setForm({ ...form, author: e.target.value })}
         />
 
-        <input
-          placeholder="Image URL (Cloudinary / Drive / GitHub)"
-          className="input md:col-span-2"
-          value={form.imageUrl}
-          onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
-        />
+        {/* IMAGE UPLOAD */}
+        <div className="md:col-span-2">
+          <label className="text-sm text-slate-600 mb-1 block">
+            Blog Image
+          </label>
+          <input
+            type="file"
+            accept="image/*"
+            className="input"
+            onChange={(e) => {
+              const file = e.target.files[0];
+              if (!file) return;
+
+              setForm({
+                ...form,
+                image: file,
+                imagePreview: URL.createObjectURL(file),
+              });
+            }}
+          />
+        </div>
 
         <textarea
           placeholder="Short summary"
@@ -121,15 +146,14 @@ export default function AdminBlogs() {
           onChange={(e) => setForm({ ...form, content: e.target.value })}
         />
 
-        {/* Image preview */}
-        {form.imageUrl && (
+        {/* IMAGE PREVIEW */}
+        {form.imagePreview && (
           <div className="md:col-span-3">
             <p className="text-sm text-slate-500 mb-1">Image Preview</p>
             <img
-              src={form.imageUrl}
+              src={form.imagePreview}
               alt="preview"
               className="h-48 rounded-lg object-cover border"
-              onError={(e) => (e.target.style.display = "none")}
             />
           </div>
         )}
@@ -156,6 +180,7 @@ export default function AdminBlogs() {
               <th className="p-3">Action</th>
             </tr>
           </thead>
+
           <tbody>
             {paginatedBlogs.map((b) => (
               <tr key={b._id} className="border-t">
@@ -166,7 +191,7 @@ export default function AdminBlogs() {
                   {b.imageUrl ? (
                     <img
                       src={b.imageUrl}
-                      className="w-16 h-10 object-cover rounded"
+                      className="w-20 h-12 object-cover rounded-md border"
                     />
                   ) : (
                     "-"
