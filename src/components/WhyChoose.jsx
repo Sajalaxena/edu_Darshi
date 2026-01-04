@@ -37,7 +37,7 @@ export default function WhyChoose() {
           <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-3">
             Why Choose Us
           </h2>
-          <p className="text-slate-600 max-w-2xl mx-auto">
+          <p className="text-slate-600 max-w-2xl mx-auto ">
             Transform your career with expert guidance and real-world experience
           </p>
         </div>
