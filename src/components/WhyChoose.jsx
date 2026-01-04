@@ -6,124 +6,113 @@ import { motion } from "framer-motion";
 const items = [
   {
     id: "career-counselling",
-    number: "1",
     title: "Career Counselling with Clarity & Confidence",
     desc: "Personalized career guidance to help you choose the right path—whether you're confused about jobs, higher studies, or switching fields. We assess your interests, strengths, and goals to create a clear, actionable roadmap aligned with real-world opportunities.",
-    points: [
-      "1:1 career counselling sessions",
-      "Interest & skill assessment",
-      "Personalized career roadmaps",
-      "Course, certification & job recommendations",
-      "Industry-informed, data-driven guidance",
-    ],
+    image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=600&h=400&fit=crop",
+    color: "rose"
   },
   {
     id: "exam-job-preparation",
-    number: "2",
-    title: "Academia & Industry Exam and Job Preparation",
+    title: "Academia & Industry Exam Preparation",
     desc: "End-to-end preparation for academic admissions, research roles, and industry jobs. From mock tests to interview simulations, we prepare you to perform with confidence in highly competitive environments.",
-    points: [
-      "Mock tests & simulated interviews (BS, MS, PhD, faculty roles)",
-      "Industry job interview preparation",
-      "Tailored study materials & resources",
-      "One-to-one mentorship from academia & industry experts",
-      "Actionable feedback to improve performance",
-    ],
+    image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600&h=400&fit=crop",
+    color: "purple"
   },
   {
     id: "workshops-internships",
-    number: "3",
-    title: "Job-Oriented Workshops & Internship Exposure",
+    title: "Job-Oriented Workshops & Internships",
     desc: "Hands-on workshops and real-world internship opportunities designed to build practical skills, professional confidence, and a strong career portfolio—guided by experienced mentors.",
-    points: [
-      "Expert-led workshops (resume, interviews, professional skills)",
-      "Industry & research-focused skill training",
-      "Live projects & supervised internships",
-      "Portfolio & credential building",
-      "Networking with mentors from academia & industry",
-    ],
+    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=400&fit=crop",
+    color: "blue"
   },
 ];
 
-export default function WhyChoose() {
+export default function WhyChoose() { 
   const navigate = useNavigate();
-  const openDetail = (id) => navigate(`/why-choose-us#${id}`);
 
-  return (
-    <section className="relative py-20 container mx-auto px-6">
-      {/* Faint gradient background */}
-      <div className="absolute inset-0  pointer-events-none" />
+  return ( 
+    <section className="py-16 lg:py-2">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-3">
+            Why Choose Us
+          </h2>
+          <p className="text-slate-600 max-w-2xl mx-auto">
+            Transform your career with expert guidance and real-world experience
+          </p>
+        </div>
 
-      <h2
-        className="text-4xl font-bold text-center mb-16"
-        style={{ color: "var(--brand)" }}
-      >
-        Why Choose Us
-      </h2>
-
-      <div className="grid md:grid-cols-3 gap-10 relative z-10">
-        {items.map((item, i) => (
-          <motion.div
-            key={item.id}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
-            whileHover={{ y: -8 }}
-            className="relative p-[2px] rounded-2xl bg-gradient-to-br from-indigo-200/40 to-blue-100/20 shadow-lg"
-          >
-            {/* Inner card (glassmorphism) */}
-            <div
-              className="bg-white/70 backdrop-blur-md rounded-2xl p-7 shadow-lg flex flex-col h-full cursor-pointer"
-              onClick={() => openDetail(item.id)}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {items.map((item, i) => (
+            <motion.div
+              key={item.id}
+              initial={{ opacity: 0, y: 50, scale: 0.9 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ 
+                delay: i * 0.2, 
+                duration: 0.7,
+                ease: [0.25, 0.46, 0.45, 0.94]
+              }}
+              whileHover={{ 
+                y: -8,
+                scale: 1.02,
+                transition: { duration: 0.3, ease: "easeOut" }
+              }}
+              onClick={() => navigate(`/why-choose-us#${item.id}`)}
+              className="group bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 cursor-pointer"
             >
-              {/* Animated number badge */}
-              <motion.div
-                animate={{ scale: [1, 1.1, 1] }}
-                transition={{
-                  repeat: Infinity,
-                  duration: 3,
-                  ease: "easeInOut",
-                }}
-                className="w-14 h-14 rounded-full grid place-items-center text-lg font-semibold mb-6 shadow-md"
-                style={{
-                  background:
-                    i === 0
-                      ? "linear-gradient(135deg, #ffe2e6, #ffd6d9)"
-                      : i === 1
-                      ? "linear-gradient(135deg, #e8d5ff, #f3e8ff)"
-                      : "linear-gradient(135deg, #dce9ff, #e6f0ff)",
-                  color: i === 0 ? "#ff4f61" : i === 1 ? "#a855f7" : "#3b82f6",
-                }}
+              {/* Image */}
+              <motion.div 
+                className="relative h-48 overflow-hidden"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: i * 0.2 + 0.2, duration: 0.5 }}
               >
-                {item.number}
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                <motion.div 
+                  initial={{ scale: 0, rotate: -180 }}
+                  whileInView={{ scale: 1, rotate: 0 }}
+                  transition={{ 
+                    delay: i * 0.2 + 0.4, 
+                    duration: 0.5,
+                    type: "spring",
+                    stiffness: 200
+                  }}
+                  className="absolute top-4 right-4 w-10 h-10 bg-white rounded-full flex items-center justify-center font-bold text-slate-700 shadow-lg"
+                >
+                  {i + 1}
+                </motion.div>
               </motion.div>
 
-              {/* Icon */}
-              <div className="text-indigo-600 mb-4">{item.icon}</div>
-
-              {/* Title */}
-              <h3 className="text-xl font-semibold text-slate-900 leading-snug">
-                {item.title}
-              </h3>
-
-              {/* Description */}
-              <p className="mt-3 text-slate-600 leading-relaxed text-[0.95rem] flex-grow">
-                {item.desc}
-              </p>
-
-              {/* CTA */}
-              <div className="mt-6 flex justify-between items-center">
-                <span className="text-sm text-slate-400">Learn more</span>
-                <motion.span
-                  whileHover={{ x: 6 }}
-                  className="text-blue-600 text-sm font-semibold"
-                >
-                  Read more →
-                </motion.span>
-              </div>
-            </div>
-          </motion.div>
-        ))}
+              {/* Content */}
+              <motion.div 
+                className="p-6"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.2 + 0.3, duration: 0.6 }}
+              >
+                <h3 className="text-xl font-bold text-slate-900 mb-2">
+                  {item.title}
+                </h3>
+                <p className="text-slate-600 text-sm leading-relaxed mb-4">
+                  {item.desc}
+                </p>
+                <span className={`inline-flex items-center text-${item.color}-600 font-medium text-sm group-hover:gap-2 transition-all duration-300`}>
+                  Learn more
+                  <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </span>
+              </motion.div>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   );

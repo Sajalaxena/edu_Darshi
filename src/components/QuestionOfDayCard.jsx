@@ -19,9 +19,9 @@ export default function QuestionOfDayCard() {
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      className="card p-4 mt-6 max-w-xl"
+      className="card p-4 mt-6 max-w-xl bg-white"
     >
-      <div className="flex items-start justify-between">
+      <div className="flex items-start justify-between ">
         <div className="font-semibold qotd-blink text-lg md:text-xl">
           <h4>Question of the Day</h4>
           <p className="text-sm text-slate-600 mt-2 mr-8">

@@ -1,157 +1,103 @@
 // src/components/MentorCard.jsx
 import React from "react";
 import { motion } from "framer-motion";
-import mentorsData from "../components/data/mentorsData"; // adjust path if needed
+import mentorsData from "../components/data/mentorsData";
 import { useNavigate } from "react-router-dom";
 
-/**
- * MentorCard
- *
- * - If `mentor` prop is passed -> render a single detailed card.
- * - If no `mentor` prop -> render a small preview grid of first 3 mentors
- *   (useful for Home where you called <MentorCard /> directly).
- *
- * Props:
- * - mentor (object) optional
- * - onOpen (function) optional, called with mentor when "View Details" clicked
- */
+const THEMES = {
+  "dr-gyan": { color: "blue", bg: "from-blue-50 to-white", btnClass: "bg-blue-600 hover:bg-blue-700" },
+  "sajal-saxena": { color: "blue", bg: "from-blue-50 to-white", btnClass: "bg-blue-600 hover:bg-blue-700" },
+  "kavita-sonkar": { color: "blue", bg: "from-blue-50 to-white", btnClass: "bg-blue-600 hover:bg-blue-700" },
+};
 
 function SingleCard({ mentor, onOpen }) {
-  // defensive guards
   const navigate = useNavigate();
-
   const m = mentor || {};
-  const id = m.id || "unknown";
-  const gradient =
-    {
-      "dr-gyan": "from-blue-50 to-white",
-      "sajal-saxena": "from-purple-50 to-white",
-      "kavita-sonkar": "from-green-50 to-white",
-    }[id] || "from-slate-50 to-white";
+  const theme = THEMES[m.id] || { color: "indigo", bg: "from-slate-50 to-white", btnClass: "bg-indigo-600 hover:bg-indigo-700" };
 
   return (
     <motion.div
-      layout
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      whileHover={{
-        y: -6,
-        scale: 1.02,
-        boxShadow: "0 16px 40px rgba(0,0,0,0.1)",
-      }}
-      transition={{ type: "spring", stiffness: 150 }}
-      className="rounded-2xl overflow-hidden border bg-white shadow-sm"
-      data-mentor-id={id}
+      viewport={{ once: true }}
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.3 }}
+      className="group bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition-all overflow-hidden"
     >
-      {/* Card header with gradient */}
-      <div className={`p-6 bg-gradient-to-b ${gradient}`}>
+      {/* Header */}
+      <div className={`p-6 bg-gradient-to-br ${theme.bg}`}>
         <div className="flex items-center gap-4">
           <img
             src={m.img}
             alt={m.name || "Mentor"}
-            className="w-20 h-20 rounded-full object-cover shadow-lg ring-4 ring-white"
-            onError={(e) => {
-              // graceful fallback if image missing
-              e.currentTarget.src =
-                "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 24 24'%3E%3Crect fill='%23e5e7eb' width='100%25' height='100%25'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23808a9a' font-size='10'%3Ementor%3C/text%3E%3C/svg%3E";
-            }}
+            className="w-20 h-20 rounded-full object-cover ring-4 ring-white shadow-lg"
+            onError={(e) => e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect fill='%23e5e7eb' width='100%25' height='100%25'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23808a9a' font-size='12'%3E👤%3C/text%3E%3C/svg%3E"}
           />
-
-          <div>
-            <h3 className="text-lg font-semibold text-slate-900">
-              {m.name || "Mentor name"}
-            </h3>
-            <p className="text-sm text-slate-600">{m.title || ""}</p>
-            <p className="text-xs text-slate-500 mt-1">{m.short || ""}</p>
+          <div className="flex-1 min-w-0">
+            <h3 className="text-lg font-bold text-slate-900 truncate">{m.name || "Mentor"}</h3>
+            <p className="text-sm text-slate-600 truncate">{m.title}</p>
+            <p className="text-xs text-slate-500 line-clamp-1">{m.short}</p>
           </div>
         </div>
       </div>
 
-      {/* Bottom section */}
-      <div className="p-6">
-        <ul className="text-sm text-slate-700 space-y-2 min-h-[3.5rem]">
-          {(m.qualifications || []).slice(0, 2).map((q, i) => (
-            <li key={i} className="flex gap-2">
-              <span className="text-indigo-500 mt-1">•</span>
-              <span>{q}</span>
-            </li>
-          ))}
+      {/* Content */}
+      <div className="p-6 space-y-4">
+        {/* Qualifications */}
+        {m.qualifications?.length > 0 && (
+          <ul className="space-y-1.5 text-sm text-slate-700">
+            {m.qualifications.slice(0, 2).map((q, i) => (
+              <li key={i} className="flex gap-2">
+                <span className={`text-${theme.color}-600`}>•</span>
+                <span className="line-clamp-1">{q}</span>
+              </li>
+            ))}
+          </ul>
+        )}
 
-          {/* handle case where no qualifications present */}
-          {(m.qualifications || []).length === 0 && (
-            <li className="text-sm text-slate-500">
-              Qualifications not listed
-            </li>
-          )}
-        </ul>
-
-        <div className="mt-4 flex justify-between items-center">
+        {/* Tags */}
+        {m.tags?.length > 0 && (
           <div className="flex gap-2 flex-wrap">
-            {(m.tags || []).map((t) => (
-              <span
-                key={t}
-                className="px-2 py-1 bg-slate-100 rounded-full text-xs text-slate-600"
-              >
+            {m.tags.slice(0, 3).map((t) => (
+              <span key={t} className="px-2.5 py-1 bg-slate-100 rounded-full text-xs text-slate-600">
                 {t}
               </span>
             ))}
           </div>
+        )}
 
-          <button
-            onClick={() => {
-              if (typeof onOpen === "function") {
-                onOpen(m);
-              } else {
-                navigate("/mentors");
-              }
-            }}
-            className="px-4 py-2 bg-indigo-600 text-white rounded-md text-sm shadow hover:bg-indigo-700"
-          >
-            View Details
-          </button>
-        </div>
+        {/* CTA */}
+        <button
+          onClick={() => onOpen?.(m) || navigate("/mentors")}
+          className={`w-full ${theme.btnClass} text-white font-medium py-2.5 px-4 rounded-lg transition-colors`}
+        >
+          View Profile →
+        </button>
       </div>
     </motion.div>
   );
 }
 
 export default function MentorCard({ mentor, onOpen }) {
-  // if single mentor given -> render single card
-  if (mentor) {
-    return <SingleCard mentor={mentor} onOpen={onOpen} />;
-  }
+  if (mentor) return <SingleCard mentor={mentor} onOpen={onOpen} />;
 
-  // No mentor prop – render a small preview grid using mentorsData
   const list = Array.isArray(mentorsData) ? mentorsData.slice(0, 3) : [];
-
-  if (!list.length) {
-    return (
-      <div className="p-6 text-center text-slate-500">
-        No mentors available (check mentorsData import)
-      </div>
-    );
-  }
+  if (!list.length) return <div className="p-6 text-center text-slate-500">No mentors available</div>;
 
   return (
-    <section className="container mx-auto px-6 my-12">
-      <h2
-        className="text-4xl font-bold text-center mb-16"
-        style={{ color: "var(--brand)" }}
-      >
-        Our Top Mentors
-      </h2>
-      <div className="flex items-center justify-between mb-6">
-        {/* optional: link to /mentors page */}
-        {/* <a href="/mentors" className="text-sm text-indigo-600 hover:underline">
-          View all
-        </a> */}
-      </div>
-
-      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        {list.map((m) => (
-          <SingleCard key={m.id || m.name} mentor={m} onOpen={onOpen} />
-        ))}
+    <section className="py-16">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold text-slate-900 mb-2">Our Top Mentors</h2>
+          <p className="text-slate-600">Learn from experienced professionals</p>
+        </div>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {list.map((m) => (
+            <SingleCard key={m.id || m.name} mentor={m} onOpen={onOpen} />
+          ))}
+        </div>
       </div>
     </section>
   );
 }
+ 

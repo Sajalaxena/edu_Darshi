@@ -1,150 +1,115 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Star } from "phosphor-react";
-
-/* ---------------- DATA ---------------- */
+import { Star, Quotes } from "phosphor-react";
 
 const reviews = [
   {
     name: "Aman Singh",
     role: "IIT-JAM Mathematics | PhD Aspirant",
-    date: "Apr 2024",
-    text: "I prepared for IIT-JAM Mathematics with EduDarshi mentors. The problem-solving approach, weekly mock analysis, and clear strategy for high-weight topics helped me improve accuracy and speed. The guidance also helped me plan my PhD applications with confidence.",
+    text: "I prepared for IIT-JAM Mathematics with EduDarshi mentors. The problem-solving approach, weekly mock analysis, and clear strategy helped me improve accuracy and speed.",
     rating: 5,
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop",
   },
   {
     name: "Riya Patel",
     role: "CSIR-NET/JRF Qualified | Research Aspirant",
-    date: "Feb 2024",
-    text: "The NET/JRF preparation was very structured. Concept-wise tests, doubt-focused sessions, and mentor feedback on answer presentation made a big difference. I also received guidance on choosing research areas and shortlisting institutes for PhD.",
+    text: "The NET/JRF preparation was very structured. Concept-wise tests, doubt-focused sessions, and mentor feedback on answer presentation made a big difference.",
     rating: 5,
+    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop",
   },
   {
     name: "Sneha Kulkarni",
     role: "PhD Admission (India & Abroad) | Postdoc Aspirant",
-    date: "Jan 2024",
-    text: "Beyond exam preparation, EduDarshi mentors helped me with SOP writing, CV structuring, and interview preparation for PhD admissions. The one-to-one feedback on my research proposal and mock interviews was extremely valuable.",
+    text: "EduDarshi mentors helped me with SOP writing, CV structuring, and interview preparation for PhD admissions. The one-to-one feedback was extremely valuable.",
     rating: 5,
+    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop",
   },
 ];
 
-/* ---------------- HELPERS ---------------- */
-
-function Stars({ value }) {
-  return (
-    <div className="flex items-center">
-      {[1, 2, 3, 4, 5].map((i) => (
-        <Star
-          key={i}
-          size={14}
-          weight={i <= value ? "fill" : "regular"}
-          color="#FBBF24"
-          className="mr-1"
-        />
-      ))}
-    </div>
-  );
-}
-
-/* ---------------- COMPONENT ---------------- */
-
 export default function ReviewsSection() {
   return (
-    <section className="relative py-20 overflow-hidden bg-gradient-to-b from-blue-50 via-indigo-50 to-white">
-      {/* Background glow */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden isolate">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] h-[380px] bg-blue-200/30 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-[320px] h-[320px] bg-indigo-200/30 rounded-full blur-3xl" />
-      </div>
-
-      <div className="relative z-10 container mx-auto px-6">
-        <h2
-          className="text-3xl md:text-4xl font-bold text-center mb-14"
-          style={{ color: "var(--brand)" }}
+    <section className="py-16 lg:py-20 bg-gradient-to-b">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-12 lg:mb-16"
         >
-          Student Reviews
-        </h2>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-3">
+            Student Reviews
+          </h2>
+          <p className="text-slate-600 max-w-2xl mx-auto">
+            Hear from students who transformed their careers with our guidance
+          </p>
+        </motion.div>
 
-        <div className="grid gap-6 md:grid-cols-3">
-          {reviews.map((r, i) => (
-            <motion.article
-              key={r.name}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.08, duration: 0.4 }}
-              className="bg-white rounded-2xl border border-blue-100 shadow-sm hover:shadow-lg transition-shadow overflow-hidden flex flex-col"
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto">
+          {reviews.map((review, i) => (
+            <motion.div
+              key={review.name}
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.15, duration: 0.5, ease: "easeOut" }}
+              whileHover={{ y: -6, scale: 1.02 }}
+              className="group relative bg-white rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-300"
             >
-              {/* CARD HEADER */}
-              <div
-                className="relative p-5 flex items-center justify-between"
-                style={{
-                  minHeight: "140px",
-                  background:
-                    "linear-gradient(135deg, rgba(219,234,254,0.95), rgba(199,210,254,0.9))",
-                  borderBottom: "1px solid rgba(99,102,241,0.15)",
-                }}
-              >
-                <div
-                  className="absolute inset-x-0 top-0 h-[2px]"
-                  style={{
-                    background:
-                      "linear-gradient(90deg, transparent, rgba(37,99,235,0.4), transparent)",
-                  }}
-                />
+              {/* Quote Icon */}
+              <div className="absolute top-6 right-6 text-blue-100 group-hover:text-blue-200 transition-colors">
+                <Quotes size={48} weight="fill" />
+              </div>
+
+              {/* Profile Section */}
+              <div className="flex items-center gap-4 mb-6 relative z-10">
+                <motion.div
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  className="relative"
+                >
+                  <img
+                    src={review.image}
+                    alt={review.name}
+                    className="w-16 h-16 rounded-full object-cover ring-4 ring-blue-50 shadow-md"
+                  />
+                  <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
+                    <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                </motion.div>
 
                 <div>
-                  <div
-                    className="text-base font-semibold"
-                    style={{ color: "var(--brand-deep)" }}
-                  >
-                    {r.name}
-                  </div>
-                  <div className="text-sm text-slate-600">{r.role}</div>
-                </div>
-
-                <div className="text-right">
-                  <div
-                    className="text-sm font-semibold"
-                    style={{ color: "var(--brand)" }}
-                  >
-                    {r.date}
-                  </div>
-                  <div className="text-xs text-slate-400">Verified</div>
+                  <h3 className="font-bold text-slate-900 text-lg">{review.name}</h3>
+                  <p className="text-sm text-slate-600 leading-snug">{review.role}</p>
                 </div>
               </div>
 
-              {/* CARD BODY */}
-              <div className="p-5 flex flex-col flex-1">
-                {/* Fixed-height text */}
-                <p className="italic text-slate-700 text-sm leading-relaxed min-h-[140px]">
-                  “{r.text}”
-                </p>
+              {/* Review Text */}
+              <p className="text-slate-700 text-sm leading-relaxed mb-6">
+                "{review.text}"
+              </p>
 
-                {/* Footer pinned */}
-                <div className="mt-auto pt-5 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Stars value={r.rating} />
-                    <span className="text-sm text-slate-500">
-                      ({r.rating}.0)
-                    </span>
-                  </div>
-
-                  <button
-                    className="text-xs font-semibold px-4 py-1.5 rounded-md text-white shadow"
-                    style={{
-                      background:
-                        "linear-gradient(90deg, var(--brand), var(--brand-deep))",
-                      boxShadow: "0 8px 22px rgba(37,99,235,0.18)",
-                    }}
-                  >
-                    Read More
-                  </button>
+              {/* Rating */}
+              <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+                <div className="flex items-center gap-1">
+                  {[...Array(5)].map((_, idx) => (
+                    <Star
+                      key={idx}
+                      size={18}
+                      weight="fill"
+                      className="text-yellow-400"
+                    />
+                  ))}
                 </div>
+                <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-3 py-1 rounded-full">
+                  Verified
+                </span>
               </div>
-            </motion.article>
+            </motion.div>
           ))}
         </div>
       </div>
     </section>
   );
 }
+             
