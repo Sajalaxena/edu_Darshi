@@ -9,74 +9,92 @@ const LOGOS = [
   { name: "IIT Madras", svg: "/IIT_Madras.png" },
 ];
 
-// Duplicate list for seamless loop
-const SCROLL = [...LOGOS, ...LOGOS];
-
 export default function TopInstitutesSlider() {
   return (
-    <section
-      className="relative py-20 overflow-hidden
-      bg-gradient-to-b from-blue-50 via-indigo-50 to-white"
-    >
-      {/* soft radial glow */}
-      {/* background glow (scroll-safe) */}
-      <div className="absolute inset-0 pointer-events-none glow-clip isolate">
-        <div
-          className="absolute top-1/2 left-1/2
-    -translate-x-1/2 -translate-y-1/2
-    w-[300px] h-[360px]
-    bg-blue-200/30 rounded-full blur-3xl"
-        />
+    <section className="relative py-16 lg:py-20 overflow-hidden ">
+      {/* Gradient Accents */}
+      <div className="absolute top-20 left-10 w-72 h-72 bg-blue-400/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-10 right-10 w-96 h-96 bg-purple-400/10 rounded-full blur-3xl" />
 
-        <div
-          className="absolute top-[60%] left-[60%]
-    -translate-x-1/2 -translate-y-1/2
-    w-[300px] h-[300px]
-    bg-indigo-200/30 rounded-full blur-3xl"
-        />
-      </div>
+      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12 lg:mb-16"
+        >
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-3">
+            Our Mentors Come From
+          </h2>
+          <p className="text-slate-600 max-w-2xl mx-auto">
+            Learn from experts at India's premier institutions
+          </p>
+        </motion.div>
 
-      {/* fade edges */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-blue-50 to-transparent z-10" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-blue-50 to-transparent z-10" />
-
-      <div className="relative z-20">
-        <h2 className="text-4xl font-extrabold text-center mb-16 text-slate-900">
-          Our Mentors Come From
-        </h2>
-
-        <div className="overflow-hidden">
-          <motion.div
-            className="flex items-center gap-20"
-            initial={{ x: 0 }}
-            animate={{ x: "-50%" }}
-            transition={{
-              duration: 15,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-            style={{ width: "200%" }}
-          >
-            {SCROLL.map((item, i) => (
-              <div
-                key={i}
-                className="flex flex-col items-center justify-center
-                  min-w-[160px] text-center
-                  opacity-80 hover:opacity-100 transition"
-              >
-                <img
-                  src={item.svg}
-                  alt={item.name}
-                  className="h-16 sm:h-20 w-auto object-contain
-                    drop-shadow-md"
-                  loading="lazy"
-                />
-                <p className="mt-3 text-sm sm:text-base font-semibold text-slate-700">
-                  {item.name}
-                </p>
+        {/* Desktop Grid View */}
+        <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 max-w-6xl mx-auto">
+          {LOGOS.map((item, i) => (
+            <motion.div
+              key={item.name}
+              initial={{ opacity: 0, scale: 0.8, y: 30 }}
+              whileInView={{ opacity: 1, scale: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1, duration: 0.5, ease: "easeOut" }}
+              whileHover={{ y: -8, scale: 1.05 }}
+              className="group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="relative flex flex-col items-center">
+                <div className="w-full h-24 flex items-center justify-center mb-4">
+                  <img
+                    src={item.svg}
+                    alt={item.name}
+                    className="max-h-20 w-auto object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300"
+                    loading="lazy"
+                  />
+                </div>
+                <p className="text-base font-bold text-slate-800 text-center">{item.name}</p>
               </div>
-            ))}
-          </motion.div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Mobile Infinite Scroll */}
+        <div className="md:hidden relative">
+          <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-white to-transparent z-10" />
+          <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-white to-transparent z-10" />
+          
+          <div className="overflow-hidden py-4">
+            <motion.div
+              className="flex gap-6"
+              animate={{ x: ["0%", "-50%"] }}
+              transition={{
+                duration: 25,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+            >
+              {[...LOGOS, ...LOGOS].map((item, i) => (
+                <div
+                  key={i}
+                  className="flex-shrink-0 bg-white rounded-xl p-6 shadow-md w-[160px]"
+                >
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="h-16 flex items-center justify-center">
+                      <img
+                        src={item.svg}
+                        alt={item.name}
+                        className="max-h-16 w-auto object-contain"
+                        loading="lazy"
+                      />
+                    </div>
+                    <p className="text-sm font-semibold text-slate-700 text-center leading-tight">{item.name}</p>
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>
