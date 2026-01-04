@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Sparkle, ArrowRight } from "phosphor-react";
 import hero1 from "../assets/banner1.png";
 import hero2 from "../assets/banner2.png";
+import hero3 from "../assets/Hero3.png";
+
 import QuestionOfDayCard from "./QuestionOfDayCard";
 // import BackgroundFX from "./BackgroundFX";
 const quotes = [
@@ -18,7 +20,7 @@ const quotes = [
   "Discipline is the bridge between goals and accomplishment.",
 ];
 
-const IMAGES = [hero1, hero2];
+const IMAGES = [hero1, hero2, hero3];
 
 // Counter animation hook
 function useCounter(end, duration = 2000) {
@@ -45,6 +47,10 @@ function useCounter(end, duration = 2000) {
   
   return count;
 }
+
+const t = setInterval(() => {
+  setIndex((i) => (i + 1) % IMAGES.length);
+}, 2000);
 
 export default function Hero() {
   const [index, setIndex] = useState(0);
@@ -137,20 +143,26 @@ export default function Hero() {
             className="relative"
           >
             {/* Main Slider Container */}
-            <div className="relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] bg-white p-3">
+            <div className="relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] bg-transparent p-3">
               <div className="relative rounded-2xl overflow-hidden h-full">
-                <AnimatePresence mode="wait">
-                  <motion.img
-                    key={index}
-                    src={IMAGES[index]}
-                    alt={`Hero ${index + 1}`}
-                    initial={{ opacity: 0, scale: 1.1 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.6 }}
-                    className="w-full h-full object-cover"
-                  />
-                </AnimatePresence>
+            <AnimatePresence>
+  <motion.img
+    key={index}
+    src={IMAGES[index]}
+    alt={`Hero ${index + 1}`}
+    initial={{ x: "100%" }}
+    animate={{ x: "0%" }}
+    exit={{ x: "-100%" }}
+    transition={{
+      duration: 0.6,
+      ease: "linear",
+    }}
+    className="absolute inset-0 w-full h-full object-cover"
+  />
+</AnimatePresence>
+
+
+
               </div>
             </div>
 

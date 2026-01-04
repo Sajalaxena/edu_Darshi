@@ -10,6 +10,7 @@ import ContactSection from "./ContactSection";
 import NewsWebinarsSection from "./NewsWebinarsSection";
 import TopInstitutes from "./TopInstitutes";
 import MathematicalBackground from "./MathematicalBackground";
+import EduDarshiYoutubeSection from "./EduDarshiYoutubeSection";
 
 export default function Home() { 
   return (
@@ -21,6 +22,9 @@ export default function Home() {
         <Hero />
          <div className="py-8 bg-gradient-to-r from-blue-50/50 to-purple-50/50 dark:from-slate-900/50 dark:to-indigo-900/50" >
           <NewsWebinarsSection />
+        </div>
+          <div className="py-8 bg-gradient-to-r from-blue-50/50 to-purple-50/50 dark:from-slate-900/50 dark:to-indigo-900/50" >
+          <EduDarshiYoutubeSection />
         </div>
         <div className="py-8 bg-white/30 dark:bg-slate-900/30 ">
           <WhyChoose />
