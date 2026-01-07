@@ -74,6 +74,49 @@ const PLANS = [
   },
 ];
 
+const PLAN_FULL_DETAILS = {
+  free: {
+    title: "Free Plan",
+    subtitle: "Foundation features to get started at zero cost",
+    points: [
+      "EduDarshi Webinars (live + select recordings): Expert-led sessions on exam strategies, subject refreshers, and career pathways.",
+      "Solutions Repository (limited): Curated worked solutions from recent and past exams.",
+      "Weekly Opportunity Alerts (national level): Exams, workshops, internships, and jobs with key dates.",
+      "Starter Study Resources: Sample notes, formula sheets, practice questions, and exam tips.",
+      "Community (read-only): Browse mentor-verified discussions and solved threads.",
+    ],
+  },
+
+  premium: {
+    title: "Premium Plan",
+    subtitle: "Includes everything in the Free Plan, plus",
+    points: [
+      "Unlimited Webinars + Exclusive Workshops with post-session resources.",
+      "Complete Solutions Library for all recent and historical exams.",
+      "Personalized Weekly Alerts (national & international) by subject and career track.",
+      "Focused Lecture Notes & Preparation Guides for chosen subjects.",
+      "Adaptive Mock Tests with performance analytics and improvement insights.",
+      "Priority Mentor Support with monthly group doubt-clearing sessions.",
+    ],
+  },
+
+  elite: {
+    title: "Elite Plan",
+    subtitle: "Concierge-level mentorship & career guidance",
+    points: [
+      "All-access webinars & workshops with guaranteed recordings.",
+      "On-demand expert discussions for deep solution analysis.",
+      "Hyper-personalized alerts + 1:1 application & document guidance.",
+      "Complete lecture notes, unlimited mocks & interview simulations.",
+      "Dedicated mentor for the entire subscription period.",
+      "Priority doubt resolution via chat + scheduled phone/video calls.",
+      "Career portfolio development: CV, SOP & LOR reviews.",
+      "Placement & scholarship support with referrals & timelines.",
+    ],
+  },
+};
+
+
 const VISUALS = {
   free: {
     price: "₹0",
@@ -123,18 +166,12 @@ export default function PlanDetails() {
     <div className="min-h-screen bg-gradient-to-b from-blue-50 via-indigo-50 to-white">
       <section className="container mx-auto px-6 py-14">
         {/* BACK */}
-        <button
-          onClick={() => navigate(-1)}
-          className="mb-6 text-sm text-slate-600 hover:underline"
-        >
-          ← Back
-        </button>
 
         {/* HEADER */}
-        <h1 className="text-3xl font-bold text-slate-900 mb-2">
-          Our Plans — Full Details
-        </h1>
-        <p className="text-slate-600 mb-10">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-8" style={{ color: "var(--brand, #2563EB)" }}>
+ Our Plans — Full Details        </h2>
+     
+        <p className="text-slate-600 mb-10 text-center">
           Choose the plan that best fits your preparation journey.
         </p>
 
@@ -215,38 +252,63 @@ export default function PlanDetails() {
         </div>
 
         {/* BRIEF DESCRIPTION */}
-        {activePlan && (
-          <div className="mt-14 max-w-3xl mx-auto bg-white border border-blue-100 rounded-2xl p-8 shadow-sm">
-            <h3 className="text-xl font-semibold text-slate-900 mb-1">
-              {PLANS.find((p) => p.id === activePlan).name}
-            </h3>
+       {/* ================= PLAN DETAILS (ALWAYS VISIBLE) ================= */}
+<div className="mt-20 space-y-16">
 
-            <p className="text-sm text-slate-500 mb-4">
-              {PLANS.find((p) => p.id === activePlan).description}
-            </p>
+  {PLANS.map((plan) => {
+    const detail = PLAN_FULL_DETAILS[plan.id];
+    const visual = VISUALS[plan.id];
 
-            <ul className="space-y-2 text-sm text-slate-700">
-              {PLANS.find((p) => p.id === activePlan).details.map((item, i) => (
-                <li key={i} className="flex gap-2">
-                  <span className="text-indigo-500 mt-[2px]">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-
-            <button
-              onClick={() =>
-                window.open(
-                  "https://docs.google.com/forms/d/e/1FAIpQLSfPLACEHOLDER/viewform",
-                  "_blank"
-                )
-              }
-              className="mt-6 px-6 py-2.5 rounded-lg bg-indigo-600 text-white font-medium hover:bg-indigo-700"
-            >
-              Proceed to Register
-            </button>
+    return (
+      <section
+        key={plan.id}
+        className="max-w-5xl mx-auto bg-white border border-blue-100 rounded-2xl p-8 shadow-sm"
+      >
+        {/* Header */}
+        <div className="flex items-center gap-4 mb-4">
+          <div
+            className={`w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center ${visual.accent}`}
+          >
+            {visual.icon}
           </div>
-        )}
+
+          <div>
+            <h3 className="text-2xl font-bold text-slate-900">
+              {detail.title}
+            </h3>
+            <p className="text-sm text-slate-500">{detail.subtitle}</p>
+          </div>
+        </div>
+
+        {/* Points */}
+        <ul className="mt-6 space-y-3 text-sm text-slate-700">
+          {detail.points.map((point, i) => (
+            <li key={i} className="flex gap-3">
+              <CheckCircle size={18} className="text-green-500 mt-0.5" />
+              <span>{point}</span>
+            </li>
+          ))}
+        </ul>
+
+        {/* CTA */}
+        <div className="mt-6">
+          <button
+            onClick={() =>
+              window.open(
+                "https://docs.google.com/forms/d/e/1FAIpQLSfPLACEHOLDER/viewform",
+                "_blank"
+              )
+            }
+            className="px-6 py-2.5 rounded-lg bg-indigo-600 text-white font-medium hover:bg-indigo-700"
+          >
+            Proceed with {detail.title}
+          </button>
+        </div>
+      </section>
+    );
+  })}
+</div>
+
       </section>
     </div>
   );
