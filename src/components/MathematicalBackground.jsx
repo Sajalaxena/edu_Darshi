@@ -9,7 +9,7 @@ const MathematicalBackground = () => {
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
-    const symbols = ['π', '∑', '∫', '√', '∞', 'α', 'β', 'θ', 'λ', 'Δ', '∂', '±', '≠', '≤', '≥', '∈', '∪', '∩', 'Ω', 'φ'];
+    const symbols = ['π', '∑', '∫', '√', '∞', 'α', 'β', 'θ', 'λ', 'Δ', '∂', '±', '≠', '≤', '≥', '∈', '∪', '∩', 'Ω', 'φ', 'γ', 'δ', 'σ', 'μ', 'ν', 'τ', 'ζ', 'η', 'κ', 'ρ', 'χ', 'ψ', 'ω'];
     
     // Vibrant color palette for mathematical symbols
     const colors = [

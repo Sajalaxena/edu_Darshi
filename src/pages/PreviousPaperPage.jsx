@@ -13,7 +13,7 @@ const EXAMS = [
 ];
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
-
+import MathematicalBackground from "../components/MathematicalBackground";
 /* ------------------ HELPERS ------------------ */
 function normalizeDriveLink(url = "") {
   if (!url) return "#";
@@ -68,6 +68,8 @@ export default function PreviousPapersPage() {
 
   return (
     <section className="min-h-screen bg-slate-50">
+                                      <MathematicalBackground />    
+
       <div className="container mx-auto px-6 py-16">
         {/* HEADER */}
         <div className="text-center max-w-2xl mx-auto">

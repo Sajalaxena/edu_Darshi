@@ -1,6 +1,7 @@
 // src/pages/BlogDetails.jsx
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import MathematicalBackground from "../components/MathematicalBackground";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
@@ -37,6 +38,8 @@ export default function BlogDetails() {
 
   return (
     <article className="container mx-auto px-6 py-10 max-w-4xl">
+                          <MathematicalBackground />    
+
       {blog.imageUrl && (
         <img
           src={blog.imageUrl}

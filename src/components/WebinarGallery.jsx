@@ -1,6 +1,6 @@
 // src/components/AttractiveWebinarGallery.jsx
 import React, { useState } from "react";
-
+import MathematicalBackground from "./MathematicalBackground";
 /**
  * Attractive Webinar Gallery
  * - Uses Tailwind classes (v2+). If you use custom CSS replace accordingly.
@@ -80,9 +80,10 @@ function Lightbox({ open, onClose, type, payload }) {
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-4xl mx-auto rounded-lg overflow-hidden bg-white"
+        className="relative w-full max-w-4xl mx-auto rounded-lg overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
+
         <button
           className="absolute right-3 top-3 z-30 bg-white/90 p-2 rounded-full shadow hover:bg-white"
           aria-label="Close"
@@ -161,7 +162,9 @@ export default function AttractiveWebinarGallery() {
   const closeLightbox = () => setLightboxState({ open: false, type: null, payload: null });
 
   return (
-    <section className="py-12 px-4 md:px-8 lg:px-16 bg-slate-50">
+    <section className="py-12 px-4 md:px-8 lg:px-16 ">
+                    <MathematicalBackground />    
+
       <div className="max-w-7xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-8" style={{ color: "var(--brand, #2563EB)" }}>
           Webinar Gallery

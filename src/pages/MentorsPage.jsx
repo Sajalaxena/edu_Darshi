@@ -4,7 +4,7 @@ import mentorsData from "../components/data/mentorsData";
 import MentorCard from "../components/MentorCard";
 import MentorModal from "../components/MentorModal";
 import { useNavigate } from "react-router-dom";
-
+import MathematicalBackground from "../components/MathematicalBackground";
 export default function MentorsPage() {
   const [query, setQuery] = useState("");
   const [activeTag, setActiveTag] = useState(null);
@@ -31,6 +31,8 @@ export default function MentorsPage() {
 
   return (
     <section className="container mx-auto px-6 py-12">
+                                <MathematicalBackground />    
+
       <div className="max-w-5xl mx-auto text-center">
         <h1
           className="text-3xl font-bold"

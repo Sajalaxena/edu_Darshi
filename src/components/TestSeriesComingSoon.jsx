@@ -2,20 +2,23 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Exam, Timer, ChartLineUp } from "phosphor-react";
-
+import MathematicalBackground from "../components/MathematicalBackground";
 export default function TestSeriesComingSoon() {
   return (
     <section
       className="relative min-h-[80vh] flex items-center overflow-hidden
       bg-gradient-to-b from-blue-50 via-indigo-50 to-white"
     >
+
+                                <MathematicalBackground />    
+
       {/* Background glow */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-[420px] h-[420px] bg-blue-200/30 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 right-1/4 w-[360px] h-[360px] bg-indigo-200/30 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative z-10 container mx-auto px-6 text-center">
+      <div className="relative z-10 container mx-auto px-6 text-center py-20">
         {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}

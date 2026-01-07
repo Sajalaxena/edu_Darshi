@@ -2,7 +2,7 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import mentorsData from "../components/data/mentorsData";
-
+import MathematicalBackground from "../components/MathematicalBackground";
 export default function MentorDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -21,6 +21,7 @@ export default function MentorDetailPage() {
 
   return (
     <section className="container mx-auto px-6 py-12">
+
       <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow p-8 grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="col-span-1 flex flex-col items-center">
           <img src={mentor.img} alt={mentor.name} className="w-40 h-40 rounded-full object-cover shadow-lg" />

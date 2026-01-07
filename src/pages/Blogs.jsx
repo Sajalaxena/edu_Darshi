@@ -1,6 +1,7 @@
 // src/pages/Blogs.jsx
 import { useEffect, useState } from "react";
 import BlogCard from "../components/BlogCard";
+import MathematicalBackground from "../components/MathematicalBackground";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
@@ -28,9 +29,11 @@ export default function Blogs() {
 
   return (
     <section className="container mx-auto px-6 py-10">
-      <h1 className="text-3xl font-bold mb-6 text-center text-purple-700">
-        Latest Blogs
-      </h1>
+                          <MathematicalBackground />    
+
+     <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-8" style={{ color: "var(--brand, #2563EB)" }}>
+          Our Blogs
+        </h2>
 
       {blogs.length === 0 ? (
         <p className="text-center text-slate-500">No blogs available</p>
