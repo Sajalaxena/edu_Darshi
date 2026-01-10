@@ -4,16 +4,16 @@ import { Link, useLocation } from "react-router-dom";
 export default function AdminSidebar() {
   const loc = useLocation().pathname;
   const items = [
-    { to: "/admin/queries", label: "Client Queries" },
-    { to: "/admin/transactions", label: "Transaction Details" },
-    { to: "/admin/mentors", label: "Add Mentors" },
-    { to: "/admin/reviews", label: "Add Reviews" },
+    // { to: "/admin/queries", label: "Client Queries" },
+    // { to: "/admin/transactions", label: "Transaction Details" },
+    // { to: "/admin/mentors", label: "Add Mentors" },
+    // { to: "/admin/reviews", label: "Add Reviews" },
     { to: "/admin/previous-paper/add", label: "Add Previous Paper" },
     { to: "/admin/research-news", label: "Research & News" },
     { to: "/admin/webinars", label: "Upcoming Webinars" },
     { to: "/admin/blogs", label: "Blogs" },
   ];
-
+ 
   return (
     <aside className="w-64 border-r hidden lg:block bg-white">
       <div className="p-4 border-b font-semibold">Admin</div>

@@ -40,7 +40,7 @@ export default function AdminLogin() {
           />
           <div className="flex justify-between items-center">
             <button className="btn-primary">Sign in</button>
-            <button
+            {/* <button
               type="button"
               className="text-sm text-slate-500"
               onClick={() => {
@@ -48,12 +48,12 @@ export default function AdminLogin() {
               }}
             >
               Fill demo
-            </button>
+            </button> */}
           </div>
         </form>
-        <p className="text-xs text-slate-400 mt-4">
+        {/* <p className="text-xs text-slate-400 mt-4">
           Demo credentials are in auth.js — replace when you add real auth.
-        </p>
+        </p> */}
       </div>
     </div>
   );

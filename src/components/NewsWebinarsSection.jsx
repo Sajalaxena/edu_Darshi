@@ -70,7 +70,7 @@ export default function NewsWebinarsCompact() {
           <div className="rounded-xl overflow-hidden bg-white border border-gray-200 shadow-sm">
             <div className="px-5 py-4 bg-gradient-to-r from-blue-50 to-white border-b">
               <div className="flex justify-between items-center">
-                <h3 className="text-lg font-semibold text-indigo-700">Research & News</h3>
+                <h3 className="text-lg font-semibold text-indigo-700">Academic & News Updates</h3>
                 <Link to="/news" className="text-sm text-blue-600 font-medium hover:underline">View All</Link>
               </div>
             </div>
@@ -86,7 +86,7 @@ export default function NewsWebinarsCompact() {
           <div className="rounded-xl overflow-hidden bg-white border border-gray-200 shadow-sm">
             <div className="px-5 py-4 bg-gradient-to-r from-indigo-50 to-white border-b">
               <div className="flex justify-between items-center">
-                <h3 className="text-lg font-semibold text-indigo-700">Upcoming Webinars</h3>
+                <h3 className="text-lg font-semibold text-indigo-700">Upcoming Webinars, Seminars, and Workshops</h3>
                 <Link to="/webinars" className="text-sm text-indigo-600 font-medium hover:underline">View All</Link>
               </div>
             </div>

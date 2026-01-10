@@ -58,7 +58,7 @@ export default function AddPreviousPaper() {
 
   async function remove(id) {
     if (!confirm("Delete this paper?")) return;
-    await fetch(`${API}previous-papers/admin/${id}`, { method: "DELETE" });
+    await fetch(`${API}/previous-papers/admin/${id}`, { method: "DELETE" });
     fetchData(page);
   }
 

@@ -57,9 +57,9 @@ export default function Hero() {
   const [quoteIndex, setQuoteIndex] = useState(0);
 
   // Counter values
-  const mentorCount = useCounter(50, 2000);
-  const questionCount = useCounter(5000, 2500);
-  const studentCount = useCounter(10000, 2200);
+  const mentorCount = useCounter(10, 2000);
+  const questionCount = useCounter(100, 2500);
+  const studentCount = useCounter(15, 2200);
 
   useEffect(() => {
     setQuoteIndex(Math.floor(Math.random() * quotes.length));

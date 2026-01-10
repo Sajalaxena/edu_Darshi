@@ -8,7 +8,7 @@ export default function AdminResearchNews() {
     title: "",
     type: "News", // News | Webinar
     source: "",
-    date: "",
+    publishedDate: "",
     summary: "",
     link: "",
   });
@@ -41,7 +41,7 @@ export default function AdminResearchNews() {
   /* ---------------- CREATE ---------------- */
   async function submit(e) {
     e.preventDefault();
-    await fetch(`${API_BASE}/admin/research-news`, {
+    await fetch(`${API_BASE}/research-news/admin/upload`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
@@ -50,7 +50,7 @@ export default function AdminResearchNews() {
       title: "",
       type: "News",
       source: "",
-      date: "",
+      publishedDate: "",
       summary: "",
       link: "",
     });
@@ -60,7 +60,7 @@ export default function AdminResearchNews() {
   /* ---------------- DELETE ---------------- */
   async function remove(id) {
     if (!window.confirm("Delete this item?")) return;
-    await fetch(`${API_BASE}/admin/research-news/${id}`, { method: "DELETE" });
+    await fetch(`${API_BASE}/research-news/admin/${id}`, { method: "DELETE" });
     fetchItems();
   }
 
@@ -99,10 +99,10 @@ export default function AdminResearchNews() {
           />
 
           <input
-            placeholder="Published Date"
+            placeholder="Published publishedDate"
             className="input"
-            value={form.date}
-            onChange={(e) => setForm({ ...form, date: e.target.value })}
+            value={form.publishedDate}
+            onChange={(e) => setForm({ ...form, publishedDate: e.target.value })}
           />
         </div>
 
@@ -137,7 +137,7 @@ export default function AdminResearchNews() {
               <th className="px-4 py-3 text-left">Title</th>
               <th className="px-4 py-3">Type</th>
               <th className="px-4 py-3">Source</th>
-              <th className="px-4 py-3">Date</th>
+              <th className="px-4 py-3">publishedDate</th>
               <th className="px-4 py-3 text-center">Link</th>
               <th className="px-4 py-3 text-center">Action</th>
             </tr>
@@ -161,7 +161,7 @@ export default function AdminResearchNews() {
                   <td className="px-4 py-3 font-medium">{i.title}</td>
                   <td className="px-4 py-3 text-center">{i.type}</td>
                   <td className="px-4 py-3 text-center">{i.source}</td>
-                  <td className="px-4 py-3 text-center">{i.date}</td>
+                  <td className="px-4 py-3 text-center">{i.publishedDate}</td>
                   <td className="px-4 py-3 text-center">
                     {i.link ? "Link" : "-"}
                   </td>

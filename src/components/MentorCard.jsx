@@ -88,7 +88,7 @@ export default function MentorCard({ mentor, onOpen }) {
     <section className="py-16">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-slate-900 mb-2">Our Top Mentors</h2>
+          <h2 className="text-4xl font-bold text-slate-900 mb-2">Our Mentors</h2>
           <p className="text-slate-600">Learn from experienced professionals</p>
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
