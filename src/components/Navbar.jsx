@@ -37,7 +37,7 @@ export default function Navbar() {
             {/* ===== LOGO ===== */}
             <Link to="/" className="flex items-center gap-4">
               <img
-                src="/logo.png"
+                src="/logo2.png"
                 alt="EduDarshi"
                 className="h-24 w-24 md:h-24 md:w-24 drop-shadow-lg"
               />

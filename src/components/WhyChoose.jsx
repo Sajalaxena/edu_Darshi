@@ -2,27 +2,30 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import w1 from "../assets/why1.png";
+import w2 from "../assets/why2.png";
+import w3 from "../assets/why3.png";
 
 const items = [
   {
     id: "career-counselling",
     title: "Career Counselling with Clarity & Confidence",
     desc: "Personalized career guidance to help you choose the right path—whether you're confused about jobs, higher studies, or switching fields. We assess your interests, strengths, and goals to create a clear, actionable roadmap aligned with real-world opportunities.",
-    image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=600&h=400&fit=crop",
+    image: w1,
     color: "rose"
   },
   {
     id: "exam-job-preparation",
     title: "Academia & Industry Exam Preparation",
     desc: "End-to-end preparation for academic admissions, research roles, and industry jobs. From mock tests to interview simulations, we prepare you to perform with confidence in highly competitive environments.",
-    image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600&h=400&fit=crop",
+    image: w2,
     color: "purple"
   },
   {
     id: "workshops-internships",
     title: "Job-Oriented Workshops & Internships",
     desc: "Hands-on workshops and real-world internship opportunities designed to build practical skills, professional confidence, and a strong career portfolio—guided by experienced mentors.",
-    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=400&fit=crop",
+    image: w3,
     color: "blue"
   },
 ];

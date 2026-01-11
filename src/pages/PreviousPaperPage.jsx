@@ -143,33 +143,53 @@ export default function PreviousPapersPage() {
               </h3>
 
               {/* BUTTONS */}
-              <div className="mt-6 flex gap-3">
-                {/* PDF */}
-                <a
-                  href={normalizeDriveLink(p.paperPdfLink)}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex-1 h-10 flex items-center justify-center
-                             rounded-lg border border-slate-200
-                             text-sm font-medium hover:bg-slate-50"
-                >
-                  📄 Paper
-                </a>
+<div className="mt-6 flex gap-3">
+  {/* PDF BUTTON – GRADIENT RED */}
+  <a
+    href={normalizeDriveLink(p.paperPdfLink)}
+    target="_blank"
+    rel="noreferrer"
+    className="
+      flex-1 h-11 flex items-center justify-center gap-2
+      rounded-xl
+      bg-gradient-to-r from-rose-500 via-red-600 to-rose-600
+      text-white
+      text-sm font-semibold tracking-wide
+      shadow-lg shadow-red-500/30
+      hover:from-rose-600 hover:via-red-700 hover:to-rose-700
+      hover:shadow-red-600/40
+      active:scale-[0.97]
+      transition-all duration-200
+    "
+  >
+    📄 Paper PDF
+  </a>
 
-                {/* SOLUTION */}
-                {p.solutionYoutubeLink && (
-                  <a
-                    href={p.solutionYoutubeLink}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="w-[120px] h-10 flex items-center justify-center
-                               rounded-lg bg-indigo-600 text-white
-                               text-sm font-medium hover:bg-indigo-700"
-                  >
-                    ▶ Solution
-                  </a>
-                )}
-              </div>
+  {/* SOLUTION BUTTON – GRADIENT GREEN */}
+  {p.solutionYoutubeLink && (
+    <a
+      href={p.solutionYoutubeLink}
+      target="_blank"
+      rel="noreferrer"
+      className="
+        w-[130px] h-11 flex items-center justify-center gap-2
+        rounded-xl
+        bg-gradient-to-r from-emerald-500 via-green-600 to-emerald-600
+        text-white
+        text-sm font-semibold tracking-wide
+        shadow-lg shadow-emerald-500/30
+        hover:from-emerald-600 hover:via-green-700 hover:to-emerald-700
+        hover:shadow-emerald-600/40
+        active:scale-[0.97]
+        transition-all duration-200
+      "
+    >
+      ▶ Solution
+    </a>
+  )}
+</div>
+
+
             </div>
           ))}
         </div>

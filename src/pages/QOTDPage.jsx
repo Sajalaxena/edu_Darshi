@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
-/* ================= JAM / GATE MATH QOTD BANK ================= */
+/* ================= DATA ================= */
 
 const QOTD_BANK = [
   {
@@ -13,32 +13,10 @@ const QOTD_BANK = [
     answerIndex: 2,
     explanation: [
       "det(A⁻¹) = 1 / det(A) = 1/5",
-      "det(2A⁻¹) = 2² · det(A⁻¹) = 4 × (1/5) = 4/5",
+      "det(2A⁻¹) = 2² × det(A⁻¹) = 4 × (1/5) = 4/5",
     ],
     youtube: "https://www.youtube.com/watch?v=example",
     date: "2026-01-10",
-  },
-  {
-    id: "gate-02",
-    title: "If f(x) = |x| is differentiable at x = a, then a must be",
-    options: ["a > 0", "a < 0", "a = 0", "a ≠ 0"],
-    answerIndex: 3,
-    explanation: [
-      "|x| is differentiable everywhere except at x = 0",
-      "Hence differentiable for all a ≠ 0",
-    ],
-    youtube: "https://www.youtube.com/watch?v=example",
-    date: "2026-01-11",
-  },
-  {
-    id: "jam-03",
-    title:
-      "Let X be a random variable with P(X=1)=P(X=−1)=1/2. Then E(X²) equals",
-    options: ["0", "1/2", "1", "2"],
-    answerIndex: 2,
-    explanation: ["X² = 1 for both outcomes", "So E(X²) = 1"],
-    youtube: "https://www.youtube.com/watch?v=example",
-    date: "2026-01-12",
   },
 ];
 
@@ -46,18 +24,21 @@ const QOTD_BANK = [
 
 export default function QOTDPage() {
   const navigate = useNavigate();
-  const [currentIndex, setCurrentIndex] = useState(QOTD_BANK.length - 1);
   const [selected, setSelected] = useState(null);
   const [result, setResult] = useState(null);
 
-  useEffect(() => setSelected(null), [currentIndex]);
+  const currentQ = QOTD_BANK[0];
+
+  useEffect(() => setSelected(null), []);
 
   function submitAnswer() {
-    if (selected === null) return alert("Please select an option.");
-    const q = QOTD_BANK[currentIndex];
+    if (selected === null) {
+      alert("Please select an option");
+      return;
+    }
     setResult({
-      correct: selected === q.answerIndex,
-      question: q,
+      correct: selected === currentQ.answerIndex,
+      question: currentQ,
     });
   }
 
@@ -66,113 +47,92 @@ export default function QOTDPage() {
     navigate("/", { replace: true });
   }
 
-  const currentQ = QOTD_BANK[currentIndex];
-
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 p-3">
+    <div className="fixed inset-0 z-[9999] bg-black/50 flex items-end sm:items-center justify-center">
+      {/* ================= MAIN MODAL ================= */}
       <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ y: 40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.25 }}
         className="
-          relative bg-white w-full max-w-5xl rounded-xl shadow-xl
-          max-h-[95vh] overflow-hidden
+          w-full sm:max-w-xl
+          bg-white
+          rounded-t-2xl sm:rounded-2xl
+          max-h-[92vh]
           flex flex-col
         "
       >
         {/* HEADER */}
-        <div className="flex justify-between items-center p-4 border-b">
+        <div className="flex items-center justify-between px-5 py-4 border-b">
           <div>
             <h2 className="text-lg font-semibold">Question of the Day</h2>
-            <p className="text-sm text-slate-500">JAM & GATE Mathematics</p>
+            <p className="text-xs text-slate-500">JAM & GATE Mathematics</p>
           </div>
-          <button onClick={closeAll}>✕</button>
+          <button
+            onClick={closeAll}
+            className="text-xl text-slate-500 hover:text-slate-800"
+          >
+            ✕
+          </button>
         </div>
 
         {/* BODY */}
-        <div className="flex flex-col md:flex-row flex-1 overflow-hidden">
-          {/* QUESTION */}
-          <div className="flex-1 p-5 overflow-auto">
-            <div className="text-xs text-slate-500 mb-2">{currentQ.date}</div>
+        <div className="flex-1 overflow-y-auto px-5 py-4">
+          <div className="text-xs text-slate-400 mb-2">{currentQ.date}</div>
 
-            <h3 className="text-lg md:text-xl font-semibold">
-              {currentQ.title}
-            </h3>
+          <h3 className="text-base sm:text-lg font-semibold leading-relaxed">
+            {currentQ.title}
+          </h3>
 
-            <div className="mt-4 space-y-3">
-              {currentQ.options.map((opt, idx) => (
-                <label
-                  key={idx}
-                  className={`block p-3 rounded-md border cursor-pointer text-sm
-                    ${
-                      selected === idx
-                        ? "border-blue-600 bg-blue-50"
-                        : "border-slate-200"
-                    }`}
-                >
-                  <input
-                    type="radio"
-                    className="mr-2"
-                    checked={selected === idx}
-                    onChange={() => setSelected(idx)}
-                  />
-                  {opt}
-                </label>
-              ))}
-            </div>
-
-            <div className="mt-5 flex flex-wrap gap-3">
-              <button className="btn-primary" onClick={submitAnswer}>
-                Submit
-              </button>
-              <button className="btn-secondary" onClick={closeAll}>
-                Close
-              </button>
-            </div>
+          <div className="mt-4 space-y-3">
+            {currentQ.options.map((opt, idx) => (
+              <label
+                key={idx}
+                className={`flex items-center gap-3 p-3 rounded-lg border text-sm cursor-pointer
+                  ${
+                    selected === idx
+                      ? "border-indigo-600 bg-indigo-50"
+                      : "border-slate-200"
+                  }`}
+              >
+                <input
+                  type="radio"
+                  checked={selected === idx}
+                  onChange={() => setSelected(idx)}
+                />
+                {opt}
+              </label>
+            ))}
           </div>
+        </div>
 
-          {/* PREVIOUS QUESTIONS */}
-          <aside
-            className="
-              w-full md:w-[280px]
-              border-t md:border-t-0 md:border-l
-              p-4 overflow-auto
-            "
+        {/* FOOTER */}
+        <div className="px-5 py-4 border-t flex gap-3">
+          <button
+            onClick={submitAnswer}
+            className="flex-1 py-2.5 rounded-lg bg-indigo-600 text-white font-medium"
           >
-            <div className="text-sm font-semibold mb-3">Previous Questions</div>
-
-            <div className="space-y-2">
-              {[...QOTD_BANK].reverse().map((q, idx) => {
-                const realIndex = QOTD_BANK.length - 1 - idx;
-                return (
-                  <button
-                    key={q.id}
-                    onClick={() => setCurrentIndex(realIndex)}
-                    className={`w-full text-left p-3 rounded-md text-sm
-                      ${
-                        realIndex === currentIndex
-                          ? "bg-blue-50 border border-blue-200"
-                          : "bg-white border border-slate-100"
-                      }`}
-                  >
-                    {q.title}
-                  </button>
-                );
-              })}
-            </div>
-          </aside>
+            Submit
+          </button>
+          <button
+            onClick={closeAll}
+            className="flex-1 py-2.5 rounded-lg border text-slate-600"
+          >
+            Close
+          </button>
         </div>
       </motion.div>
 
-      {/* RESULT MODAL */}
+      {/* ================= RESULT MODAL ================= */}
       {result && (
-        <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/30 p-4">
+        <div className="fixed inset-0 z-[10000] bg-black/40 flex items-center justify-center px-4">
           <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-lg p-6 max-w-md w-full"
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="bg-white rounded-xl p-6 w-full max-w-md"
           >
             <h3
-              className={`text-2xl font-bold ${
+              className={`text-xl font-bold ${
                 result.correct ? "text-green-600" : "text-red-500"
               }`}
             >
@@ -190,7 +150,7 @@ export default function QOTDPage() {
 
             <div className="mt-4">
               <h4 className="font-semibold">Explanation</h4>
-              <ul className="list-disc pl-5 mt-2 text-sm space-y-1">
+              <ul className="mt-2 list-disc pl-5 text-sm space-y-1">
                 {result.question.explanation.map((e, i) => (
                   <li key={i}>{e}</li>
                 ))}
@@ -202,11 +162,14 @@ export default function QOTDPage() {
                 href={result.question.youtube}
                 target="_blank"
                 rel="noreferrer"
-                className="btn-primary"
+                className="flex-1 py-2 rounded-lg bg-indigo-600 text-white text-center"
               >
                 Watch Solution
               </a>
-              <button className="btn-secondary" onClick={closeAll}>
+              <button
+                onClick={closeAll}
+                className="flex-1 py-2 rounded-lg border"
+              >
                 Close
               </button>
             </div>
