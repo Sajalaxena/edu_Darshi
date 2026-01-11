@@ -8,7 +8,7 @@ const plans = [
     id: "free",
     name: "Free Plan",
     price: "₹0",
-    period: "/month",
+    period: "/session",
     icon: Star,
     color: "blue",
     gradient: "from-blue-500 to-cyan-500",
@@ -25,7 +25,7 @@ const plans = [
     id: "premium",
     name: "Basic Plan",
     price: "₹499",
-    period: "/month",
+    period: "/session",
     icon: Crown,
     color: "purple",
     gradient: "from-purple-500 to-pink-500",
@@ -42,7 +42,7 @@ const plans = [
     id: "elite",
     name: "Personalised Plan",
     price: "₹999",
-    period: "/month",
+    period: "/session",
     icon: RocketLaunch,
     color: "green",
     gradient: "from-green-500 to-emerald-500",
@@ -115,13 +115,35 @@ export default function PricingSection() {
                   {plan.name}
                 </h3>
 
-                {/* Price */}
-                <div className="mb-6">
-                  <span className="text-4xl font-bold text-slate-900">
-                    {plan.price}
-                  </span>
-                  <span className="text-slate-500 text-sm">{plan.period}</span>
-                </div>
+             {/* Price */}
+<div className="mb-6">
+  {plan.id === "premium" ? (
+    <>
+      <div className="flex items-end gap-2">
+        <span className="text-3xl font-bold text-slate-400 line-through">
+          ₹499
+        </span>
+        <span className="text-slate-500 text-sm">{plan.period}</span>
+      </div>
+
+      <div className="mt-1">
+        <span className="inline-block px-3 py-1 rounded-full
+          bg-gradient-to-r from-purple-500 to-pink-500
+          text-white text-xs font-semibold shadow-md">
+          🎉 Registration FREE till March
+        </span>
+      </div>
+    </>
+  ) : (
+    <>
+      <span className="text-4xl font-bold text-slate-900">
+        {plan.price}
+      </span>
+      <span className="text-slate-500 text-sm">{plan.period}</span>
+    </>
+  )}
+</div>
+
 
                 {/* Features */}
                 <ul className="space-y-3 mb-8">

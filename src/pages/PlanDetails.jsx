@@ -123,21 +123,18 @@ const VISUALS = {
     accent: "text-blue-600",
     icon: <Star size={28} weight="duotone" />,
     duration: "6 Months",
-    perSession: "Free",
   },
   premium: {
     price: "₹499",
     accent: "text-indigo-600",
     icon: <Crown size={28} weight="duotone" />,
     duration: "6 Months",
-    perSession: "≈ ₹3 / day", // 499 / 48
   },
   elite: {
     price: "₹999",
     accent: "text-emerald-600",
     icon: <RocketLaunch size={28} weight="duotone" />,
     duration: "6 Months",
-    perSession: "≈ ₹6 / day", // 999 / 72
   },
 };
 
@@ -214,12 +211,12 @@ export default function PlanDetails() {
                       <span className="font-medium">Duration:</span>{" "}
                       {visual.duration}
                     </div>
-                    <div>
+                    {/* <div>
                       <span className="font-medium">Per Session:</span>{" "}
                       <span className="text-slate-700">
                         {visual.perSession}
                       </span>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
 
