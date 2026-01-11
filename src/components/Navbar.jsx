@@ -15,7 +15,7 @@ export default function Navbar() {
 
   const navItems = [
     { to: "/", label: "Home" },
-    { to: "/plans", label: "Programs" },
+    { to: "/plans", label: "Our Services" },
     { to: "/gallery", label: "Gallery" },
     { to: "/blogs", label: "Blog" },
     { to: "/mentors", label: "Mentors" },
