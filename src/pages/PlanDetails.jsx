@@ -202,9 +202,23 @@ export default function PlanDetails() {
                     {plan.name}
                   </h3>
 
-                  <p className={`mt-1 text-3xl font-bold ${visual.accent}`}>
-                    {visual.price}
-                  </p>
+                {plan.id === "premium" ? (
+  <div className="mt-1">
+    <div className="text-2xl font-bold text-slate-400 line-through">
+      ₹499
+    </div>
+    <div className="mt-1 inline-block px-3 py-1 rounded-full
+      bg-gradient-to-r from-purple-500 to-pink-500
+      text-white text-xs font-semibold shadow">
+      🎉 Registration FREE till March
+    </div>
+  </div>
+) : (
+  <p className={`mt-1 text-3xl font-bold ${visual.accent}`}>
+    {visual.price}
+  </p>
+)}
+
 
                   <div className="mt-2 text-xs text-slate-500 space-y-0.5">
                     <div>
@@ -274,6 +288,23 @@ export default function PlanDetails() {
               {detail.title}
             </h3>
             <p className="text-sm text-slate-500">{detail.subtitle}</p>
+            {plan.id === "premium" ? (
+  <div className="mt-1">
+    <div className="text-2xl font-bold text-slate-400 line-through">
+      ₹499
+    </div>
+    <div className="mt-1 inline-block px-3 py-1 rounded-full
+      bg-gradient-to-r from-purple-500 to-pink-500
+      text-white text-xs font-semibold shadow">
+      🎉 Registration FREE till March
+    </div>
+  </div>
+) : (
+  <p className={`mt-1 text-3xl font-bold ${visual.accent}`}>
+    {visual.price}
+  </p>
+)}
+
           </div>
         </div>
 
