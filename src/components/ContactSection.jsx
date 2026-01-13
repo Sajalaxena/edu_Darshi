@@ -310,7 +310,7 @@ export default function ContactSectionModern() {
                         className={`w-full rounded-xl border-2 px-4 py-3.5 text-sm transition-all shadow-sm hover:shadow-md ${
                           errors.subject ? "border-rose-400 bg-rose-50" : "border-slate-200 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
                         }`}
-                        placeholder="e.g., Physics / Computer Science"
+                        placeholder="e.g., Mathematics"
                       />
                       {errors.subject && (
                         <motion.div

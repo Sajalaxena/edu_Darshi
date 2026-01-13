@@ -1,7 +1,9 @@
-// src/pages/BlogDetails.jsx
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import MathematicalBackground from "../components/MathematicalBackground";
+import rehypeRaw from "rehype-raw";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
@@ -20,31 +22,18 @@ export default function BlogDetails() {
       .catch(() => setLoading(false));
   }, [id]);
 
-  if (loading) {
-    return (
-      <div className="container mx-auto px-6 py-10 text-center">
-        Loading blog...
-      </div>
-    );
-  }
-
-  if (!blog) {
-    return (
-      <div className="container mx-auto px-6 py-10">
-        <h2 className="text-2xl font-bold">Blog Not Found</h2>
-      </div>
-    );
-  }
+  if (loading) return <div className="text-center py-10">Loading blog...</div>;
+  if (!blog) return <div className="text-center py-10">Blog Not Found</div>;
 
   return (
     <article className="container mx-auto px-6 py-10 max-w-4xl">
-                          <MathematicalBackground />    
+      <MathematicalBackground />
 
       {blog.imageUrl && (
         <img
           src={blog.imageUrl}
           alt={blog.title}
-          className="rounded-xl w-full h-64 object-cover shadow-md"
+          className="rounded-xl w-full max-h-[420px] object-cover shadow-md"
         />
       )}
 
@@ -60,10 +49,13 @@ export default function BlogDetails() {
         )}
       </div>
 
-      <div
-        className="mt-8 prose prose-lg max-w-none"
-        dangerouslySetInnerHTML={{ __html: blog.content }}
-      />
+      {/* ✅ MARKDOWN RENDER */}
+      <div className="mt-8 prose prose-lg max-w-none">
+        <ReactMarkdown  remarkPlugins={[remarkGfm]}
+    rehypePlugins={[rehypeRaw]}>
+          {blog.content}
+        </ReactMarkdown>
+      </div>
     </article>
   );
 }
