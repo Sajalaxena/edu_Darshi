@@ -129,7 +129,7 @@ export default function MentorModal({ mentor, open, onClose }) {
             )} */}
 
             <button
-              onClick={() => alert("Contact flow coming soon")}
+              // onClick={() => alert("Contact flow coming soon")}
               className="
                 ml-auto sm:ml-auto 
                 px-4 py-2 bg-indigo-600 text-white rounded-md 

@@ -54,7 +54,9 @@ export default function MentorDetailPage() {
           </div>
 
           <div className="mt-6 flex gap-3">
-            <button onClick={() => alert("Schedule request flow")} className="btn-primary">Request Session</button>
+            <button 
+            // onClick={() => alert("Schedule request flow")} 
+            className="btn-primary">Request Session</button>
             <button onClick={() => navigate(-1)} className="btn-secondary">Back</button>
           </div>
         </div>

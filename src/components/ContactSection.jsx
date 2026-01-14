@@ -98,7 +98,9 @@ export default function ContactSectionModern() {
           >
             ✨ Get Expert Guidance
           </motion.div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4"
+                        style={{ color: "var(--brand-deep)" }}
+>
             Need Guidance Contact Us?
           </h2>
           <p className="text-slate-600 max-w-2xl mx-auto text-lg">

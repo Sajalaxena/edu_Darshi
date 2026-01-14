@@ -94,7 +94,7 @@ export default function WebinarModal({ webinar, onClose }) {
               </a>
             ) : (
               <button
-                onClick={() => alert("Registration link not provided yet.")}
+                // onClick={() => alert("Registration link not provided yet.")}
                 className="btn-primary"
               >
                 Register

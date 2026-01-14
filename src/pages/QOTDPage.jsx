@@ -35,7 +35,7 @@ export default function QOTDPage() {
 
   async function submitAnswer() {
     if (!selected) {
-      alert("Please select an option");
+      // alert("Please select an option");
       return;
     }
 

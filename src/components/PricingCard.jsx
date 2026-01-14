@@ -69,7 +69,9 @@ export default function PricingSection() {
           viewport={{ once: true }}
           className="text-center mb-12 lg:mb-16"
         >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-3">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-3"
+                        style={{ color: "var(--brand-deep)" }}
+>
             Our Services
           </h2>
           <p className="text-slate-600 max-w-2xl mx-auto">
