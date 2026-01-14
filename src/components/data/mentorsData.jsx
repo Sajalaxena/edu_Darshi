@@ -16,8 +16,8 @@ const mentors = [
     ],
     tags: ["Academia", "Research"],
     img: m2,
-    linkedin: "#",
-    email: "gyanendra@example.com",
+    linkedin: " https://sites.google.com/view/gkverma/page",
+    // email: "gyanendra@example.com",
   },
 
   {
@@ -32,8 +32,8 @@ const mentors = [
     ],
     tags: ["Mathematics", "Industry"],
     img: m2,
-    linkedin: "#",
-    email: "ashish@example.com",
+    linkedin: "http://linkedin.com/in/dr-ashish-kumar-pandey-63223b16b",
+    // email: "ashish@example.com",
   },
 
   {
@@ -45,21 +45,21 @@ const mentors = [
     qualifications: ["M.Tech — IIT Madras", "Industry experience in IoT"],
     tags: ["Embedded", "Industry"],
     img: w2,
-    linkedin: "https://www.linkedin.com",
-    email: "kavita@example.com",
+    linkedin: "http://linkedin.com/in/kavita-sonker-67021721b",
+    // email: "kavita@example.com",
   },
-  {
-    id: "sajal-saxena",
-    name: "Sajal Saxena",
-    title: "MCA • NIT Patna",
-    short: "GEN AI • IIT Mandi",
-    bio: "Sajal is a full-stack engineer and AI mentor helping students in project building, ML concepts, interview prep, and career strategy.",
-    qualifications: ["MCA — NIT Patna", "GEN AI — IIT Mandi"],
-    tags: ["AI", "Projects"],
-    img: m2,
-    linkedin: "https://www.linkedin.com",
-    email: "sajal@example.com",
-  },
+  // {
+  //   id: "sajal-saxena",
+  //   name: "Sajal Saxena",
+  //   title: "MCA • NIT Patna",
+  //   short: "GEN AI • IIT Mandi",
+  //   bio: "Sajal is a full-stack engineer and AI mentor helping students in project building, ML concepts, interview prep, and career strategy.",
+  //   qualifications: ["MCA — NIT Patna", "GEN AI — IIT Mandi"],
+  //   tags: ["AI", "Projects"],
+  //   img: m2,
+  //   linkedin: "https://www.linkedin.com",
+  //   email: "sajal@example.com",
+  // },
 
   // --------------------------
   // New mentors added below
@@ -77,8 +77,8 @@ const mentors = [
     ],
     tags: ["Bioinformatics", "Industry"],
     img: w2,
-    linkedin: "#",
-    email: "ekta@example.com",
+    linkedin: "http://linkedin.com/in/ekta-pandey-3867321b6",
+    // email: "ekta@example.com",
   },
 
   {
@@ -90,8 +90,8 @@ const mentors = [
     qualifications: ["Ph.D — IIT Delhi", "Postdoctoral Fellow — Paris"],
     tags: ["Research", "Mathematics"],
     img: m2,
-    linkedin: "#",
-    email: "manuj@example.com",
+    linkedin: "https://sites.google.com/view/manujverma/home?authuser=0",
+    // email: "manuj@example.com",
   },
 
   {
@@ -103,8 +103,8 @@ const mentors = [
     qualifications: ["Ph.D — NIT Allahabad", "Visiting Fellow — HRI"],
     tags: ["Mathematics", "Research"],
     img: m2,
-    linkedin: "#",
-    email: "tushar@example.com",
+    linkedin: "https://www.researchgate.net/profile/Tushar-Singh-25",
+    // email: "tushar@example.com",
   },
 
   {
@@ -119,25 +119,25 @@ const mentors = [
     ],
     tags: ["Research", "International"],
     img: m2,
-    linkedin: "#",
-    email: "himanshu@example.com",
+    linkedin: "https://www.researchgate.net/profile/Himanshu-Sharma-99",
+    // email: "himanshu@example.com",
   },
 
-  {
-    id: "mr-aman-singh",
-    name: "Mr. Aman Singh (Chemistry)",
-    title: "Senior Research Scholar • IIT BHU",
-    short: "Allahabad University",
-    bio: "Aman specializes in physical and organic chemistry, mentoring students for competitive exams and research projects.",
-    qualifications: [
-      "Research Scholar — IIT BHU",
-      "M.Sc — Allahabad University",
-    ],
-    tags: ["Chemistry", "Research"],
-    img: m2,
-    linkedin: "#",
-    email: "aman@example.com",
-  },
+  // {
+  //   id: "mr-aman-singh",
+  //   name: "Mr. Aman Singh (Chemistry)",
+  //   title: "Senior Research Scholar • IIT BHU",
+  //   short: "Allahabad University",
+  //   bio: "Aman specializes in physical and organic chemistry, mentoring students for competitive exams and research projects.",
+  //   qualifications: [
+  //     "Research Scholar — IIT BHU",
+  //     "M.Sc — Allahabad University",
+  //   ],
+  //   tags: ["Chemistry", "Research"],
+  //   img: m2,
+  //   linkedin: "#",
+  //   email: "aman@example.com",
+  // },
 
   {
     id: "dr-sarita",
@@ -148,8 +148,8 @@ const mentors = [
     qualifications: ["Ph.D — IIT BHU", "Assistant Professor"],
     tags: ["Academia", "Science"],
     img: w2,
-    linkedin: "#",
-    email: "sarita@example.com",
+    linkedin: "https://scholar.google.com/citations?user=2X_Ext4AAAAJ&hl=en&oi=sra",
+    // email: "sarita@example.com",
   },
 
   {
@@ -161,8 +161,8 @@ const mentors = [
     qualifications: ["Ph.D — BHU", "Assistant Professor"],
     tags: ["Mathematics", "Academia"],
     img: m2,
-    linkedin: "#",
-    email: "anurag@example.com",
+    linkedin: "https://scholar.google.com/citations?user=yt-kWkEAAAAJ&hl=en&oi=ao",
+    // email: "anurag@example.com",
   },
 
   {
@@ -174,22 +174,22 @@ const mentors = [
     qualifications: ["Senior Research Scholar — IIT Jodhpur", "M.Sc — BHU"],
     tags: ["Research", "Mathematics"],
     img: m2,
-    linkedin: "#",
-    email: "ankit@example.com",
+    linkedin: "https://sites.google.com/view/ankit-chauhan-iitj",
+    // email: "ankit@example.com",
   },
 
-  {
-    id: "dr-manan-singh",
-    name: "Dr. Manan Singh",
-    title: "Postdoctoral Fellow • TIFR",
-    short: "Physics Specialist",
-    bio: "Dr. Manan mentors physics aspirants, focusing on intuition building, derivations, and research-oriented thinking.",
-    qualifications: ["Postdoctoral Fellow — TIFR", "Ph.D — Physics"],
-    tags: ["Physics", "Research"],
-    img: m2,
-    linkedin: "#",
-    email: "manan@example.com",
-  },
+  // {
+  //   id: "dr-manan-singh",
+  //   name: "Dr. Manan Singh",
+  //   title: "Postdoctoral Fellow • TIFR",
+  //   short: "Physics Specialist",
+  //   bio: "Dr. Manan mentors physics aspirants, focusing on intuition building, derivations, and research-oriented thinking.",
+  //   qualifications: ["Postdoctoral Fellow — TIFR", "Ph.D — Physics"],
+  //   tags: ["Physics", "Research"],
+  //   img: m2,
+  //   linkedin: "#",
+  //   email: "manan@example.com",
+  // },
 ];
 
 export default mentors;

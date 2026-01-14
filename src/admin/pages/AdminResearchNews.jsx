@@ -10,7 +10,7 @@ export default function AdminResearchNews() {
     source: "",
     publishedDate: "",
     summary: "",
-    link: "",
+    externalLink: "",
   });
 
   const [items, setItems] = useState([]);
@@ -52,7 +52,7 @@ export default function AdminResearchNews() {
       source: "",
       publishedDate: "",
       summary: "",
-      link: "",
+      externalLink: "",
     });
     fetchItems();
   }
@@ -116,10 +116,10 @@ export default function AdminResearchNews() {
 
           <div className="flex flex-col gap-4">
             <input
-              placeholder="External link (optional)"
+              placeholder="External externalLink (optional)"
               className="input"
-              value={form.link}
-              onChange={(e) => setForm({ ...form, link: e.target.value })}
+              value={form.externalLink}
+              onChange={(e) => setForm({ ...form, externalLink: e.target.value })}
             />
 
             <button className="btn-primary w-full h-11">
@@ -138,7 +138,7 @@ export default function AdminResearchNews() {
               <th className="px-4 py-3">Type</th>
               <th className="px-4 py-3">Source</th>
               <th className="px-4 py-3">publishedDate</th>
-              <th className="px-4 py-3 text-center">Link</th>
+              <th className="px-4 py-3 text-center">externalLink</th>
               <th className="px-4 py-3 text-center">Action</th>
             </tr>
           </thead>
@@ -163,7 +163,7 @@ export default function AdminResearchNews() {
                   <td className="px-4 py-3 text-center">{i.source}</td>
                   <td className="px-4 py-3 text-center">{i.publishedDate}</td>
                   <td className="px-4 py-3 text-center">
-                    {i.link ? "Link" : "-"}
+                    {i.externalLink ? "externalLink" : "-"}
                   </td>
                   <td className="px-4 py-3 text-center">
                     <button

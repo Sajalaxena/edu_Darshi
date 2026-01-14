@@ -1,9 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 
 export default function EduDarshiIntroModal({ open, onClose }) {
-  const navigate = useNavigate();
   const closeRef = useRef(null);
 
   useEffect(() => {
@@ -37,41 +35,27 @@ export default function EduDarshiIntroModal({ open, onClose }) {
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 20, scale: 0.96 }}
         transition={{ duration: 0.2 }}
-className="relative z-10 w-full max-w-5xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col md:grid md:grid-cols-2"
+        className="relative z-10 w-full max-w-5xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col md:grid md:grid-cols-2"
         onClick={(e) => e.stopPropagation()}
       >
         {/* LEFT – Branding */}
-      {/* LEFT / TOP – Branding */}
-<div
-  className="
-    flex md:flex
-    md:flex-col
-    flex-row
-    items-center
-    justify-center
-    gap-4
-    text-white
-    p-6 md:p-10
-    bg-gradient-to-br from-indigo-600 to-blue-700
-  "
->
-  <img
-    src="/logo.png"
-    alt="EduDarshi"
-    className="w-16 h-16 md:w-28 md:h-28"
-  />
+        <div className="flex md:flex-col flex-row items-center justify-center gap-4 text-white p-6 md:p-10 bg-gradient-to-br from-indigo-600 to-blue-700">
+          <img
+            src="/logo.png"
+            alt="EduDarshi"
+            className="w-16 h-16 md:w-56 md:h-56"
+          />
 
-  <div className="text-center md:text-center">
-    <h2 className="text-xl md:text-3xl font-bold">EduDarshi</h2>
-    <p className="mt-1 text-blue-100 text-xs md:text-base">
-      Guiding students to clarity, confidence & success
-    </p>
-  </div>
-</div>
+          <div className="text-center">
+            <h2 className="text-xl md:text-3xl font-bold">EduDarshi</h2>
+            <p className="mt-1 text-blue-100 text-xs md:text-base">
+              Academic mentorship beyond coursework
+            </p>
+          </div>
+        </div>
 
-
-        {/* RIGHT – Content */}
-        <div className="p-6 sm:p-8 flex flex-col justify-between">
+        {/* RIGHT – UPDATED CONTENT */}
+        <div className="p-6 sm:p-8 flex flex-col justify-between relative">
           {/* Close */}
           <button
             ref={closeRef}
@@ -85,15 +69,28 @@ className="relative z-10 w-full max-w-5xl bg-white rounded-2xl shadow-2xl overfl
 
           <div>
             <h3 className="text-2xl sm:text-3xl font-bold text-slate-900">
-              Learn smarter. Not harder.
+              Postdocs & Academic / Industry Jobs
             </h3>
 
-            <ul className="mt-5 space-y-3 text-slate-600 text-sm">
-              <li>✔️ Expert-designed courses for JAM, JRF, GATE & NET</li>
-              <li>✔️ Concept-first teaching with real exam focus</li>
-              <li>✔️ Previous year papers & detailed solutions</li>
-              <li>✔️ Research insights & live expert webinars</li>
-              <li>✔️ Personal mentorship & doubt resolution</li>
+            <p className="mt-4 text-slate-700 font-medium">
+              🎓 Just finished your Ph.D.? Congratulations!
+            </p>
+
+            <p className="mt-3 text-slate-600 text-sm leading-relaxed">
+              Thinking about postdoctoral positions or jobs in India or overseas,
+              but confused about where to start?
+              <br />
+              <br />
+              Whether it’s approaching professors, writing a strong research
+              proposal, or preparing an effective SOP, we guide you through
+              every step with clarity and structure.
+            </p>
+
+            <ul className="mt-5 space-y-2 text-sm text-slate-600">
+              <li>✔️ Postdoc opportunities (NPDF / NBHM / IPDF)</li>
+              <li>✔️ Academic & industry job guidance</li>
+              <li>✔️ Research proposal & SOP review</li>
+              <li>✔️ Faculty outreach & application strategy</li>
             </ul>
           </div>
 
@@ -111,24 +108,17 @@ className="relative z-10 w-full max-w-5xl bg-white rounded-2xl shadow-2xl overfl
               Don’t show again
             </label>
 
-            <div className="flex gap-3">
-              {/* <button
-                className="px-5 py-2 rounded-md border border-slate-200 text-slate-700 hover:bg-slate-50"
-                onClick={onClose}
-              >
-                Close
-              </button> */}
-
-              <button
-                className="px-6 py-2 rounded-md bg-indigo-600 text-white shadow hover:bg-indigo-700"
-                onClick={() => {
-                  onClose();
-                  navigate("/register");
-                }}
-              >
-                Register Now
-              </button>
-            </div>
+            <button
+              className="px-6 py-2 rounded-md bg-indigo-600 text-white shadow hover:bg-indigo-700"
+              onClick={() =>
+                window.open(
+                  "https://docs.google.com/forms/d/e/1FAIpQLSesT8-qk5jfZoDXqjUfiCkq83xhfkZ6CfBekE74uGTpibWPcQ/viewform",
+                  "_blank"
+                )
+              }
+            >
+              Register Now
+            </button>
           </div>
         </div>
       </motion.div>

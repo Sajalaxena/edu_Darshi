@@ -93,7 +93,7 @@ export default function NewsWebinarsCompact() {
             <div className="p-3 space-y-2 max-h-[360px] overflow-y-auto no-scrollbar">
               {webinars.slice(0, 4).map((w) => (
                 <CompactRow key={w._id} type="webinar" title={w.title} meta={`${w.date} • ${w.time}`}
-                  onClick={() => setOpen(w)} />
+                  onClick={() => w.registrationLink && window.open(w.registrationLink, "_blank")} />
               ))}
             </div>
           </div>

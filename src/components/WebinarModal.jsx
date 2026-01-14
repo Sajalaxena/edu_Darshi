@@ -73,7 +73,7 @@ export default function WebinarModal({ webinar, onClose }) {
         <div className="p-5 md:p-6">
           <p className="text-sm text-slate-700 mb-3">
             {/* optional short intro */}
-            {webinar.summary || "Join our webinar to learn practical tips and strategies."}
+            {webinar.summary}
           </p>
 
           <ul className="list-disc pl-5 space-y-2 text-sm text-slate-700 mb-4">

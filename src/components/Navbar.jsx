@@ -46,7 +46,7 @@ export default function Navbar() {
                   EduDarshi
                 </div>
                 <div className="text-xs md:text-sm text-slate-500 -mt-1">
-                  Mentorship & Competitive Exams
+                  Elevate | Educate | Empower
                 </div>
               </div>
             </Link>

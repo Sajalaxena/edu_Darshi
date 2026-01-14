@@ -9,7 +9,7 @@ export default function ScrollToTop() {
     window.scrollTo({
       top: 0,
       left: 0,
-      behavior: "instant", // use "smooth" if you want animation
+      behavior: "smooth", // 
     });
   }, [pathname]);
 

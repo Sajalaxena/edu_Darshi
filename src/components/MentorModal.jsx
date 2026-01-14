@@ -115,18 +115,18 @@ export default function MentorModal({ mentor, open, onClose }) {
                 rel="noreferrer"
                 className="text-indigo-600 hover:underline font-medium text-sm"
               >
-                🔗 LinkedIn
+                🔗 Portfolio
               </a>
             )}
 
-            {mentor.email && (
+            {/* {mentor.email && (
               <a
                 href={`mailto:${mentor.email}`}
                 className="text-slate-600 hover:text-slate-800 text-sm"
               >
                 ✉️ {mentor.email}
               </a>
-            )}
+            )} */}
 
             <button
               onClick={() => alert("Contact flow coming soon")}

@@ -12,106 +12,110 @@ import {
 
 const ALL_FEATURES = [
   "Webinars (live + recordings)",
-  "Solutions Repository",
-  "Weekly Opportunity Alerts",
   "Starter Study Resources",
-  "Community Access",
-  "Exclusive Workshops",
+  "Adaptive Mock Tests",
+  "Interview Practice",
+  "Weekly Doubt Sessions",
+  "Weekly Alerts",
+  "Personalized Weekly Alerts",
+  "Dedicated Mentor (1:1)",
+  "Profile Build-up Guidance",
   "Internship Opportunities",
   "Complete Solutions Library",
-  "Personalized Alerts",
-  "Preparation Guides",
-  "Adaptive Mock Tests",
-  "Dedicated Mentor",
-  "Career Portfolio Support",
-  "Interview Preparation",
-  "Weekly Doubt Sessions",
+  "Previous Year Question Papers",
+  "Community Access",
 ];
 
 const PLANS = [
   {
     id: "free",
     name: "Free Plan",
-    description: "Best for beginners",
-    includes: ALL_FEATURES.slice(0, 5),
-    details: [
-      "Access to EduDarshi webinars (live + selected recordings)",
-      "Limited solutions for recent and past exams",
-      "Weekly alerts for national-level exams, workshops, and jobs",
-      "Starter study resources: sample notes, practice questions",
-      "Basic community access (read-only discussions)",
+    description: "Get started with essential learning tools",
+    includes: [
+      "Webinars (live + recordings)",
+      "Limited Solutions Library",
+      "Previous Year Question Papers",
+      "Community Access",
     ],
   },
   {
     id: "premium",
     name: "Basic Plan",
-    description: "For serious aspirants",
-    includes: ALL_FEATURES.slice(0, 11),
-    details: [
-      "Unlimited webinars and exclusive expert workshops",
-      "Complete solutions library for past and recent exams",
-      "Personalized weekly alerts by subject and interest",
-      "Focused preparation guides and limited lecture notes",
-      "Adaptive mock tests with performance analytics",
-      "Priority mentor support and group doubt sessions",
+    description: "Structured preparation for serious aspirants",
+    includes: [
+      "Webinars (live + recordings)",
+      "Weekly Alerts",
+      "Complete Solutions Library",
+      "Starter Study Resources",
+      "Adaptive Mock Tests",
+      "Interview Practice",
+      "Previous Year Question Papers"
     ],
   },
   {
     id: "elite",
     name: "Personalised Plan",
-    description: "Top-tier mentorship & career guidance",
-    includes: ALL_FEATURES,
-    details: [
-      "All-access webinars and exclusive workshops with recordings",
-      "On-demand expert discussions on complex solutions",
-      "Hyper-personalized alerts with 1:1 application guidance",
-      "Unlimited mocks, interview preparation, and simulations",
-      "Dedicated mentor for the entire subscription period",
-      "Priority doubt resolution via chat and scheduled calls",
-      "Career portfolio support: CV, SOP, LOR reviews",
-      "Placement and scholarship support with referrals",
+    description: "End-to-end mentorship & career guidance",
+    includes: [
+      "Webinars (live + recordings)",
+      "Starter Study Resources",
+      "Adaptive Mock Tests",
+      "Dedicated Mentor (1:1)",
+      "Interview Practice",
+      "Weekly Doubt Sessions",
+      "Personalized Weekly Alerts",
+      "Profile Build-up Guidance",
+      "Internship Opportunities",
+      "Complete Solutions Library",
+      "Previous Year Question Papers",
+            "Weekly Alerts",
+                  "Community Access",
+
+
     ],
   },
 ];
 
+
 const PLAN_FULL_DETAILS = {
   free: {
     title: "Free Plan",
-    subtitle: "Foundation features to get started at zero cost",
+    subtitle: "Foundation features to explore EduDarshi",
     points: [
-      "EduDarshi Webinars (live + select recordings): Expert-led sessions on exam strategies, subject refreshers, and career pathways.",
-      "Solutions Repository (limited): Curated worked solutions from recent and past exams.",
-      "Weekly Opportunity Alerts (national level): Exams, workshops, internships, and jobs with key dates.",
-      "Starter Study Resources: Sample notes, formula sheets, practice questions, and exam tips.",
-      "Community (read-only): Browse mentor-verified discussions and solved threads.",
+      "EduDarshi Webinars (live + selected recordings): Expert-led sessions on exam strategies, subject refreshers, and career pathways.",
+      "Limited Solutions Library: Access a curated set of solved questions from previous exams.",
+      "Previous Year Question Papers: Explore PYQs to understand exam patterns.",
+      "Community Access: Read discussions and mentor-verified answers.",
     ],
   },
 
   premium: {
-    title: "Premium Plan",
-    subtitle: "Includes everything in the Free Plan, plus",
+    title: "Basic Plan",
+    subtitle: "Everything you need for focused exam preparation",
     points: [
-      "Unlimited Webinars + Exclusive Workshops with post-session resources.",
-      "Complete Solutions Library for all recent and historical exams.",
-      "Personalized Weekly Alerts (national & international) by subject and career track.",
-      "Focused Lecture Notes & Preparation Guides for chosen subjects.",
-      "Adaptive Mock Tests with performance analytics and improvement insights.",
-      "Priority Mentor Support with monthly group doubt-clearing sessions.",
+      "Webinars (live + recordings) with expert instructors.",
+      "Weekly Alerts for exams, internships, and academic opportunities.",
+      "Complete Solutions Library for recent and past exams.",
+      "Starter Study Resources including notes, formula sheets, and practice sets.",
+      "Adaptive Mock Tests to analyze performance and improve accuracy.",
+      "Interview Practice sessions to build confidence and clarity.",
     ],
   },
 
   elite: {
-    title: "Elite Plan",
-    subtitle: "Concierge-level mentorship & career guidance",
+    title: "Personalised Plan",
+    subtitle: "High-touch mentorship with career-focused guidance",
     points: [
-      "All-access webinars & workshops with guaranteed recordings.",
-      "On-demand expert discussions for deep solution analysis.",
-      "Hyper-personalized alerts + 1:1 application & document guidance.",
-      "Complete lecture notes, unlimited mocks & interview simulations.",
-      "Dedicated mentor for the entire subscription period.",
-      "Priority doubt resolution via chat + scheduled phone/video calls.",
-      "Career portfolio development: CV, SOP & LOR reviews.",
-      "Placement & scholarship support with referrals & timelines.",
+      "All-access webinars and exclusive workshops with recordings.",
+      "Starter Study Resources with structured learning paths.",
+      "Advanced Adaptive Mock Tests aligned with your goals.",
+      "Dedicated 1:1 Mentor for personalized guidance.",
+      "Interview Practice with feedback and improvement plans.",
+      "Weekly Doubt Sessions for continuous clarity.",
+      "Personalized Weekly Alerts based on your profile.",
+      "Profile Build-up Guidance (CV, SOP, academic positioning).",
+      "Internship Opportunities with application support.",
+      "Complete Solutions Library with in-depth explanations.",
     ],
   },
 };
@@ -204,7 +208,7 @@ export default function PlanDetails() {
 
                 {plan.id === "premium" ? (
   <div className="mt-1">
-    <div className="text-2xl font-bold text-slate-400 line-through">
+    <div className="text-2xl font-bold text-slate-400">
       ₹499
     </div>
     <div className="mt-1 inline-block px-3 py-1 rounded-full
@@ -244,7 +248,7 @@ export default function PlanDetails() {
                         className={`flex items-center gap-2 ${
                           included
                             ? "text-slate-700"
-                            : "text-slate-400 line-through"
+                            : "text-slate-400 "
                         }`}
                       >
                         {included ? (
@@ -290,7 +294,7 @@ export default function PlanDetails() {
             <p className="text-sm text-slate-500">{detail.subtitle}</p>
             {plan.id === "premium" ? (
   <div className="mt-1">
-    <div className="text-2xl font-bold text-slate-400 line-through">
+    <div className="text-2xl font-bold text-slate-400 ">
       ₹499
     </div>
     <div className="mt-1 inline-block px-3 py-1 rounded-full

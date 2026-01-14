@@ -53,7 +53,7 @@ export default function AllNews() {
                   rel="noreferrer"
                   className="text-blue-600 text-sm hover:underline"
                 >
-                  Read paper →
+                  More Details →
                 </a>
               </div>
             )}

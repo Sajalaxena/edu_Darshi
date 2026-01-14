@@ -9,7 +9,7 @@ export default function AllWebinars() {
   const [open, setOpen] = useState(null);
 
   useEffect(() => {
-    fetch(`${API_BASE}/research-news`)
+    fetch(`${API_BASE}/webinars`)
       .then((r) => r.json())
       .then((j) => setWebinars(j.data || []));
   }, []);
@@ -38,19 +38,19 @@ export default function AllWebinars() {
             )}
 
             <div className="mt-3 flex gap-4">
-              <button
+              {/* <button
                 onClick={() => setOpen(w)}
                 className="text-blue-600 text-sm hover:underline"
               >
                 Details
-              </button>
+              </button> */}
 
               {w.registrationLink && (
                 <a
                   href={w.registrationLink}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-sm text-slate-500 hover:underline"
+                  className="text-sm text-blue-600 hover:underline"
                 >
                   Register
                 </a>
