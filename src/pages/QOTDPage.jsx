@@ -3,43 +3,60 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
-/* ================= DATA ================= */
-
-const QOTD_BANK = [
-  {
-    id: "jam-01",
-    title: "Let A be a 2×2 matrix with determinant 5. What is det(2A⁻¹)?",
-    options: ["1/5", "2/5", "4/5", "8/5"],
-    answerIndex: 2,
-    explanation: [
-      "det(A⁻¹) = 1 / det(A) = 1/5",
-      "det(2A⁻¹) = 2² × det(A⁻¹) = 4 × (1/5) = 4/5",
-    ],
-    youtube: "https://www.youtube.com/watch?v=example",
-    date: "2026-01-10",
-  },
-];
-
-/* ================= COMPONENT ================= */
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 export default function QOTDPage() {
   const navigate = useNavigate();
+
+  const [question, setQuestion] = useState(null);
   const [selected, setSelected] = useState(null);
   const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const currentQ = QOTD_BANK[0];
+  /* ================= FETCH TODAY QUESTION ================= */
 
-  useEffect(() => setSelected(null), []);
+  useEffect(() => {
+    async function loadQOTD() {
+      try {
+        const res = await fetch(`${API_BASE}/question/today`);
+        const json = await res.json();
+        setQuestion(json.data);
+      } catch (err) {
+        console.error("Failed to load QOTD", err);
+      } finally {
+        setLoading(false);
+      }
+    }
 
-  function submitAnswer() {
-    if (selected === null) {
+    loadQOTD();
+  }, []);
+
+  /* ================= SUBMIT ANSWER ================= */
+
+  async function submitAnswer() {
+    if (!selected) {
       alert("Please select an option");
       return;
     }
-    setResult({
-      correct: selected === currentQ.answerIndex,
-      question: currentQ,
-    });
+
+    try {
+      const res = await fetch(`${API_BASE}/question/submit`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          questionId: question._id,
+          answer: selected,
+        }),
+      });
+
+      const json = await res.json();
+      setResult({
+        ...json,
+        selected,
+      });
+    } catch (err) {
+      console.error("Submit failed", err);
+    }
   }
 
   function closeAll() {
@@ -47,58 +64,64 @@ export default function QOTDPage() {
     navigate("/", { replace: true });
   }
 
+  if (loading) {
+    return (
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
+        <div className="bg-white px-6 py-4 rounded-lg">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!question) {
+    return (
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
+        <div className="bg-white px-6 py-4 rounded-lg">
+          No Question Today
+        </div>
+      </div>
+    );
+  }
+
+  /* ================= UI ================= */
+
   return (
     <div className="fixed inset-0 z-[9999] bg-black/50 flex items-end sm:items-center justify-center">
-      {/* ================= MAIN MODAL ================= */}
+      {/* MAIN MODAL */}
       <motion.div
         initial={{ y: 40, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.25 }}
-        className="
-          w-full sm:max-w-xl
-          bg-white
-          rounded-t-2xl sm:rounded-2xl
-          max-h-[92vh]
-          flex flex-col
-        "
+        className="w-full sm:max-w-xl bg-white rounded-t-2xl sm:rounded-2xl max-h-[92vh] flex flex-col"
       >
         {/* HEADER */}
-        <div className="flex items-center justify-between px-5 py-4 border-b">
+        <div className="flex justify-between items-center px-5 py-4 border-b">
           <div>
             <h2 className="text-lg font-semibold">Question of the Day</h2>
-            <p className="text-xs text-slate-500">JAM & GATE Mathematics</p>
+            <p className="text-xs text-slate-500">EduDarshi</p>
           </div>
-          <button
-            onClick={closeAll}
-            className="text-xl text-slate-500 hover:text-slate-800"
-          >
-            ✕
-          </button>
+          <button onClick={closeAll}>✕</button>
         </div>
 
         {/* BODY */}
         <div className="flex-1 overflow-y-auto px-5 py-4">
-          <div className="text-xs text-slate-400 mb-2">{currentQ.date}</div>
-
-          <h3 className="text-base sm:text-lg font-semibold leading-relaxed">
-            {currentQ.title}
+          <h3 className="text-base sm:text-lg font-semibold">
+            {question.question}
           </h3>
 
           <div className="mt-4 space-y-3">
-            {currentQ.options.map((opt, idx) => (
+            {question.options.map((opt, idx) => (
               <label
                 key={idx}
-                className={`flex items-center gap-3 p-3 rounded-lg border text-sm cursor-pointer
-                  ${
-                    selected === idx
-                      ? "border-indigo-600 bg-indigo-50"
-                      : "border-slate-200"
-                  }`}
+                className={`flex gap-3 p-3 rounded-lg border cursor-pointer text-sm ${
+                  selected === opt
+                    ? "border-indigo-600 bg-indigo-50"
+                    : "border-slate-200"
+                }`}
               >
                 <input
                   type="radio"
-                  checked={selected === idx}
-                  onChange={() => setSelected(idx)}
+                  checked={selected === opt}
+                  onChange={() => setSelected(opt)}
                 />
                 {opt}
               </label>
@@ -116,14 +139,14 @@ export default function QOTDPage() {
           </button>
           <button
             onClick={closeAll}
-            className="flex-1 py-2.5 rounded-lg border text-slate-600"
+            className="flex-1 py-2.5 rounded-lg border"
           >
             Close
           </button>
         </div>
       </motion.div>
 
-      {/* ================= RESULT MODAL ================= */}
+      {/* RESULT MODAL */}
       {result && (
         <div className="fixed inset-0 z-[10000] bg-black/40 flex items-center justify-center px-4">
           <motion.div
@@ -141,31 +164,29 @@ export default function QOTDPage() {
 
             {!result.correct && (
               <p className="mt-2 text-sm">
-                Correct answer:{" "}
-                <strong>
-                  {result.question.options[result.question.answerIndex]}
+                Correct answer:
+                <strong className="ml-1">
+                  {question.correctAnswer}
                 </strong>
               </p>
             )}
 
-            <div className="mt-4">
-              <h4 className="font-semibold">Explanation</h4>
-              <ul className="mt-2 list-disc pl-5 text-sm space-y-1">
-                {result.question.explanation.map((e, i) => (
-                  <li key={i}>{e}</li>
-                ))}
-              </ul>
+            <div className="mt-4 text-sm">
+              <strong>Explanation</strong>
+              <p className="mt-1">{result.explanation}</p>
             </div>
 
             <div className="mt-5 flex gap-3">
-              <a
-                href={result.question.youtube}
-                target="_blank"
-                rel="noreferrer"
-                className="flex-1 py-2 rounded-lg bg-indigo-600 text-white text-center"
-              >
-                Watch Solution
-              </a>
+              {result.solutionVideoUrl && (
+                <a
+                  href={result.solutionVideoUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex-1 py-2 rounded-lg bg-indigo-600 text-white text-center"
+                >
+                  Watch Solution
+                </a>
+              )}
               <button
                 onClick={closeAll}
                 className="flex-1 py-2 rounded-lg border"

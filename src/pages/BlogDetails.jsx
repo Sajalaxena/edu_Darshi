@@ -33,7 +33,7 @@ export default function BlogDetails() {
         <img
           src={blog.imageUrl}
           alt={blog.title}
-          className="rounded-xl w-full max-h-[420px] object-cover shadow-md"
+          className="rounded-xl w-full h-full object-cover shadow-md"
         />
       )}
 

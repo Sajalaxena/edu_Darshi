@@ -12,6 +12,7 @@ import AddPreviousPaper from "./pages/AddPreviousPaper";
 import AdminResearchNews from "./pages/AdminResearchNews";
 import AdminWebinars from "./pages/AdminUpcomingWebinars";
 import AdminBlogs from "./pages/AdminBlogs";
+import QOTDAdmin from "./pages/QOTDAdmin";
 import "./admin.css";
 function Protected({ children }) {
   // if not logged in, redirect to the nested "login" route
@@ -59,7 +60,7 @@ export default function AdminApp() {
                 <Route path="research-news" element={<AdminResearchNews />} />
                       <Route path="webinars" element={<AdminWebinars />} />
                   <Route path="blogs" element={<AdminBlogs />} />
-
+                  <Route path="qotd" element={<QOTDAdmin />} />
                   {/* default when /admin is visited -> go to queries */}
                   <Route path="" element={<ClientQueries />} />
                 </Routes>

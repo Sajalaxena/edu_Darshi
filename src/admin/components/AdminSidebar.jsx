@@ -12,6 +12,7 @@ export default function AdminSidebar() {
     { to: "/admin/research-news", label: "Research & News" },
     { to: "/admin/webinars", label: "Upcoming Webinars" },
     { to: "/admin/blogs", label: "Blogs" },
+    { to: "/admin/qotd", label: "Question of the Day" },
   ];
  
   return (
