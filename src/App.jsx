@@ -22,7 +22,7 @@ import MentorDetailPage from "./pages/MentorDetailPage";
 import TestSeriesComingSoon from "./components/TestSeriesComingSoon";
 import GlobalBackground from "./components/GlobalBackground";
 import PreviousPapersPage from "./pages/PreviousPaperPage";
-
+import ScrollToTop from "./components/ScrollToTop"; 
 export default function App() {
   return (
     <div className="relative min-h-screen">
@@ -32,6 +32,7 @@ export default function App() {
       {/* Main App Content */}
       <div className="relative z-10">
         <BrowserRouter>
+        <ScrollToTop />
           <Routes>
             {/* Admin Panel */}
             <Route path="/admin/*" element={<AdminApp />} />
