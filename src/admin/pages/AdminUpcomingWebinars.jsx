@@ -50,7 +50,7 @@ export default function AdminUpcomingWebinars() {
 
       const url = editingId
         ? `${API_BASE}/webinars/admin/${editingId}`
-        : `${API_BASE}/webinars/admin/upload`;
+        : `${API_BASE}/webinars/upload`;
 
       const method = editingId ? "PUT" : "POST";
 
@@ -97,7 +97,7 @@ export default function AdminUpcomingWebinars() {
   async function remove(id) {
     if (!window.confirm("Delete this webinar?")) return;
 
-    await fetch(`${API_BASE}/webinars/admin/${id}`, {
+    await fetch(`${API_BASE}/webinars/${id}`, {
       method: "DELETE",
     });
 
