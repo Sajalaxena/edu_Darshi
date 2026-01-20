@@ -50,7 +50,7 @@ export default function AdminUpcomingWebinars() {
 
       const url = editingId
         ? `${API_BASE}/webinars/admin/${editingId}`
-        : `${API_BASE}/webinars/upload`;
+        : `${API_BASE}/webinars`;
 
       const method = editingId ? "PUT" : "POST";
 
