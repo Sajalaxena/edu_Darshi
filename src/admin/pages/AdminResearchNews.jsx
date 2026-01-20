@@ -24,7 +24,7 @@ export default function AdminResearchNews() {
     description: "",
     type: "research",
     source: "",
-    link: "",
+    externalLink: "",
     publishedDate: "",
   });
 
@@ -61,7 +61,7 @@ export default function AdminResearchNews() {
         description: item.description || "",
         type: item.type || "research",
         source: item.source || "",
-        link: item.link || "",
+        externalLink: item.externalLink || "",
         publishedDate: item.publishedDate
           ? item.publishedDate.split("T")[0]
           : "",
@@ -111,7 +111,7 @@ export default function AdminResearchNews() {
         description: "",
         type: "research",
         source: "",
-        link: "",
+        externalLink: "",
         publishedDate: "",
       });
 
@@ -204,9 +204,9 @@ export default function AdminResearchNews() {
         <input
           disabled={loading}
           className="input"
-          placeholder="External Link"
-          value={form.link}
-          onChange={(e) => setForm({ ...form, link: e.target.value })}
+          placeholder="External externalLink"
+          value={form.externalLink}
+          onChange={(e) => setForm({ ...form, externalLink: e.target.value })}
         />
 
         <div className="md:col-span-2 text-right">

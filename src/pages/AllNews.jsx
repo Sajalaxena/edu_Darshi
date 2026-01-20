@@ -29,7 +29,8 @@ export default function AllNews() {
 
   return (
     <section className="container mx-auto px-6 py-10">
-      <h2 className="text-2xl font-semibold mb-6">All Research & News</h2>
+      <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-8"
+          style={{ color: "var(--brand, #2563EB)" }}>Competitive Exams, Postdocs & Jobs Updates</h2>
 
       <div className="grid md:grid-cols-2 gap-4">
         {news.map((n) => (
