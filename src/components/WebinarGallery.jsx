@@ -22,7 +22,7 @@ const PLACEHOLDERS = [
 const GALLERY_ITEMS = [
   {
     id: "g1",
-    title: "Crack NEET 2026 — Strategy & Timetable",
+    title: "Crack JRF 2026 — Strategy & Timetable",
     venue: "Zoom • 12 Feb 2026 • 7:00 PM",
     variant: "slideshow",
     images: [PLACEHOLDERS[0], PLACEHOLDERS[1], PLACEHOLDERS[2]],
@@ -32,7 +32,7 @@ const GALLERY_ITEMS = [
   },
   {
     id: "g2",
-    title: "JEE Problem Solving Marathon — Recording",
+    title: "JAM Problem Solving Marathon — Recording",
     venue: "YouTube • 26 Feb 2026",
     variant: "video",
     youtube: "KpnyhOJNyAI", // YouTube ID (works with https://img.youtube.com/vi/{ID}/maxresdefault.jpg)
@@ -50,12 +50,12 @@ const GALLERY_ITEMS = [
   },
   {
     id: "g4",
-    title: "Career Roadmap for CS — Workshop",
+    title: "Career Roadmap for Phd in Mathematics — Workshop",
     venue: "Zoom • 10 Mar 2026",
     variant: "video",
     youtube: "KpnyhOJNyAI", // demo id (replace with your own)
     image: PLACEHOLDERS[4],
-    tags: ["Career", "CS"],
+    tags: ["Career", "PhD"],
     duration: "60m",
   },
 ];
@@ -83,7 +83,6 @@ function Lightbox({ open, onClose, type, payload }) {
         className="relative w-full max-w-4xl mx-auto rounded-lg overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-
         <button
           className="absolute right-3 top-3 z-30 bg-white/90 p-2 rounded-full shadow hover:bg-white"
           aria-label="Close"
@@ -95,10 +94,16 @@ function Lightbox({ open, onClose, type, payload }) {
         {type === "images" && payload?.images?.length ? (
           <div className="w-full bg-black">
             {/* simple slideshow UI */}
-            <ImageSlideshow images={payload.images} start={payload.startIndex || 0} />
+            <ImageSlideshow
+              images={payload.images}
+              start={payload.startIndex || 0}
+            />
           </div>
         ) : type === "video" && payload?.youtubeId ? (
-          <div className="w-full" style={{ aspectRatio: "16/9", minHeight: 240 }}>
+          <div
+            className="w-full"
+            style={{ aspectRatio: "16/9", minHeight: 240 }}
+          >
             <iframe
               title="webinar-recording"
               src={`https://www.youtube.com/embed/${payload.youtubeId}?rel=0&autoplay=1`}
@@ -125,7 +130,11 @@ function ImageSlideshow({ images = [], start = 0 }) {
 
   return (
     <div className="relative w-full bg-black">
-      <img src={images[index]} alt={`slide ${index + 1}`} className="w-full h-[60vh] object-cover" />
+      <img
+        src={images[index]}
+        alt={`slide ${index + 1}`}
+        className="w-full h-[60vh] object-cover"
+      />
       <div className="absolute inset-0 flex items-center justify-between px-3">
         <button
           onClick={prev}
@@ -151,27 +160,40 @@ function ImageSlideshow({ images = [], start = 0 }) {
 
 /* ---------- The gallery main component ---------- */
 export default function AttractiveWebinarGallery() {
-  const [lightboxState, setLightboxState] = useState({ open: false, type: null, payload: null });
+  const [lightboxState, setLightboxState] = useState({
+    open: false,
+    type: null,
+    payload: null,
+  });
 
   const openImages = (images, start = 0) => {
-    setLightboxState({ open: true, type: "images", payload: { images, startIndex: start } });
+    setLightboxState({
+      open: true,
+      type: "images",
+      payload: { images, startIndex: start },
+    });
   };
   const openVideo = (youtubeId) => {
     setLightboxState({ open: true, type: "video", payload: { youtubeId } });
   };
-  const closeLightbox = () => setLightboxState({ open: false, type: null, payload: null });
+  const closeLightbox = () =>
+    setLightboxState({ open: false, type: null, payload: null });
 
   return (
     <section className="py-12 px-4 md:px-8 lg:px-16 ">
-                    <MathematicalBackground />    
+      <MathematicalBackground />
 
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-8" style={{ color: "var(--brand, #2563EB)" }}>
+        <h2
+          className="text-3xl md:text-4xl font-extrabold text-center mb-8"
+          style={{ color: "var(--brand, #2563EB)" }}
+        >
           Webinar Gallery
         </h2>
 
         <p className="text-center text-slate-600 max-w-2xl mx-auto mb-10">
-          Highlights, recordings and snapshots from our recent webinars and workshops.
+          Highlights, recordings and snapshots from our recent webinars and
+          workshops.
         </p>
 
         <div className="grid gap-8 md:grid-cols-2">
@@ -179,10 +201,9 @@ export default function AttractiveWebinarGallery() {
             const reverse = idx % 2 === 1;
             const isVideo = item.variant === "video";
             const hasSlideshow = item.variant === "slideshow";
-            const cardGradient =
-              item.featured
-                ? "bg-gradient-to-tr from-indigo-50 to-amber-50"
-                : "bg-white";
+            const cardGradient = item.featured
+              ? "bg-gradient-to-tr from-indigo-50 to-amber-50"
+              : "bg-white";
 
             // Media preview:
             let preview;
@@ -190,14 +211,25 @@ export default function AttractiveWebinarGallery() {
               const thumb = youtubeThumbUrl(item.youtube);
               preview = thumb ? (
                 <div className="relative rounded-lg overflow-hidden group">
-                  <img src={thumb} alt={item.title} className="w-full h-64 md:h-72 object-cover transition-transform group-hover:scale-105" />
+                  <img
+                    src={thumb}
+                    alt={item.title}
+                    className="w-full h-64 md:h-72 object-cover transition-transform group-hover:scale-105"
+                  />
                   <div className="absolute inset-0 bg-black/25 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
                     <button
                       onClick={() => openVideo(item.youtube)}
                       aria-label="Play video"
                       className="inline-flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-full shadow hover:bg-indigo-700"
                     >
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 3v18l15-9L5 3z" fill="currentColor"/></svg>
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                      >
+                        <path d="M5 3v18l15-9L5 3z" fill="currentColor" />
+                      </svg>
                       Watch
                     </button>
                   </div>
@@ -206,12 +238,21 @@ export default function AttractiveWebinarGallery() {
                   </div>
                 </div>
               ) : (
-                <div className="h-64 md:h-72 rounded-lg bg-slate-100 grid place-items-center">Video</div>
+                <div className="h-64 md:h-72 rounded-lg bg-slate-100 grid place-items-center">
+                  Video
+                </div>
               );
             } else if (hasSlideshow) {
               preview = (
-                <div className="relative rounded-lg overflow-hidden group cursor-pointer" onClick={() => openImages(item.images || [], 0)}>
-                  <img src={item.images?.[0] || PLACEHOLDERS[0]} alt={item.title} className="w-full h-64 md:h-72 object-cover transition-transform group-hover:scale-105" />
+                <div
+                  className="relative rounded-lg overflow-hidden group cursor-pointer"
+                  onClick={() => openImages(item.images || [], 0)}
+                >
+                  <img
+                    src={item.images?.[0] || PLACEHOLDERS[0]}
+                    alt={item.title}
+                    className="w-full h-64 md:h-72 object-cover transition-transform group-hover:scale-105"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-60 transition" />
                   <div className="absolute left-3 top-3 bg-white/90 px-3 py-1 rounded-full text-xs font-semibold text-slate-800 shadow">
                     {item.images?.length || 0} slides
@@ -221,7 +262,11 @@ export default function AttractiveWebinarGallery() {
             } else {
               preview = (
                 <div className="rounded-lg overflow-hidden">
-                  <img src={item.image || PLACEHOLDERS[5]} alt={item.title} className="w-full h-64 md:h-72 object-cover rounded-lg transition-transform hover:scale-105" />
+                  <img
+                    src={item.image || PLACEHOLDERS[5]}
+                    alt={item.title}
+                    className="w-full h-64 md:h-72 object-cover rounded-lg transition-transform hover:scale-105"
+                  />
                 </div>
               );
             }
@@ -232,19 +277,36 @@ export default function AttractiveWebinarGallery() {
                 className={`flex flex-col md:flex-row items-stretch gap-6 p-4 md:p-6 rounded-2xl ${cardGradient} shadow-sm`}
               >
                 {/* Media left / right - alternate */}
-                <div className={`md:w-1/2 ${reverse ? "md:order-2" : "md:order-1"}`}>{preview}</div>
+                <div
+                  className={`md:w-1/2 ${
+                    reverse ? "md:order-2" : "md:order-1"
+                  }`}
+                >
+                  {preview}
+                </div>
 
-                <div className={`md:w-1/2 flex flex-col justify-between ${reverse ? "md:order-1" : "md:order-2"}`}>
+                <div
+                  className={`md:w-1/2 flex flex-col justify-between ${
+                    reverse ? "md:order-1" : "md:order-2"
+                  }`}
+                >
                   <div>
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <h3 className="text-xl md:text-2xl font-semibold text-slate-900">{item.title}</h3>
-                        <div className="text-sm text-slate-500 mt-1">{item.venue}</div>
+                        <h3 className="text-xl md:text-2xl font-semibold text-slate-900">
+                          {item.title}
+                        </h3>
+                        <div className="text-sm text-slate-500 mt-1">
+                          {item.venue}
+                        </div>
                       </div>
 
                       <div className="hidden md:flex items-center gap-2">
                         {item.tags?.map((t) => (
-                          <span key={t} className="text-xs px-2 py-1 bg-slate-100 rounded-full text-slate-700">
+                          <span
+                            key={t}
+                            className="text-xs px-2 py-1 bg-slate-100 rounded-full text-slate-700"
+                          >
                             {t}
                           </span>
                         ))}
@@ -252,15 +314,31 @@ export default function AttractiveWebinarGallery() {
                     </div>
 
                     <p className="mt-4 text-slate-600 max-w-prose">
-                      {item.description || "High-quality talks, curated slides, and recorded sessions from mentors and industry guest speakers."}
+                      {item.description ||
+                        "High-quality talks, curated slides, and recorded sessions from mentors and industry guest speakers."}
                     </p>
                   </div>
 
                   <div className="mt-6 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <div className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-white shadow text-sm">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 4v16M4 12h16" stroke="#4F46E5" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                        <span className="text-slate-700 text-sm font-medium">{item.duration || "—"}</span>
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                        >
+                          <path
+                            d="M12 4v16M4 12h16"
+                            stroke="#4F46E5"
+                            strokeWidth="1.6"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                        <span className="text-slate-700 text-sm font-medium">
+                          {item.duration || "—"}
+                        </span>
                       </div>
                       <div className="text-sm text-slate-500 ml-2 md:hidden">
                         {item.tags?.slice(0, 2).join(" • ")}
@@ -274,7 +352,14 @@ export default function AttractiveWebinarGallery() {
                           onClick={() => openVideo(item.youtube)}
                           className="inline-flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-md shadow hover:bg-indigo-700"
                         >
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 3v18l15-9L5 3z" fill="currentColor"/></svg>
+                          <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                          >
+                            <path d="M5 3v18l15-9L5 3z" fill="currentColor" />
+                          </svg>
                           Watch
                         </button>
                       ) : item.variant === "slideshow" ? (
@@ -286,7 +371,9 @@ export default function AttractiveWebinarGallery() {
                         </button>
                       ) : (
                         <button
-                          onClick={() => openImages([item.image || PLACEHOLDERS[0]])}
+                          onClick={() =>
+                            openImages([item.image || PLACEHOLDERS[0]])
+                          }
                           className="inline-flex items-center gap-2 bg-slate-800 text-white px-4 py-2 rounded-md shadow hover:bg-slate-900"
                         >
                           View image
@@ -302,7 +389,12 @@ export default function AttractiveWebinarGallery() {
       </div>
 
       {/* Lightbox */}
-      <Lightbox open={lightboxState.open} onClose={closeLightbox} type={lightboxState.type} payload={lightboxState.payload} />
+      <Lightbox
+        open={lightboxState.open}
+        onClose={closeLightbox}
+        type={lightboxState.type}
+        payload={lightboxState.payload}
+      />
     </section>
   );
 }

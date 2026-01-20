@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Trash } from "phosphor-react";
+import { Trash, PencilSimple } from "phosphor-react";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
@@ -15,6 +15,8 @@ export default function AdminUpcomingWebinars() {
 
   const [webinars, setWebinars] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [editingId, setEditingId] = useState(null);
 
   /* pagination */
   const [page, setPage] = useState(1);
@@ -38,29 +40,67 @@ export default function AdminUpcomingWebinars() {
     fetchWebinars();
   }, []);
 
-  /* ================= CREATE ================= */
+  /* ================= CREATE / UPDATE ================= */
   async function submit(e) {
     e.preventDefault();
-    await fetch(`${API_BASE}/webinars`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
+    if (saving) return;
+
+    try {
+      setSaving(true);
+
+      const url = editingId
+        ? `${API_BASE}/webinars/admin/${editingId}`
+        : `${API_BASE}/webinars/admin/upload`;
+
+      const method = editingId ? "PUT" : "POST";
+
+      await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      setForm({
+        title: "",
+        date: "",
+        time: "",
+        platform: "",
+        description: "",
+        registrationLink: "",
+      });
+
+      setEditingId(null);
+      fetchWebinars();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  /* ================= START EDIT ================= */
+  function startEdit(webinar) {
+    setEditingId(webinar._id);
     setForm({
-      title: "",
-      date: "",
-      time: "",
-      platform: "",
-      description: "",
-      registrationLink: "",
+      title: webinar.title || "",
+      date: webinar.date || "",
+      time: webinar.time || "",
+      platform: webinar.platform || "",
+      description: webinar.description || "",
+      registrationLink: webinar.registrationLink || "",
     });
-    fetchWebinars();
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   /* ================= DELETE ================= */
   async function remove(id) {
     if (!window.confirm("Delete this webinar?")) return;
-    await fetch(`${API_BASE}/webinars/${id}`, { method: "DELETE" });
+
+    await fetch(`${API_BASE}/webinars/admin/${id}`, {
+      method: "DELETE",
+    });
+
     fetchWebinars();
   }
 
@@ -73,6 +113,10 @@ export default function AdminUpcomingWebinars() {
         onSubmit={submit}
         className="bg-white rounded-2xl border shadow-sm p-6"
       >
+        <h2 className="text-lg font-semibold mb-4">
+          {editingId ? "Edit Webinar" : "Add Webinar"}
+        </h2>
+
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <input
             className="input"
@@ -80,6 +124,7 @@ export default function AdminUpcomingWebinars() {
             value={form.title}
             onChange={(e) => setForm({ ...form, title: e.target.value })}
             required
+            disabled={saving}
           />
 
           <input
@@ -88,14 +133,16 @@ export default function AdminUpcomingWebinars() {
             value={form.date}
             onChange={(e) => setForm({ ...form, date: e.target.value })}
             required
+            disabled={saving}
           />
 
           <input
             className="input"
-            placeholder="Time (7:00 PM IST)"
+            placeholder="Deadline"
             value={form.time}
             onChange={(e) => setForm({ ...form, time: e.target.value })}
             required
+            disabled={saving}
           />
 
           <input
@@ -103,6 +150,7 @@ export default function AdminUpcomingWebinars() {
             placeholder="Platform (Zoom / YouTube)"
             value={form.platform}
             onChange={(e) => setForm({ ...form, platform: e.target.value })}
+            disabled={saving}
           />
         </div>
 
@@ -111,9 +159,8 @@ export default function AdminUpcomingWebinars() {
             className="input h-24 resize-none md:col-span-2"
             placeholder="Short description"
             value={form.description}
-            onChange={(e) =>
-              setForm({ ...form, description: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, description: e.target.value })}
+            disabled={saving}
           />
 
           <div className="flex flex-col gap-4">
@@ -124,11 +171,39 @@ export default function AdminUpcomingWebinars() {
               onChange={(e) =>
                 setForm({ ...form, registrationLink: e.target.value })
               }
+              disabled={saving}
             />
 
-            <button className="btn-primary w-full h-11">
-              Add Webinar
+            <button
+              className="btn-primary w-full h-11 disabled:opacity-50"
+              disabled={saving}
+            >
+              {saving
+                ? "Saving..."
+                : editingId
+                ? "Update Webinar"
+                : "Add Webinar"}
             </button>
+
+            {editingId && (
+              <button
+                type="button"
+                onClick={() => {
+                  setEditingId(null);
+                  setForm({
+                    title: "",
+                    date: "",
+                    time: "",
+                    platform: "",
+                    description: "",
+                    registrationLink: "",
+                  });
+                }}
+                className="btn-secondary w-full h-11"
+              >
+                Cancel Edit
+              </button>
+            )}
           </div>
         </div>
       </form>
@@ -140,7 +215,7 @@ export default function AdminUpcomingWebinars() {
             <tr>
               <th className="px-4 py-3 text-left">Title</th>
               <th className="px-4 py-3">Date</th>
-              <th className="px-4 py-3">Time</th>
+              <th className="px-4 py-3">Deadline</th>
               <th className="px-4 py-3">Platform</th>
               <th className="px-4 py-3 text-center">Link</th>
               <th className="px-4 py-3 text-center">Action</th>
@@ -158,10 +233,7 @@ export default function AdminUpcomingWebinars() {
 
             {!loading &&
               pagedData.map((w, idx) => (
-                <tr
-                  key={w._id}
-                  className={idx % 2 ? "bg-blue-50/40" : ""}
-                >
+                <tr key={w._id} className={idx % 2 ? "bg-blue-50/40" : ""}>
                   <td className="px-4 py-3 font-medium">{w.title}</td>
                   <td className="px-4 py-3 text-center">{w.date}</td>
                   <td className="px-4 py-3 text-center">{w.time}</td>
@@ -169,7 +241,13 @@ export default function AdminUpcomingWebinars() {
                   <td className="px-4 py-3 text-center">
                     {w.registrationLink ? "Link" : "-"}
                   </td>
-                  <td className="px-4 py-3 text-center">
+                  <td className="px-4 py-3 text-center flex justify-center gap-3">
+                    <button
+                      onClick={() => startEdit(w)}
+                      className="text-blue-600 hover:text-blue-700"
+                    >
+                      <PencilSimple size={18} />
+                    </button>
                     <button
                       onClick={() => remove(w._id)}
                       className="text-red-500 hover:text-red-600"

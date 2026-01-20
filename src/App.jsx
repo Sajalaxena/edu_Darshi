@@ -22,8 +22,10 @@ import MentorDetailPage from "./pages/MentorDetailPage";
 import TestSeriesComingSoon from "./components/TestSeriesComingSoon";
 import GlobalBackground from "./components/GlobalBackground";
 import PreviousPapersPage from "./pages/PreviousPaperPage";
-import ScrollToTop from "./components/ScrollToTop"; 
+import ScrollToTop from "./components/ScrollToTop";
 import AboutUs from "./pages/AboutUs";
+import { Toaster } from "react-hot-toast";
+
 export default function App() {
   return (
     <div className="relative min-h-screen">
@@ -33,7 +35,10 @@ export default function App() {
       {/* Main App Content */}
       <div className="relative z-10">
         <BrowserRouter>
-        <ScrollToTop />
+          <ScrollToTop />
+
+          <Toaster position="top-right" />
+
           <Routes>
             {/* Admin Panel */}
             <Route path="/admin/*" element={<AdminApp />} />
@@ -48,7 +53,7 @@ export default function App() {
               <Route path="news" element={<AllNews />} />
               <Route path="webinars" element={<AllWebinars />} />
               <Route path="qotd" element={<QOTDPage />} />
-               
+
               <Route path="why-choose-us" element={<WhyChooseDetails />} />
               <Route path="plans/:id?" element={<PlanDetails />} />
 
@@ -64,7 +69,6 @@ export default function App() {
               <Route path="test-series" element={<TestSeriesComingSoon />} />
               <Route path="previous-papers" element={<PreviousPapersPage />} />
               <Route path="about-us" element={<AboutUs />} />
-
             </Route>
           </Routes>
         </BrowserRouter>

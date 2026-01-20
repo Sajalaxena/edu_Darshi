@@ -5,12 +5,13 @@ import { motion } from "framer-motion";
 export default function WebinarModal({ webinar, onClose }) {
   useEffect(() => {
     if (!webinar) return;
-    function onKey(e) {
-      if (e.key === "Escape") onClose();
-    }
+
+    const onKey = (e) => e.key === "Escape" && onClose();
     document.addEventListener("keydown", onKey);
+
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prev;
@@ -20,16 +21,11 @@ export default function WebinarModal({ webinar, onClose }) {
   if (!webinar) return null;
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center px-4"
-      role="dialog"
-      aria-modal="true"
-    >
-      <div
-        className="absolute inset-0 bg-black/40"
-        onClick={onClose}
-        aria-hidden
-      />
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/40" onClick={onClose} />
+
+      {/* Modal */}
       <motion.div
         initial={{ opacity: 0, y: 12, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -37,8 +33,13 @@ export default function WebinarModal({ webinar, onClose }) {
         transition={{ duration: 0.22 }}
         className="relative z-10 max-w-3xl w-full bg-white rounded-xl shadow-2xl overflow-hidden"
       >
+        {/* Header */}
         <div className="flex items-start gap-4 p-4 md:p-6 bg-gradient-to-r from-sky-50 to-white border-b">
-          <div className="w-28 h-20 rounded-md overflow-hidden flex-shrink-0 bg-slate-100">
+          <div
+            className="w-28 h-20 rounded-md overflow-hidden flex-shrink-0
+                bg-gradient-to-br from-indigo-100 to-violet-100
+                flex items-center justify-center"
+          >
             {webinar.image ? (
               <img
                 src={webinar.image}
@@ -46,9 +47,20 @@ export default function WebinarModal({ webinar, onClose }) {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-sm text-slate-400">
-                Image
-              </div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-8 h-8 text-indigo-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={1.8}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M8 7V3m8 4V3M4 11h16M5 21h14a1 1 0 001-1V7a1 1 0 00-1-1H5a1 1 0 00-1 1v13a1 1 0 001 1z"
+                />
+              </svg>
             )}
           </div>
 
@@ -56,51 +68,50 @@ export default function WebinarModal({ webinar, onClose }) {
             <h3 className="text-lg md:text-xl font-semibold text-slate-900">
               {webinar.title}
             </h3>
-            <div className="text-sm text-slate-500 mt-1">
-              {webinar.date} • {webinar.time} {webinar.venue ? `• ${webinar.venue}` : ""}
-            </div>
+            <p className="text-sm text-slate-500 mt-1">
+              {webinar.date} • {webinar.time}
+              {webinar.venue ? ` • ${webinar.venue}` : ""}
+            </p>
           </div>
 
           <button
-            aria-label="Close"
             onClick={onClose}
-            className="ml-2 text-slate-600 hover:text-slate-800"
+            className="text-slate-600 hover:text-slate-800"
+            aria-label="Close"
           >
             ✕
           </button>
         </div>
 
-        <div className="p-5 md:p-6">
-          <p className="text-sm text-slate-700 mb-3">
-            {/* optional short intro */}
-            {webinar.summary}
-          </p>
+        {/* Body */}
+        <div className="p-5 md:p-6 space-y-4">
+          {/* Short summary (optional) */}
+          {webinar.summary && (
+            <p className="text-sm text-slate-600">{webinar.summary}</p>
+          )}
 
-          <ul className="list-disc pl-5 space-y-2 text-sm text-slate-700 mb-4">
-            {(webinar.points || []).map((p, i) => (
-              <li key={i}>{p}</li>
-            ))}
-          </ul>
+          {/* ✅ Full description */}
+          {webinar.description && (
+            <div className="text-sm text-slate-700 leading-relaxed whitespace-pre-line">
+              {webinar.description}
+            </div>
+          )}
 
-          <div className="flex gap-3 justify-end">
-            {webinar.registration ? (
-              <a
-                href={webinar.registration}
-                target="_blank"
-                rel="noreferrer"
-                className="btn-primary"
-              >
-                Register
-              </a>
-            ) : (
+          {/* Actions */}
+          <div className="pt-4 flex justify-end gap-3">
+            {webinar.registrationLink && (
               <button
-                // onClick={() => alert("Registration link not provided yet.")}
-                className="btn-primary"
+                onClick={() => window.open(webinar.registrationLink, "_blank")}
+                className="px-5 py-2 rounded-md bg-indigo-600 text-white font-medium hover:bg-indigo-700"
               >
-                Register
+                More Details
               </button>
             )}
-            <button className="btn-secondary" onClick={onClose}>
+
+            <button
+              onClick={onClose}
+              className="px-5 py-2 rounded-md border border-slate-200 text-slate-700 hover:bg-slate-50"
+            >
               Close
             </button>
           </div>

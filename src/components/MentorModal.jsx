@@ -1,9 +1,11 @@
 // src/components/MentorModal.jsx
 import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 export default function MentorModal({ mentor, open, onClose }) {
   const closeBtnRef = useRef(null);
+   const navigate = useNavigate();
 
   useEffect(() => {
     if (!open) return;
@@ -129,16 +131,16 @@ export default function MentorModal({ mentor, open, onClose }) {
             )} */}
 
             <button
-              // onClick={() => alert("Contact flow coming soon")}
-              className="
-                ml-auto sm:ml-auto 
-                px-4 py-2 bg-indigo-600 text-white rounded-md 
-                hover:bg-indigo-700 shadow 
-                text-sm
-              "
-            >
-              Contact
-            </button>
+  onClick={() =>
+    navigate("/home", { state: { scrollTo: "contact" } })
+  }
+  className="
+    px-4 py-2 bg-indigo-600 text-white rounded-md
+    hover:bg-indigo-700 shadow text-sm
+  "
+>
+  Contact
+</button>
 
           </div>
 

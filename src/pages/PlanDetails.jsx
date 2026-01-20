@@ -12,18 +12,14 @@ import {
 
 const ALL_FEATURES = [
   "Webinars (live + recordings)",
-  "Starter Study Resources",
   "Adaptive Mock Tests",
   "Interview Practice",
   "Weekly Doubt Sessions",
-  "Weekly Alerts",
   "Personalized Weekly Alerts",
   "Dedicated Mentor (1:1)",
   "Profile Build-up Guidance",
   "Internship Opportunities",
   "Complete Solutions Library",
-  "Previous Year Question Papers",
-  "Community Access",
 ];
 
 const PLANS = [
@@ -49,7 +45,7 @@ const PLANS = [
       "Starter Study Resources",
       "Adaptive Mock Tests",
       "Interview Practice",
-      "Previous Year Question Papers"
+      "Previous Year Question Papers",
     ],
   },
   {
@@ -67,15 +63,9 @@ const PLANS = [
       "Profile Build-up Guidance",
       "Internship Opportunities",
       "Complete Solutions Library",
-      "Previous Year Question Papers",
-            "Weekly Alerts",
-                  "Community Access",
-
-
     ],
   },
 ];
-
 
 const PLAN_FULL_DETAILS = {
   free: {
@@ -116,10 +106,10 @@ const PLAN_FULL_DETAILS = {
       "Profile Build-up Guidance (CV, SOP, academic positioning).",
       "Internship Opportunities with application support.",
       "Complete Solutions Library with in-depth explanations.",
+      "Priority Mentor Support with monthly group doubt-clearing sessions. One-to-one Mentorship.",
     ],
   },
 };
-
 
 const VISUALS = {
   free: {
@@ -169,9 +159,13 @@ export default function PlanDetails() {
         {/* BACK */}
 
         {/* HEADER */}
-          <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-8" style={{ color: "var(--brand, #2563EB)" }}>
- Our Plans — Full Details        </h2>
-     
+        <h2
+          className="text-3xl md:text-4xl font-extrabold text-center mb-8"
+          style={{ color: "var(--brand, #2563EB)" }}
+        >
+          Our Plans — Full Details{" "}
+        </h2>
+
         <p className="text-slate-600 mb-10 text-center">
           Choose the plan that best fits your preparation journey.
         </p>
@@ -206,23 +200,24 @@ export default function PlanDetails() {
                     {plan.name}
                   </h3>
 
-                {plan.id === "premium" ? (
-  <div className="mt-1">
-    <div className="text-2xl font-bold text-slate-400">
-      ₹499
-    </div>
-    <div className="mt-1 inline-block px-3 py-1 rounded-full
+                  {plan.id === "premium" ? (
+                    <div className="mt-1">
+                      <div className="text-2xl font-bold text-slate-400">
+                        ₹499
+                      </div>
+                      <div
+                        className="mt-1 inline-block px-3 py-1 rounded-full
       bg-gradient-to-r from-purple-500 to-pink-500
-      text-white text-xs font-semibold shadow">
-      🎉 Registration FREE till March
-    </div>
-  </div>
-) : (
-  <p className={`mt-1 text-3xl font-bold ${visual.accent}`}>
-    {visual.price}
-  </p>
-)}
-
+      text-white text-xs font-semibold shadow"
+                      >
+                        🎉 Registration FREE till March
+                      </div>
+                    </div>
+                  ) : (
+                    <p className={`mt-1 text-3xl font-bold ${visual.accent}`}>
+                      {visual.price}
+                    </p>
+                  )}
 
                   <div className="mt-2 text-xs text-slate-500 space-y-0.5">
                     <div>
@@ -246,9 +241,7 @@ export default function PlanDetails() {
                       <li
                         key={feature}
                         className={`flex items-center gap-2 ${
-                          included
-                            ? "text-slate-700"
-                            : "text-slate-400 "
+                          included ? "text-slate-700" : "text-slate-400 "
                         }`}
                       >
                         {included ? (
@@ -267,80 +260,82 @@ export default function PlanDetails() {
         </div>
 
         {/* BRIEF DESCRIPTION */}
-       {/* ================= PLAN DETAILS (ALWAYS VISIBLE) ================= */}
-<div className="mt-20 space-y-16">
+        {/* ================= PLAN DETAILS (ALWAYS VISIBLE) ================= */}
+        <div className="mt-20 space-y-16">
+          {PLANS.map((plan) => {
+            const detail = PLAN_FULL_DETAILS[plan.id];
+            const visual = VISUALS[plan.id];
 
-  {PLANS.map((plan) => {
-    const detail = PLAN_FULL_DETAILS[plan.id];
-    const visual = VISUALS[plan.id];
+            return (
+              <section
+                key={plan.id}
+                className="max-w-5xl mx-auto bg-white border border-blue-100 rounded-2xl p-8 shadow-sm"
+              >
+                {/* Header */}
+                <div className="flex items-center gap-4 mb-4">
+                  <div
+                    className={`w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center ${visual.accent}`}
+                  >
+                    {visual.icon}
+                  </div>
 
-    return (
-      <section
-        key={plan.id}
-        className="max-w-5xl mx-auto bg-white border border-blue-100 rounded-2xl p-8 shadow-sm"
-      >
-        {/* Header */}
-        <div className="flex items-center gap-4 mb-4">
-          <div
-            className={`w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center ${visual.accent}`}
-          >
-            {visual.icon}
-          </div>
-
-          <div>
-            <h3 className="text-2xl font-bold text-slate-900">
-              {detail.title}
-            </h3>
-            <p className="text-sm text-slate-500">{detail.subtitle}</p>
-            {plan.id === "premium" ? (
-  <div className="mt-1">
-    <div className="text-2xl font-bold text-slate-400 ">
-      ₹499
-    </div>
-    <div className="mt-1 inline-block px-3 py-1 rounded-full
+                  <div>
+                    <h3 className="text-2xl font-bold text-slate-900">
+                      {detail.title}
+                    </h3>
+                    <p className="text-sm text-slate-500">{detail.subtitle}</p>
+                    {plan.id === "premium" ? (
+                      <div className="mt-1">
+                        <div className="text-2xl font-bold text-slate-400 ">
+                          ₹499
+                        </div>
+                        <div
+                          className="mt-1 inline-block px-3 py-1 rounded-full
       bg-gradient-to-r from-purple-500 to-pink-500
-      text-white text-xs font-semibold shadow">
-      🎉 Registration FREE till March
-    </div>
-  </div>
-) : (
-  <p className={`mt-1 text-3xl font-bold ${visual.accent}`}>
-    {visual.price}
-  </p>
-)}
+      text-white text-xs font-semibold shadow"
+                        >
+                          🎉 Registration FREE till March
+                        </div>
+                      </div>
+                    ) : (
+                      <p className={`mt-1 text-3xl font-bold ${visual.accent}`}>
+                        {visual.price}
+                      </p>
+                    )}
+                  </div>
+                </div>
 
-          </div>
+                {/* Points */}
+                <ul className="mt-6 space-y-3 text-sm text-slate-700">
+                  {detail.points.map((point, i) => (
+                    <li key={i} className="flex gap-3">
+                      <CheckCircle
+                        size={18}
+                        className="text-green-500 mt-0.5"
+                      />
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* CTA */}
+                <div className="mt-6">
+                  <button
+                    onClick={() =>
+                      window.open(
+                        "https://docs.google.com/forms/d/e/1FAIpQLSfPLACEHOLDER/viewform",
+                        "_blank"
+                      )
+                    }
+                    className="px-6 py-2.5 rounded-lg bg-indigo-600 text-white font-medium hover:bg-indigo-700"
+                  >
+                    Proceed with {detail.title}
+                  </button>
+                </div>
+              </section>
+            );
+          })}
         </div>
-
-        {/* Points */}
-        <ul className="mt-6 space-y-3 text-sm text-slate-700">
-          {detail.points.map((point, i) => (
-            <li key={i} className="flex gap-3">
-              <CheckCircle size={18} className="text-green-500 mt-0.5" />
-              <span>{point}</span>
-            </li>
-          ))}
-        </ul>
-
-        {/* CTA */}
-        <div className="mt-6">
-          <button
-            onClick={() =>
-              window.open(
-                "https://docs.google.com/forms/d/e/1FAIpQLSfPLACEHOLDER/viewform",
-                "_blank"
-              )
-            }
-            className="px-6 py-2.5 rounded-lg bg-indigo-600 text-white font-medium hover:bg-indigo-700"
-          >
-            Proceed with {detail.title}
-          </button>
-        </div>
-      </section>
-    );
-  })}
-</div>
-
       </section>
     </div>
   );

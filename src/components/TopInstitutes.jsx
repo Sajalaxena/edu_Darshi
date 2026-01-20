@@ -7,6 +7,12 @@ const LOGOS = [
   { name: "IIT Delhi", svg: "/IIT_Delhi.png" },
   { name: "IIT Jodhpur", svg: "/IIT_Jodhpur.png" },
   { name: "IIT Madras", svg: "/IIT_Madras.png" },
+  { name: "IISc Banglore", svg: "/IISc_Banglore.png" },
+  { name: "IISER Bhopal", svg: "/IISER_Bhopal.png" },
+  { name: "IISER Pune", svg: "/iiser-pune.png" },
+  { name: "IIT Kharagpur", svg: "/IIT-kharagpur.jpg" },
+  { name: "IIT BHU", svg: "/iit-bhu.png" },
+  { name: "TIFR", svg: "/tifr.png" },
 ];
 
 export default function TopInstitutesSlider() {
@@ -24,9 +30,10 @@ export default function TopInstitutesSlider() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12 lg:mb-16"
         >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-3"
-                        style={{ color: "var(--brand-deep)" }}
->
+          <h2
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-3"
+            style={{ color: "var(--brand-deep)" }}
+          >
             Our Mentors Come From
           </h2>
           <p className="text-slate-600 max-w-2xl mx-auto">
@@ -35,65 +42,42 @@ export default function TopInstitutesSlider() {
         </motion.div>
 
         {/* Desktop Grid View */}
-        <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 max-w-6xl mx-auto">
-          {LOGOS.map((item, i) => (
-            <motion.div
-              key={item.name}
-              initial={{ opacity: 0, scale: 0.8, y: 30 }}
-              whileInView={{ opacity: 1, scale: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.5, ease: "easeOut" }}
-              whileHover={{ y: -8, scale: 1.05 }}
-              className="group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="relative flex flex-col items-center">
-                <div className="w-full h-24 flex items-center justify-center mb-4">
-                  <img
-                    src={item.svg}
-                    alt={item.name}
-                    className="max-h-20 w-auto object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300"
-                    loading="lazy"
-                  />
-                </div>
-                <p className="text-base font-bold text-slate-800 text-center">{item.name}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        {/* Infinite Slider – All Screens */}
+        <div className="relative">
+          {/* Edge fade */}
+          <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white to-transparent z-10" />
+          <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-white to-transparent z-10" />
 
-        {/* Mobile Infinite Scroll */}
-        <div className="md:hidden relative">
-          <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-white to-transparent z-10" />
-          <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-white to-transparent z-10" />
-          
-          <div className="overflow-hidden py-4">
+          <div className="overflow-hidden py-6">
             <motion.div
-              className="flex gap-6"
+              className="flex gap-6 lg:gap-10"
               animate={{ x: ["0%", "-50%"] }}
               transition={{
-                duration: 25,
+                duration: 30, // slower for desktop
                 repeat: Infinity,
                 ease: "linear",
               }}
             >
               {[...LOGOS, ...LOGOS].map((item, i) => (
-                <div
+                <motion.div
                   key={i}
-                  className="flex-shrink-0 bg-white rounded-xl p-6 shadow-md w-[160px]"
+                  whileHover={{ scale: 1.08, y: -6 }}
+                  className="flex-shrink-0 bg-white rounded-2xl p-6 lg:p-8 shadow-lg w-[160px] lg:w-[220px]"
                 >
-                  <div className="flex flex-col items-center gap-3">
-                    <div className="h-16 flex items-center justify-center">
+                  <div className="flex flex-col items-center gap-4">
+                    <div className="h-16 lg:h-20 flex items-center justify-center">
                       <img
                         src={item.svg}
                         alt={item.name}
-                        className="max-h-16 w-auto object-contain"
+                        className="max-h-16 lg:max-h-20 w-auto object-contain transition-transform duration-300"
                         loading="lazy"
                       />
                     </div>
-                    <p className="text-sm font-semibold text-slate-700 text-center leading-tight">{item.name}</p>
+                    <p className="text-sm lg:text-base font-bold text-slate-800 text-center leading-tight">
+                      {item.name}
+                    </p>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </motion.div>
           </div>
