@@ -21,7 +21,7 @@ export default function AdminResearchNews() {
 
   const [form, setForm] = useState({
     title: "",
-    description: "",
+    summary: "",
     type: "research",
     source: "",
     externalLink: "",
@@ -58,7 +58,7 @@ export default function AdminResearchNews() {
       setEditingId(item._id);
       setForm({
         title: item.title || "",
-        description: item.description || "",
+        summary: item.summary || "",
         type: item.type || "research",
         source: item.source || "",
         externalLink: item.externalLink || "",
@@ -79,8 +79,8 @@ export default function AdminResearchNews() {
   const submitItem = async () => {
     if (loading) return;
 
-    if (!form.title || !form.description || !form.type || !form.publishedDate) {
-      toast.error("Title, description, type and published date are required");
+    if (!form.title || !form.summary || !form.type || !form.publishedDate) {
+      toast.error("Title, summary, type and published date are required");
       return;
     }
 
@@ -108,7 +108,7 @@ export default function AdminResearchNews() {
       setEditingId(null);
       setForm({
         title: "",
-        description: "",
+        summary: "",
         type: "research",
         source: "",
         externalLink: "",
@@ -188,9 +188,9 @@ export default function AdminResearchNews() {
           rows={3}
           disabled={loading}
           className="input md:col-span-2"
-          placeholder="Description"
-          value={form.description}
-          onChange={(e) => setForm({ ...form, description: e.target.value })}
+          placeholder="summary"
+          value={form.summary}
+          onChange={(e) => setForm({ ...form, summary: e.target.value })}
         />
 
         <input
