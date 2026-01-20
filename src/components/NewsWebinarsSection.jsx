@@ -134,14 +134,15 @@ export default function NewsWebinarsCompact() {
                       <span className="text-emerald-600 font-medium">
                         Starts:
                       </span>
-                      <span className="text-slate-700">{n.source || "—"}</span>
+                      <span className="text-slate-600">{n.publishedDate}</span>
 
                       <span className="text-slate-400">•</span>
 
                       <span className="text-sky-600 font-medium">
                         Deadline:
                       </span>
-                      <span className="text-slate-600">{n.publishedDate}</span>
+                                            <span className="text-slate-700">{n.source || "—"}</span>
+
                     </span>
                   }
                   onClick={() =>
