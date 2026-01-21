@@ -323,7 +323,7 @@ export default function PlanDetails() {
                   <button
                     onClick={() =>
                       window.open(
-                        "https://docs.google.com/forms/d/e/1FAIpQLSfPLACEHOLDER/viewform",
+                        "https://forms.gle/j79LRuzWo5q7CxJL8",
                         "_blank"
                       )
                     }
