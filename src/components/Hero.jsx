@@ -25,26 +25,26 @@ const IMAGES = [hero1, hero2, hero3];
 // Counter animation hook
 function useCounter(end, duration = 2000) {
   const [count, setCount] = useState(0);
-  
+
   useEffect(() => {
     let startTime;
     let animationFrame;
-    
+
     const animate = (currentTime) => {
       if (!startTime) startTime = currentTime;
       const progress = Math.min((currentTime - startTime) / duration, 1);
-      
+
       setCount(Math.floor(progress * end));
-      
+
       if (progress < 1) {
         animationFrame = requestAnimationFrame(animate);
       }
     };
-    
+
     animationFrame = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animationFrame);
   }, [end, duration]);
-  
+
   return count;
 }
 
@@ -57,83 +57,92 @@ export default function Hero() {
   const [quoteIndex, setQuoteIndex] = useState(0);
 
   // Counter values
-  const mentorCount = useCounter(10, 2000);
+  const mentorCount = useCounter(20, 2000);
   const questionCount = useCounter(100, 2500);
-  const studentCount = useCounter(15, 2200);
+  const studentCount = useCounter(50, 2200);
 
   useEffect(() => {
     setQuoteIndex(Math.floor(Math.random() * quotes.length));
     const t = setInterval(() => setIndex((i) => (i + 1) % IMAGES.length), 4000);
     return () => clearInterval(t);
   }, []);
- 
-  return ( 
+
+  return (
     <section className="relative py-12 lg:py-20 overflow-hidden">
       <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }} 
-        > 
-          <h1
-            className="text-4xl md:text-5xl font-extrabold leading-tight"
-            style={{ color: "var(--brand-deep)" }}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
           >
-            Empowering Students Through Mentorship
-          </h1>
-          <p className="mt-4 text-lg text-slate-600 dark:text-slate-300 max-w-xl">
-            Get personalized guidance, access previous year papers, and learn
-            from top mentors.
-          </p>
-          
-          {/* Stats Counters */}
-          <div className="mt-8 grid grid-cols-3 gap-6 max-w-2xl">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-              className="text-center"
+            <h1
+              className="text-4xl md:text-5xl font-extrabold leading-tight"
+              style={{ color: "var(--brand-deep)" }}
             >
-              <div className="text-3xl md:text-4xl font-bold mb-1" style={{ color: "var(--brand-deep)" }}>
-                {mentorCount}+
-              </div>
-              <div className="text-sm text-slate-600 dark:text-slate-400">
-                Expert Mentors
-              </div>
-            </motion.div>
+              Empowering Students Through Mentorship
+            </h1>
+            <p className="mt-4 text-lg text-slate-600 dark:text-slate-300 max-w-xl">
+              Get personalized guidance, access previous year papers, and learn
+              from top mentors.
+            </p>
 
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
-              className="text-center"
-            >
-              <div className="text-3xl md:text-4xl font-bold mb-1" style={{ color: "var(--brand-deep)" }}>
-                {questionCount}+
-              </div>
-              <div className="text-sm text-slate-600 dark:text-slate-400">
-                Questions Bank
-              </div>
-            </motion.div>
+            {/* Stats Counters */}
+            <div className="mt-8 grid grid-cols-3 gap-6 max-w-2xl">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
+                className="text-center"
+              >
+                <div
+                  className="text-3xl md:text-4xl font-bold mb-1"
+                  style={{ color: "var(--brand-deep)" }}
+                >
+                  {mentorCount}+
+                </div>
+                <div className="text-sm text-slate-600 dark:text-slate-400">
+                  Expert Mentors
+                </div>
+              </motion.div>
 
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.5 }}
-              className="text-center"
-            >
-              <div className="text-3xl md:text-4xl font-bold mb-1" style={{ color: "var(--brand-deep)" }}>
-                {studentCount}+
-              </div>
-              <div className="text-sm text-slate-600 dark:text-slate-400">
-                Students Helped
-              </div>
-            </motion.div>
-          </div>
-          
-          <QuestionOfDayCard />  
-        </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+                className="text-center"
+              >
+                <div
+                  className="text-3xl md:text-4xl font-bold mb-1"
+                  style={{ color: "var(--brand-deep)" }}
+                >
+                  {questionCount}+
+                </div>
+                <div className="text-sm text-slate-600 dark:text-slate-400">
+                  Questions Bank
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.5 }}
+                className="text-center"
+              >
+                <div
+                  className="text-3xl md:text-4xl font-bold mb-1"
+                  style={{ color: "var(--brand-deep)" }}
+                >
+                  {studentCount}+
+                </div>
+                <div className="text-sm text-slate-600 dark:text-slate-400">
+                  Students Helped
+                </div>
+              </motion.div>
+            </div>
+
+            <QuestionOfDayCard />
+          </motion.div>
 
           {/* RIGHT: Premium Image Slider */}
           <motion.div
@@ -145,24 +154,21 @@ export default function Hero() {
             {/* Main Slider Container */}
             <div className="relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] bg-transparent p-3">
               <div className="relative rounded-2xl overflow-hidden h-full">
-            <AnimatePresence>
-  <motion.img
-    key={index}
-    src={IMAGES[index]}
-    alt={`Hero ${index + 1}`}
-    initial={{ x: "100%" }}
-    animate={{ x: "0%" }}
-    exit={{ x: "-100%" }}
-    transition={{
-      duration: 0.6,
-      ease: "linear",
-    }}
-    className="absolute inset-0 w-full h-full object-cover"
-  />
-</AnimatePresence>
-
-
-
+                <AnimatePresence>
+                  <motion.img
+                    key={index}
+                    src={IMAGES[index]}
+                    alt={`Hero ${index + 1}`}
+                    initial={{ x: "100%" }}
+                    animate={{ x: "0%" }}
+                    exit={{ x: "-100%" }}
+                    transition={{
+                      duration: 0.6,
+                      ease: "linear",
+                    }}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                </AnimatePresence>
               </div>
             </div>
 

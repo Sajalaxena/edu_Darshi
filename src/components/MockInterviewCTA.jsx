@@ -4,53 +4,63 @@ export default function MockInterviewCTA() {
   const googleFormLink = "https://forms.gle/YOUR_GOOGLE_FORM_LINK";
 
   return (
-    <section className="relative py-20 px-6 overflow-hidden">
-      {/* Background Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-r from-indigo-700 via-purple-600 to-blue-600"></div>
+    <section className="py-16">
+      <div className="container mx-auto px-6 sm:px-8 lg:px-12">
+        <div className="relative rounded-3xl overflow-hidden">
+          {/* Background Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-r from-indigo-700 via-purple-600 to-blue-600"></div>
 
-      {/* Animated Glow */}
-      <div className="absolute -top-20 -left-20 w-72 h-72 bg-pink-400 rounded-full blur-[120px] opacity-30 animate-pulse"></div>
-      <div className="absolute -bottom-20 -right-20 w-72 h-72 bg-cyan-400 rounded-full blur-[120px] opacity-30 animate-pulse"></div>
+          {/* Glow Effects */}
+          <div className="absolute -top-20 -left-20 w-72 h-72 bg-pink-400 rounded-full blur-[120px] opacity-30"></div>
+          <div className="absolute -bottom-20 -right-20 w-72 h-72 bg-cyan-400 rounded-full blur-[120px] opacity-30"></div>
 
-      <div className="relative max-w-6xl mx-auto text-center text-white">
-        {/* Blinking Badge */}
-        <div className="inline-block mb-6">
-          <span
-            className="px-6 py-2 rounded-full text-sm font-bold tracking-wide
-                           bg-white/20 backdrop-blur-md
-                           border border-white/40
-                           animate-pulse"
-          >
-            🎯 MOCK INTERVIEW PROGRAM
-          </span>
-        </div>
+          <div className="relative text-center text-white px-6 py-14">
+            {/* Badge */}
+            <div className="inline-block mb-6">
+              <span
+                className="px-5 py-2 rounded-full text-xs font-semibold tracking-wide
+                               bg-gradient-to-r from-pink-500 to-yellow-400
+                               border border-white/30"
+              >
+                🎯 MOCK INTERVIEW PROGRAM
+              </span>
+            </div>
 
-        {/* Main Heading */}
-        <h2 className="text-3xl md:text-5xl font-bold leading-tight">
-          Preparing for Ph.D. Admission, Assistant Professor, TGT / PGT or
-          Industry Jobs?
-        </h2>
+            {/* Heading */}
+            <h2 className="text-2xl md:text-4xl font-bold leading-tight max-w-4xl mx-auto">
+              Preparing for Ph.D. Admission, Assistant Professor, TGT / PGT or
+              Industry Jobs?
+            </h2>
 
-        {/* Sub Text */}
-        <p className="mt-6 text-lg md:text-xl text-indigo-100 max-w-4xl mx-auto leading-relaxed">
-          IITs / IISERs / TIFR / IISc / Central Universities • HPSC / UPHESC /
-          MPPSC • Boost your selection chances with expert mock interviews.
-        </p>
+            {/* Sub Text */}
+            <p className="mt-5 text-base md:text-lg text-indigo-100 max-w-3xl mx-auto">
+              IITs / IISERs / TIFR / IISc / Central Universities • HPSC / UPHESC
+              / MPPSC • Boost your selection chances with expert mock
+              interviews.
+            </p>
 
-        {/* CTA Button */}
-        <div className="mt-10">
-          <button
-            onClick={() => window.open(googleFormLink, "_blank")}
-            className="px-10 py-4 rounded-full text-lg font-bold
-                       bg-gradient-to-r from-pink-500 to-yellow-400
-                       text-white
-                       shadow-2xl shadow-pink-500/40
-                       hover:scale-110
-                       transition-all duration-300
-                       animate-bounce"
-          >
-            🚀 Register Now
-          </button>
+            {/* Button */}
+            <div className="mt-8">
+              <button
+                onClick={() => window.open(googleFormLink, "_blank")}
+                className="group relative inline-flex items-center justify-center
+                           px-8 py-3 rounded-full text-base font-semibold
+                           bg-gradient-to-r from-pink-500 via-orange-500 to-yellow-400
+                           text-white shadow-xl shadow-orange-500/30
+                           hover:scale-105 transition-all duration-300 overflow-hidden"
+              >
+                🚀 Register Now
+                {/* Shine animation */}
+                <span
+                  className="absolute inset-0
+                                 bg-gradient-to-r from-transparent via-white/30 to-transparent
+                                 translate-x-[-100%]
+                                 group-hover:translate-x-[100%]
+                                 transition-transform duration-700 ease-out"
+                />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
