@@ -141,13 +141,10 @@ export default function NewsWebinarsCompact() {
                       <span className="text-sky-600 font-medium">
                         Deadline:
                       </span>
-                                            <span className="text-slate-700">{n.source || "—"}</span>
-
+                      <span className="text-slate-700">{n.source || "—"}</span>
                     </span>
                   }
-                  onClick={() =>
-                    n.externalLink && window.open(n.externalLink, "_blank")
-                  }
+                  onClick={() => setOpen({ ...n, type: "news" })}
                 />
               ))}
             </div>
@@ -198,7 +195,7 @@ export default function NewsWebinarsCompact() {
       </section>
 
       <AnimatePresence>
-        {open && <WebinarModal webinar={open} onClose={() => setOpen(null)} />}
+        {open && <WebinarModal data={open} onClose={() => setOpen(null)} />}
       </AnimatePresence>
     </>
   );
