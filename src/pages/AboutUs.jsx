@@ -15,6 +15,18 @@ export default function AboutUs() {
         >
           About EduDarshi
         </h1>
+        <div className="w-full max-w-4xl mx-auto mb-8">
+          <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-lg">
+            <iframe
+              src="https://www.youtube.com/embed/KpnyhOJNyAI"
+              title="EduDarshi Platform Overview"
+              className="absolute inset-0 w-full h-full"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+        </div>
 
         <p className="text-center text-slate-600 mb-12">
           Academic mentorship with clarity, rigor, and purpose.
@@ -22,9 +34,7 @@ export default function AboutUs() {
 
         {/* Section 1 */}
         <div className="bg-white/90 backdrop-blur rounded-2xl p-8 shadow-sm mb-10">
-          <h2 className="text-2xl font-bold text-slate-900 mb-4">
-            Who We Are
-          </h2>
+          <h2 className="text-2xl font-bold text-slate-900 mb-4">Who We Are</h2>
 
           <p className="text-slate-700 leading-relaxed">
             We are a dedicated team of experienced faculty members, postdoctoral
@@ -42,9 +52,7 @@ export default function AboutUs() {
 
         {/* Section 2 */}
         <div className="bg-white/90 backdrop-blur rounded-2xl p-8 shadow-sm mb-10">
-          <h2 className="text-2xl font-bold text-slate-900 mb-4">
-            Our Focus
-          </h2>
+          <h2 className="text-2xl font-bold text-slate-900 mb-4">Our Focus</h2>
 
           <p className="text-slate-700 leading-relaxed">
             Our focus is clear and uncompromising.
@@ -55,11 +63,10 @@ export default function AboutUs() {
             IITs, NITs, IISERs, IISc, TIFR, and other leading research centers.
             <br />
             <br />
-            EduDarshi follows a{" "}
-            <strong>100% academic-focused approach</strong>. We do not offer
-            shortcuts or generic coaching. Instead, we provide structured
-            guidance, rigorous feedback, and comprehensive academic support
-            throughout the entire PhD admission journey—from application
+            EduDarshi follows a <strong>100% academic-focused approach</strong>.
+            We do not offer shortcuts or generic coaching. Instead, we provide
+            structured guidance, rigorous feedback, and comprehensive academic
+            support throughout the entire PhD admission journey—from application
             preparation to interview readiness.
           </p>
         </div>
