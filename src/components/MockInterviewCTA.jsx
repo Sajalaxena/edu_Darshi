@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function MockInterviewCTA() {
-  const googleFormLink = "https://forms.gle/YOUR_GOOGLE_FORM_LINK";
+  const googleFormLink = "https://forms.office.com/r/U24iyxuCLD";
 
   return (
     <section className="py-16">
