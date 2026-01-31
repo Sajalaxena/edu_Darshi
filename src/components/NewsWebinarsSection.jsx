@@ -106,88 +106,146 @@ export default function NewsWebinarsCompact() {
 
   return (
     <>
-      <section className="container mx-auto px-4 sm:px-6 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* NEWS */}
-          <div className="rounded-xl overflow-hidden bg-white border border-gray-200 shadow-sm">
-            <div className="px-5 py-4 bg-gradient-to-r from-blue-50 to-white border-b">
+      <section className="container mx-auto px-4 sm:px-6 py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* ================= NEWS BOX ================= */}
+          <div
+            className="rounded-2xl overflow-hidden 
+                    bg-gradient-to-br from-blue-50 via-white to-indigo-50
+                    border border-blue-200
+                    shadow-lg shadow-blue-100/50"
+          >
+            {/* Header */}
+            <div className="px-6 py-5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
               <div className="flex justify-between items-center">
-                <h3 className="text-lg font-semibold text-indigo-700">
+                <h3 className="text-lg md:text-xl font-semibold tracking-wide">
                   Competitive Exams, Postdocs & Jobs Updates
                 </h3>
                 <Link
                   to="/news"
-                  className="text-sm text-blue-600 font-medium hover:underline"
+                  className="text-sm font-medium bg-white/20 px-4 py-1.5 rounded-full hover:bg-white/30 transition"
                 >
-                  View All
+                  View{" "}
                 </Link>
               </div>
             </div>
-            <div className="p-3 space-y-2 max-h-[360px] overflow-y-auto no-scrollbar">
+
+            {/* Rows */}
+            <div className="p-4 space-y-3 max-h-[380px] overflow-y-auto no-scrollbar">
               {news.slice(0, 4).map((n) => (
-                <CompactRow
+                <div
                   key={n._id}
-                  type="news"
-                  title={n.title}
-                  meta={
-                    <span className="flex flex-wrap items-center gap-2 text-sm">
-                      <span className="text-emerald-600 font-medium">
-                        Starts:
-                      </span>
-                      <span className="text-slate-600">{n.publishedDate}</span>
-
-                      <span className="text-slate-400">•</span>
-
-                      <span className="text-sky-600 font-medium">
-                        Deadline:
-                      </span>
-                      <span className="text-slate-700">{n.source || "—"}</span>
-                    </span>
-                  }
                   onClick={() => setOpen({ ...n, type: "news" })}
-                />
+                  className="group p-4 rounded-xl bg-white 
+                          border border-blue-100
+                          hover:border-blue-400
+                          hover:shadow-md
+                          transition cursor-pointer"
+                >
+                  <div className="flex items-start gap-3">
+                    <div
+                      className="w-10 h-10 flex items-center justify-center 
+                              bg-blue-100 text-blue-700 text-xs font-bold rounded-md"
+                    >
+                      NEWS
+                    </div>
+
+                    <div className="flex-1">
+                      <h4 className="text-sm font-semibold text-gray-900 group-hover:text-blue-700 transition">
+                        {n.title}
+                      </h4>
+
+                      <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
+                        <span className="text-emerald-600 font-medium">
+                          Starts:
+                        </span>
+                        <span className="text-gray-600">{n.publishedDate}</span>
+
+                        <span className="text-gray-400">•</span>
+
+                        <span className="text-sky-600 font-medium">
+                          Deadline:
+                        </span>
+                        <span className="text-gray-700">{n.source || "—"}</span>
+                      </div>
+                    </div>
+
+                    <span className="text-gray-400 group-hover:text-blue-600 transition">
+                      ›
+                    </span>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
 
-          {/* WEBINARS */}
-          <div className="rounded-xl overflow-hidden bg-white border border-gray-200 shadow-sm">
-            <div className="px-5 py-4 bg-gradient-to-r from-indigo-50 to-white border-b">
+          {/* ================= WEBINAR BOX ================= */}
+          <div
+            className="rounded-2xl overflow-hidden 
+                    bg-gradient-to-br from-indigo-50 via-white to-purple-50
+                    border border-indigo-200
+                    shadow-lg shadow-indigo-100/50"
+          >
+            {/* Header */}
+            <div className="px-6 py-5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
               <div className="flex justify-between items-center">
-                <h3 className="text-lg font-semibold text-indigo-700">
+                <h3 className="text-lg md:text-xl font-semibold tracking-wide">
                   Conferences, Seminars & Workshops Updates
                 </h3>
                 <Link
                   to="/webinars"
-                  className="text-sm text-indigo-600 font-medium hover:underline"
+                  className="text-sm font-medium bg-white/20 px-4 py-1.5 rounded-full hover:bg-white/30 transition"
                 >
-                  View All
+                  View{" "}
                 </Link>
               </div>
             </div>
-            <div className="p-3 space-y-2 max-h-[360px] overflow-y-auto no-scrollbar">
+
+            {/* Rows */}
+            <div className="p-4 space-y-3 max-h-[380px] overflow-y-auto no-scrollbar">
               {webinars.slice(0, 4).map((w) => (
-                <CompactRow
+                <div
                   key={w._id}
-                  type="webinar"
-                  title={w.title}
-                  meta={
-                    <span className="flex flex-wrap items-center gap-2 text-sm">
-                      <span className="text-emerald-600 font-medium">
-                        Starts:
-                      </span>
-                      <span className="text-slate-700">{w.date}</span>
-
-                      <span className="text-slate-400">•</span>
-
-                      <span className="text-rose-600 font-medium">
-                        Deadline:
-                      </span>
-                      <span className="text-slate-700">{w.time}</span>
-                    </span>
-                  }
                   onClick={() => setOpen(w)}
-                />
+                  className="group p-4 rounded-xl bg-white 
+                          border border-indigo-100
+                          hover:border-indigo-400
+                          hover:shadow-md
+                          transition cursor-pointer"
+                >
+                  <div className="flex items-start gap-3">
+                    <div
+                      className="w-10 h-10 flex items-center justify-center 
+                              bg-indigo-100 text-indigo-700 text-xs font-bold rounded-md"
+                    >
+                      LIVE
+                    </div>
+
+                    <div className="flex-1">
+                      <h4 className="text-sm font-semibold text-gray-900 group-hover:text-indigo-700 transition">
+                        {w.title}
+                      </h4>
+
+                      <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
+                        <span className="text-emerald-600 font-medium">
+                          Starts:
+                        </span>
+                        <span className="text-gray-700">{w.date}</span>
+
+                        <span className="text-gray-400">•</span>
+
+                        <span className="text-rose-600 font-medium">
+                          Deadline:
+                        </span>
+                        <span className="text-gray-700">{w.time}</span>
+                      </div>
+                    </div>
+
+                    <span className="text-gray-400 group-hover:text-indigo-600 transition">
+                      ›
+                    </span>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
