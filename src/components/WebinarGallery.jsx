@@ -188,7 +188,7 @@ export default function AttractiveWebinarGallery() {
           className="text-3xl md:text-4xl font-extrabold text-center mb-8"
           style={{ color: "var(--brand, #2563EB)" }}
         >
-          Webinar Gallery
+          Talks Delieverd By Our Mentors{" "}
         </h2>
 
         <p className="text-center text-slate-600 max-w-2xl mx-auto mb-10">

@@ -123,9 +123,16 @@ export default function NewsWebinarsCompact() {
                 </h3>
                 <Link
                   to="/news"
-                  className="text-sm font-medium bg-white/20 px-4 py-1.5 rounded-full hover:bg-white/30 transition"
+                  className="inline-flex items-center justify-center
+             px-5 py-2
+             text-sm font-semibold
+             bg-white text-blue-700
+             rounded-full
+             hover:bg-blue-50
+             transition
+             shadow-sm whitespace-nowrap"
                 >
-                  View{" "}
+                  View All →
                 </Link>
               </div>
             </div>
@@ -147,7 +154,7 @@ export default function NewsWebinarsCompact() {
                       className="w-10 h-10 flex items-center justify-center 
                               bg-blue-100 text-blue-700 text-xs font-bold rounded-md"
                     >
-                      NEWS
+                      Jobs
                     </div>
 
                     <div className="flex-1">
@@ -193,10 +200,17 @@ export default function NewsWebinarsCompact() {
                   Conferences, Seminars & Workshops Updates
                 </h3>
                 <Link
-                  to="/webinars"
-                  className="text-sm font-medium bg-white/20 px-4 py-1.5 rounded-full hover:bg-white/30 transition"
+                  to="/news"
+                  className="inline-flex items-center justify-center
+             px-5 py-2
+             text-sm font-semibold
+             bg-white text-blue-700
+             rounded-full
+             hover:bg-blue-50
+             transition
+             shadow-sm whitespace-nowrap"
                 >
-                  View{" "}
+                  View All →
                 </Link>
               </div>
             </div>

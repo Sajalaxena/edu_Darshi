@@ -25,6 +25,7 @@ import PreviousPapersPage from "./pages/PreviousPaperPage";
 import ScrollToTop from "./components/ScrollToTop";
 import AboutUs from "./pages/AboutUs";
 import { Toaster } from "react-hot-toast";
+import ContactSectionModern from "./components/ContactSection";
 
 export default function App() {
   return (
@@ -69,6 +70,7 @@ export default function App() {
               <Route path="test-series" element={<TestSeriesComingSoon />} />
               <Route path="previous-papers" element={<PreviousPapersPage />} />
               <Route path="about-us" element={<AboutUs />} />
+              <Route path="contact" element={<ContactSectionModern />} />
             </Route>
           </Routes>
         </BrowserRouter>

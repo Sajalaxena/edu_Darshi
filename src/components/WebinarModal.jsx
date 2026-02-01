@@ -78,17 +78,6 @@ export default function WebinarModal({ data, onClose }) {
               {/* Buttons Section */}
               <div className="flex gap-3 flex-wrap">
                 {/* Register Button */}
-                {data.registrationLink && (
-                  <button
-                    onClick={() => window.open(data.registrationLink, "_blank")}
-                    className="px-6 py-3 rounded-full text-sm font-bold text-white
-                    bg-gradient-to-r from-indigo-600 to-purple-600
-                    shadow-xl shadow-indigo-500/30
-                    hover:scale-[1.05] transition-transform"
-                  >
-                    Register Now
-                  </button>
-                )}
 
                 {/* More Details Button */}
                 {data.moreLink && (
@@ -132,6 +121,17 @@ export default function WebinarModal({ data, onClose }) {
             </div>
 
             <div className="pt-4 flex justify-end border-t border-slate-200">
+              {data.registrationLink && (
+                <button
+                  onClick={() => window.open(data.registrationLink, "_blank")}
+                  className="px-6 py-3 rounded-full text-sm font-bold text-white
+                    bg-gradient-to-r from-indigo-600 to-purple-600
+                    shadow-xl shadow-indigo-500/30
+                    hover:scale-[1.05] transition-transform"
+                >
+                  More Details{" "}
+                </button>
+              )}
               <button
                 onClick={onClose}
                 className="px-6 py-3 rounded-xl 

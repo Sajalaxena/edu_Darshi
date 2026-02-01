@@ -16,13 +16,13 @@ const STUDENT_DATA = [
     brief: "Scored 680/720. Focused on concept clarity & timed practice.",
     image: "student1.jpg",
   },
-  {
-    id: "s2",
-    name: "Rohit Verma",
-    exam: "JEE Advanced - 2025 (Rank 1200)",
-    brief: "Strong problem-solving routine, weekly mock evaluation.",
-    image: "student2.jpg",
-  },
+  // {
+  //   id: "s2",
+  //   name: "Rohit Verma",
+  //   exam: "JEE Advanced - 2025 (Rank 1200)",
+  //   brief: "Strong problem-solving routine, weekly mock evaluation.",
+  //   image: "student2.jpg",
+  // },
   {
     id: "s3",
     name: "Priya N",
@@ -35,7 +35,7 @@ const STUDENT_DATA = [
   {
     id: "s4",
     name: "Vikram Joshi",
-    exam: "JEE Main - 2025",
+    exam: "IIT-JAM Mathematics | PhD AspirantCSIR-NET/JRF Qualified | Research Aspirant",
     brief: "Consistent daily targets; improved speed & accuracy.",
     image: "student4.jpg",
   },
@@ -81,11 +81,11 @@ export default function RisingStars({ imageMap = {} }) {
             <div className="text-sm text-slate-500">{s.exam}</div>
             <p className="text-sm text-slate-700 mt-3">{s.brief}</p>
 
-            <div className="mt-4">
+            {/* <div className="mt-4">
               <Link to="#" className="text-sm text-blue-600 hover:underline">
                 Read full story →
               </Link>
-            </div>
+            </div> */}
           </article>
         ))}
       </div>

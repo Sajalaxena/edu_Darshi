@@ -9,8 +9,7 @@ export default function TestSeriesComingSoon() {
       className="relative min-h-[80vh] flex items-center overflow-hidden
       bg-gradient-to-b from-blue-50 via-indigo-50 to-white"
     >
-
-                                <MathematicalBackground />    
+      <MathematicalBackground />
 
       {/* Background glow */}
       <div className="absolute inset-0 pointer-events-none">
@@ -80,7 +79,7 @@ export default function TestSeriesComingSoon() {
           className="mt-14"
         >
           <a
-            href="#contact"
+            href="/contact"
             className="inline-block px-8 py-3 rounded-xl text-white font-semibold
             bg-gradient-to-r from-blue-600 to-indigo-600
             shadow-lg hover:shadow-xl hover:scale-[1.03] transition"

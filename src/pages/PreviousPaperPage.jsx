@@ -68,7 +68,7 @@ export default function PreviousPapersPage() {
 
   return (
     <section className="min-h-screen bg-slate-50">
-                                      <MathematicalBackground />    
+      <MathematicalBackground />
 
       <div className="container mx-auto px-6 py-16">
         {/* HEADER */}
@@ -134,22 +134,22 @@ export default function PreviousPapersPage() {
               className="bg-white rounded-2xl border border-slate-200
                          shadow-sm hover:shadow-md transition p-6"
             >
-              <div className="text-sm text-slate-500">
+              <h3 className="  text-lg font-bold">
                 {p.exam} · {p.subject || "General"}
-              </div>
-
-              <h3 className="mt-1 text-lg font-semibold">
-                {p.year} Question Paper
               </h3>
 
+              <div className="mt-1 text-sm text-slate-500">
+                {p.year} Question Paper
+              </div>
+
               {/* BUTTONS */}
-<div className="mt-6 flex gap-3">
-  {/* PDF BUTTON – GRADIENT RED */}
-  <a
-    href={normalizeDriveLink(p.paperPdfLink)}
-    target="_blank"
-    rel="noreferrer"
-    className="
+              <div className="mt-6 flex gap-3">
+                {/* PDF BUTTON – GRADIENT RED */}
+                <a
+                  href={normalizeDriveLink(p.paperPdfLink)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="
       flex-1 h-11 flex items-center justify-center gap-2
       rounded-xl
       bg-gradient-to-r from-rose-500 via-red-600 to-rose-600
@@ -161,17 +161,17 @@ export default function PreviousPapersPage() {
       active:scale-[0.97]
       transition-all duration-200
     "
-  >
-    📄 Paper PDF
-  </a>
+                >
+                  📄 Paper PDF
+                </a>
 
-  {/* SOLUTION BUTTON – GRADIENT GREEN */}
-  {p.solutionYoutubeLink && (
-    <a
-      href={p.solutionYoutubeLink}
-      target="_blank"
-      rel="noreferrer"
-      className="
+                {/* SOLUTION BUTTON – GRADIENT GREEN */}
+                {p.solutionYoutubeLink && (
+                  <a
+                    href={p.solutionYoutubeLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="
         w-[130px] h-11 flex items-center justify-center gap-2
         rounded-xl
         bg-gradient-to-r from-emerald-500 via-green-600 to-emerald-600
@@ -183,13 +183,11 @@ export default function PreviousPapersPage() {
         active:scale-[0.97]
         transition-all duration-200
       "
-    >
-      ▶ Solution
-    </a>
-  )}
-</div>
-
-
+                  >
+                    ▶ Solution
+                  </a>
+                )}
+              </div>
             </div>
           ))}
         </div>

@@ -8,21 +8,24 @@ const reviews = [
     role: "IIT-JAM Mathematics | PhD Aspirant",
     text: "I prepared for IIT-JAM Mathematics with EduDarshi mentors. The problem-solving approach, weekly mock analysis, and clear strategy helped me improve accuracy and speed.",
     rating: 5,
-    image: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+    image:
+      "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
   },
   {
     name: "Riya Patel",
     role: "CSIR-NET/JRF Qualified | Research Aspirant",
     text: "The NET/JRF preparation was very structured. Concept-wise tests, doubt-focused sessions, and mentor feedback on answer presentation made a big difference.",
     rating: 5,
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOOOp7Ae6JdqU8o-6BLyjvrep4SEd8mfKx2w&s",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOOOp7Ae6JdqU8o-6BLyjvrep4SEd8mfKx2w&s",
   },
   {
     name: "Sneha Kulkarni",
     role: "PhD Admission (India & Abroad) | Postdoc Aspirant",
     text: "EduDarshi mentors helped me with SOP writing, CV structuring, and interview preparation for PhD admissions. The one-to-one feedback was extremely valuable.",
     rating: 5,
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOOOp7Ae6JdqU8o-6BLyjvrep4SEd8mfKx2w&s",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOOOp7Ae6JdqU8o-6BLyjvrep4SEd8mfKx2w&s",
   },
 ];
 
@@ -36,9 +39,10 @@ export default function ReviewsSection() {
           viewport={{ once: true }}
           className="text-center mb-12 lg:mb-16"
         >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-3"
-                        style={{ color: "var(--brand-deep)" }}
->
+          <h2
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-3"
+            style={{ color: "var(--brand-deep)" }}
+          >
             Student Reviews
           </h2>
           <p className="text-slate-600 max-w-2xl mx-auto">
@@ -81,8 +85,12 @@ export default function ReviewsSection() {
                 </motion.div>
 
                 <div>
-                  <h3 className="font-bold text-slate-900 text-lg">{review.name}</h3>
-                  <p className="text-sm text-slate-600 leading-snug">{review.role}</p>
+                  <h3 className="font-bold text-slate-900 text-lg">
+                    {review.name}
+                  </h3>
+                  <p className="text-sm text-slate-600 leading-snug">
+                    {review.role}
+                  </p>
                 </div>
               </div>
 
@@ -114,4 +122,3 @@ export default function ReviewsSection() {
     </section>
   );
 }
-             
