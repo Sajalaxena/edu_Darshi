@@ -40,16 +40,14 @@ export default function QuestionOfDayCard() {
         {/* Button */}
         <div className="mt-4">
           <button
-            onClick={() => {
-              onOpen;
-            }}
+            onClick={onOpen}
             className="px-6 py-2 rounded-full text-lg font-bold
-                       bg-gradient-to-r from-pink-500 to-yellow-400
-                       text-white
-                       shadow-2xl shadow-pink-500/40
-                       hover:scale-110
-                       transition-all duration-300
-                       animate-bounce"
+             bg-gradient-to-r from-pink-500 to-yellow-400
+             text-white
+             shadow-2xl shadow-pink-500/40
+             hover:scale-110
+             transition-all duration-300
+             animate-bounce"
           >
             🚀 Question of the Day
           </button>

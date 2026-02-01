@@ -18,7 +18,7 @@ export default function MockInterviewCTA() {
             {/* Badge */}
             <div className="inline-block mb-6">
               <span
-                className="px-5 py-2 rounded-full text-xs font-semibold tracking-wide
+                className="px-5 py-2 rounded-full text-lg font-semibold tracking-wide
                                bg-gradient-to-r from-pink-500 to-yellow-400
                                border border-white/30"
               >
