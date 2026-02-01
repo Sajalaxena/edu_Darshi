@@ -6,7 +6,7 @@ import { Star, Crown, RocketLaunch, Check } from "phosphor-react";
 const plans = [
   {
     id: "free",
-    name: "Free Plan",
+    name: "Free Service",
     price: "₹0",
     period: "/session",
     icon: Star,
@@ -23,7 +23,7 @@ const plans = [
   },
   {
     id: "premium",
-    name: "Basic Plan",
+    name: "Basic Service",
     price: "₹499",
     period: "/session",
     icon: Crown,
@@ -40,7 +40,7 @@ const plans = [
   },
   {
     id: "elite",
-    name: "Personalised Plan",
+    name: "Personalised Service",
     price: "₹999",
     period: "/session",
     icon: RocketLaunch,
@@ -69,9 +69,10 @@ export default function PricingSection() {
           viewport={{ once: true }}
           className="text-center mb-12 lg:mb-16"
         >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-3"
-                        style={{ color: "var(--brand-deep)" }}
->
+          <h2
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-3"
+            style={{ color: "var(--brand-deep)" }}
+          >
             Our Services
           </h2>
           <p className="text-slate-600 max-w-2xl mx-auto">
@@ -117,35 +118,40 @@ export default function PricingSection() {
                   {plan.name}
                 </h3>
 
-             {/* Price */}
-<div className="mb-6">
-  {plan.id === "premium" ? (
-    <>
-      <div className="flex items-end gap-2">
-        <span className="text-3xl font-bold text-slate-400 line-through">
-          ₹499
-        </span>
-        <span className="text-slate-500 text-sm">{plan.period}</span>
-      </div>
+                {/* Price */}
+                <div className="mb-6">
+                  {plan.id === "premium" ? (
+                    <>
+                      <div className="flex items-end gap-2">
+                        <span className="text-3xl font-bold text-slate-400 line-through">
+                          ₹499
+                        </span>
+                        <span className="text-slate-500 text-sm">
+                          {plan.period}
+                        </span>
+                      </div>
 
-      <div className="mt-1">
-        <span className="inline-block px-3 py-1 rounded-full
+                      <div className="mt-1">
+                        <span
+                          className="inline-block px-3 py-1 rounded-full
           bg-gradient-to-r from-purple-500 to-pink-500
-          text-white text-xs font-semibold shadow-md">
-          🎉 Registration FREE till March
-        </span>
-      </div>
-    </>
-  ) : (
-    <>
-      <span className="text-4xl font-bold text-slate-900">
-        {plan.price}
-      </span>
-      <span className="text-slate-500 text-sm">{plan.period}</span>
-    </>
-  )}
-</div>
-
+          text-white text-xs font-semibold shadow-md"
+                        >
+                          🎉 Registration FREE till March
+                        </span>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <span className="text-4xl font-bold text-slate-900">
+                        {plan.price}
+                      </span>
+                      <span className="text-slate-500 text-sm">
+                        {plan.period}
+                      </span>
+                    </>
+                  )}
+                </div>
 
                 {/* Features */}
                 <ul className="space-y-3 mb-8">
@@ -157,7 +163,9 @@ export default function PricingSection() {
                       transition={{ delay: i * 0.15 + idx * 0.1 }}
                       className="flex items-start gap-3"
                     >
-                      <div className={`flex-shrink-0 w-5 h-5 rounded-full bg-gradient-to-br ${plan.gradient} flex items-center justify-center mt-0.5`}>
+                      <div
+                        className={`flex-shrink-0 w-5 h-5 rounded-full bg-gradient-to-br ${plan.gradient} flex items-center justify-center mt-0.5`}
+                      >
                         <Check size={12} weight="bold" className="text-white" />
                       </div>
                       <span className="text-slate-700 text-sm leading-relaxed">

@@ -25,7 +25,7 @@ const ALL_FEATURES = [
 const PLANS = [
   {
     id: "free",
-    name: "Free Plan",
+    name: "Free Service",
     description: "Get started with essential learning tools",
     includes: [
       "Webinars (live + recordings)",
@@ -36,7 +36,7 @@ const PLANS = [
   },
   {
     id: "premium",
-    name: "Basic Plan",
+    name: "Basic Service",
     description: "Structured preparation for serious aspirants",
     includes: [
       "Webinars (live + recordings)",
@@ -50,7 +50,7 @@ const PLANS = [
   },
   {
     id: "elite",
-    name: "Personalised Plan",
+    name: "Personalised Service",
     description: "End-to-end mentorship & career guidance",
     includes: [
       "Webinars (live + recordings)",
@@ -69,7 +69,7 @@ const PLANS = [
 
 const PLAN_FULL_DETAILS = {
   free: {
-    title: "Free Plan",
+    title: "Free Service",
     subtitle: "Foundation features to explore EduDarshi",
     points: [
       "EduDarshi Webinars (live + selected recordings): Expert-led sessions on exam strategies, subject refreshers, and career pathways.",
@@ -80,7 +80,7 @@ const PLAN_FULL_DETAILS = {
   },
 
   premium: {
-    title: "Basic Plan",
+    title: "Basic Service",
     subtitle: "Everything you need for focused exam preparation",
     points: [
       "Webinars (live + recordings) with expert instructors.",
@@ -93,7 +93,7 @@ const PLAN_FULL_DETAILS = {
   },
 
   elite: {
-    title: "Personalised Plan",
+    title: "Personalised Service",
     subtitle: "High-touch mentorship with career-focused guidance",
     points: [
       "All-access webinars and exclusive workshops with recordings.",
@@ -324,7 +324,7 @@ export default function PlanDetails() {
                     onClick={() =>
                       window.open(
                         "https://forms.gle/j79LRuzWo5q7CxJL8",
-                        "_blank"
+                        "_blank",
                       )
                     }
                     className="px-6 py-2.5 rounded-lg bg-indigo-600 text-white font-medium hover:bg-indigo-700"
