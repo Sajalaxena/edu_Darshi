@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Trash } from "phosphor-react";
+import { Trash, PencilSimple } from "phosphor-react";
 
-const API = import.meta.env.VITE_API_BASE_URL;;
+const API = import.meta.env.VITE_API_BASE_URL;
 const LIMIT = 10;
 
 export default function AddPreviousPaper() {
@@ -13,21 +13,24 @@ export default function AddPreviousPaper() {
     solutionYoutubeLink: "",
   });
 
+  const [editId, setEditId] = useState(null);
+
   const [rows, setRows] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
+  /* ================= FETCH ================= */
   async function fetchData(p = page) {
     const res = await fetch(`${API}/previous-papers?page=${p}&limit=${LIMIT}`);
     const json = await res.json();
 
-    const data = json.data || json.papers || json;
+    const data = json.data || json.papers || [];
     setRows(data);
 
     setTotalPages(
       json.pagination?.totalPages ||
-      Math.ceil((json.total || data.length) / LIMIT) ||
-      1
+        Math.ceil((json.total || data.length) / LIMIT) ||
+        1,
     );
   }
 
@@ -35,15 +38,28 @@ export default function AddPreviousPaper() {
     fetchData();
   }, [page]);
 
+  /* ================= SAVE / UPDATE ================= */
   async function savePaper(e) {
     e.preventDefault();
 
-    await fetch(`${API}/previous-papers/admin/upload`, {
-      method: "POST",
+    const url = editId
+      ? `${API}/previous-papers/admin/${editId}`
+      : `${API}/previous-papers/admin/upload`;
+
+    const method = editId ? "PUT" : "POST";
+
+    await fetch(url, {
+      method,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
     });
 
+    resetForm();
+    fetchData(editId ? page : 1);
+    if (!editId) setPage(1);
+  }
+
+  function resetForm() {
     setForm({
       exam: "",
       subject: "",
@@ -51,24 +67,39 @@ export default function AddPreviousPaper() {
       paperPdfLink: "",
       solutionYoutubeLink: "",
     });
-
-    fetchData(1);
-    setPage(1);
+    setEditId(null);
   }
 
+  /* ================= EDIT ================= */
+  function editPaper(row) {
+    setEditId(row._id);
+    setForm({
+      exam: row.exam || "",
+      subject: row.subject || "",
+      year: row.year || "",
+      paperPdfLink: row.paperPdfLink || "",
+      solutionYoutubeLink: row.solutionYoutubeLink || "",
+    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  /* ================= DELETE ================= */
   async function remove(id) {
     if (!confirm("Delete this paper?")) return;
-    await fetch(`${API}/previous-papers/admin/${id}`, { method: "DELETE" });
+    await fetch(`${API}/previous-papers/admin/${id}`, {
+      method: "DELETE",
+    });
     fetchData(page);
   }
 
+  /* ================= UI ================= */
   return (
     <div className="space-y-6">
       {/* HEADER */}
       <div className="admin-header">
         <div className="flex items-center gap-3">
           <img src="/logo.png" alt="EduDarshi" className="h-10" />
-          <h1>Add Previous Papers</h1>
+          <h1>{editId ? "Edit Previous Paper" : "Add Previous Papers"}</h1>
         </div>
       </div>
 
@@ -106,12 +137,29 @@ export default function AddPreviousPaper() {
           className="admin-input md:col-span-2"
           placeholder="Solution YouTube link (optional)"
           value={form.solutionYoutubeLink}
-          onChange={(e) => setForm({ ...form, solutionYoutubeLink: e.target.value })}
+          onChange={(e) =>
+            setForm({
+              ...form,
+              solutionYoutubeLink: e.target.value,
+            })
+          }
         />
 
-        <button onClick={savePaper} className="admin-btn">
-          Save Paper
-        </button>
+        <div className="flex gap-3">
+          <button onClick={savePaper} className="admin-btn">
+            {editId ? "Update Paper" : "Save Paper"}
+          </button>
+
+          {editId && (
+            <button
+              type="button"
+              onClick={resetForm}
+              className="admin-btn-outline"
+            >
+              Cancel
+            </button>
+          )}
+        </div>
       </form>
 
       {/* TABLE */}
@@ -124,7 +172,7 @@ export default function AddPreviousPaper() {
               <th>Year</th>
               <th>Paper</th>
               <th>Solution</th>
-              <th></th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -141,14 +189,29 @@ export default function AddPreviousPaper() {
                   <td>{r.subject || "-"}</td>
                   <td>{r.year}</td>
                   <td>
-                    <a href={r.paperPdfLink} target="_blank">PDF</a>
+                    <a href={r.paperPdfLink} target="_blank" rel="noreferrer">
+                      PDF
+                    </a>
                   </td>
                   <td>
                     {r.solutionYoutubeLink ? (
-                      <a href={r.solutionYoutubeLink} target="_blank">Video</a>
-                    ) : "-"}
+                      <a
+                        href={r.solutionYoutubeLink}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Video
+                      </a>
+                    ) : (
+                      "-"
+                    )}
                   </td>
-                  <td>
+                  <td className="flex gap-3">
+                    <PencilSimple
+                      size={18}
+                      className="admin-edit"
+                      onClick={() => editPaper(r)}
+                    />
                     <Trash
                       size={18}
                       className="admin-delete"
@@ -163,12 +226,17 @@ export default function AddPreviousPaper() {
 
         {/* PAGINATION */}
         <div className="admin-pagination">
-          <span>Page {page} of {totalPages}</span>
+          <span>
+            Page {page} of {totalPages}
+          </span>
           <div>
             <button disabled={page === 1} onClick={() => setPage(page - 1)}>
               Prev
             </button>
-            <button disabled={page === totalPages} onClick={() => setPage(page + 1)}>
+            <button
+              disabled={page === totalPages}
+              onClick={() => setPage(page + 1)}
+            >
               Next
             </button>
           </div>

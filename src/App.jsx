@@ -1,6 +1,7 @@
 // src/App.jsx
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "katex/dist/katex.min.css";
 
 import AdminApp from "./admin/AdminApp";
 

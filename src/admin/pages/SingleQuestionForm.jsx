@@ -1,87 +1,155 @@
-// SingleQuestionForm.jsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const API = import.meta.env.VITE_API_BASE_URL;
 
-export default function SingleQuestionForm() {
+export default function SingleQuestionForm({ editData, onSaved }) {
   const [form, setForm] = useState({
     question: "",
-    option1: "",
-    option2: "",
-    option3: "",
-    option4: "",
+    options: ["", "", "", ""],
     correctAnswer: "",
     explanation: "",
     scheduledDate: "",
   });
 
-  function handleChange(e) {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  }
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
-  async function submit() {
-    await fetch(`${API}/question/admin`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        question: form.question,
-        options: [
-          form.option1,
-          form.option2,
-          form.option3,
-          form.option4,
-        ].filter(Boolean),
-        correctAnswer: form.correctAnswer,
-        explanation: form.explanation,
-        scheduledDate: form.scheduledDate,
-      }),
-    });
+  /* ===== Populate form on Edit ===== */
+  useEffect(() => {
+    if (editData) {
+      setForm({
+        question: editData.question,
+        options: [...editData.options, "", "", ""].slice(0, 4),
+        correctAnswer: editData.correctAnswer,
+        explanation: editData.explanation || "",
+        scheduledDate: editData.scheduledDate.slice(0, 10),
+      });
+    }
+  }, [editData]);
 
-    alert("Question added");
-  }
+  const updateOption = (i, value) => {
+    const updated = [...form.options];
+    updated[i] = value;
+    setForm({ ...form, options: updated });
+  };
+
+  const validate = () => {
+    const e = {};
+    const validOptions = form.options.filter((o) => o.trim());
+
+    if (!form.question.trim()) e.question = "Question is required";
+    if (validOptions.length < 2) e.options = "Minimum 2 options required";
+    if (!validOptions.includes(form.correctAnswer))
+      e.correctAnswer = "Correct answer must match an option";
+    if (!form.scheduledDate) e.scheduledDate = "Date is required";
+
+    setErrors(e);
+    return Object.keys(e).length === 0;
+  };
+
+  const submit = async () => {
+    if (!validate()) {
+      toast.error("Fix validation errors");
+      return;
+    }
+
+    setLoading(true);
+
+    const payload = {
+      question: form.question,
+      options: form.options.filter(Boolean),
+      correctAnswer: form.correctAnswer,
+      explanation: form.explanation,
+      scheduledDate: form.scheduledDate,
+    };
+
+    try {
+      const res = await fetch(
+        editData
+          ? `${API}/question/admin/${editData._id}`
+          : `${API}/question/admin`,
+        {
+          method: editData ? "PUT" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        },
+      );
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message || "Failed");
+      }
+
+      toast.success(editData ? "Question updated" : "Question added");
+      onSaved?.();
+
+      setForm({
+        question: "",
+        options: ["", "", "", ""],
+        correctAnswer: "",
+        explanation: "",
+        scheduledDate: "",
+      });
+    } catch (err) {
+      toast.error(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="bg-white p-6 rounded-xl border space-y-4">
+    <div className="bg-white p-6 rounded-2xl shadow space-y-4">
+      <h2 className="text-xl font-bold">
+        {editData ? "Edit Question" : "Add Question"}
+      </h2>
+
       <textarea
-        name="question"
-        placeholder="Question"
-        className="input"
-        onChange={handleChange}
+        className={`input ${errors.question && "border-red-500"}`}
+        placeholder="Question (LaTeX allowed)"
+        value={form.question}
+        onChange={(e) => setForm({ ...form, question: e.target.value })}
       />
 
-      {["option1", "option2", "option3", "option4"].map((o) => (
-        <input
-          key={o}
-          name={o}
-          placeholder={o}
-          className="input"
-          onChange={handleChange}
-        />
-      ))}
+      <div className="grid grid-cols-2 gap-3">
+        {form.options.map((opt, i) => (
+          <input
+            key={i}
+            className="input"
+            placeholder={`Option ${i + 1}`}
+            value={opt}
+            onChange={(e) => updateOption(i, e.target.value)}
+          />
+        ))}
+      </div>
 
       <input
-        name="correctAnswer"
+        className={`input ${errors.correctAnswer && "border-red-500"}`}
         placeholder="Correct Answer"
-        className="input"
-        onChange={handleChange}
+        value={form.correctAnswer}
+        onChange={(e) => setForm({ ...form, correctAnswer: e.target.value })}
       />
 
       <textarea
-        name="explanation"
-        placeholder="Explanation"
         className="input"
-        onChange={handleChange}
+        placeholder="Explanation (LaTeX allowed)"
+        value={form.explanation}
+        onChange={(e) => setForm({ ...form, explanation: e.target.value })}
       />
 
       <input
         type="date"
-        name="scheduledDate"
-        className="input"
-        onChange={handleChange}
+        className={`input ${errors.scheduledDate && "border-red-500"}`}
+        value={form.scheduledDate}
+        onChange={(e) => setForm({ ...form, scheduledDate: e.target.value })}
       />
 
-      <button onClick={submit} className="btn-primary">
-        Save Question
+      <button
+        onClick={submit}
+        disabled={loading}
+        className="btn-primary w-full"
+      >
+        {loading ? "Saving..." : editData ? "Update Question" : "Save Question"}
       </button>
     </div>
   );

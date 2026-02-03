@@ -2,9 +2,28 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { BlockMath, InlineMath } from "react-katex";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
+/* ================= LaTeX Renderer ================= */
+function LatexText({ text }) {
+  if (!text) return null;
+
+  const parts = text.split(/(\$\$[\s\S]+?\$\$|\$[\s\S]+?\$)/g);
+
+  return parts.map((part, i) => {
+    if (part.startsWith("$$")) {
+      return <BlockMath key={i} math={part.slice(2, -2)} />;
+    }
+    if (part.startsWith("$")) {
+      return <InlineMath key={i} math={part.slice(1, -1)} />;
+    }
+    return <span key={i}>{part}</span>;
+  });
+}
+
+/* ================= MAIN COMPONENT ================= */
 export default function QOTDPage() {
   const navigate = useNavigate();
 
@@ -13,8 +32,7 @@ export default function QOTDPage() {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  /* ================= FETCH TODAY QUESTION ================= */
-
+  /* -------- Fetch Today Question -------- */
   useEffect(() => {
     async function loadQOTD() {
       try {
@@ -31,13 +49,9 @@ export default function QOTDPage() {
     loadQOTD();
   }, []);
 
-  /* ================= SUBMIT ANSWER ================= */
-
+  /* -------- Submit Answer -------- */
   async function submitAnswer() {
-    if (!selected) {
-      // alert("Please select an option");
-      return;
-    }
+    if (!selected || result) return;
 
     try {
       const res = await fetch(`${API_BASE}/question/submit`, {
@@ -50,10 +64,7 @@ export default function QOTDPage() {
       });
 
       const json = await res.json();
-      setResult({
-        ...json,
-        selected,
-      });
+      setResult({ ...json, selected });
     } catch (err) {
       console.error("Submit failed", err);
     }
@@ -64,10 +75,12 @@ export default function QOTDPage() {
     navigate("/", { replace: true });
   }
 
+  /* ================= STATES ================= */
+
   if (loading) {
     return (
       <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
-        <div className="bg-white px-6 py-4 rounded-lg">Loading...</div>
+        <div className="bg-white px-6 py-4 rounded-xl shadow">Loading...</div>
       </div>
     );
   }
@@ -75,7 +88,7 @@ export default function QOTDPage() {
   if (!question) {
     return (
       <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
-        <div className="bg-white px-6 py-4 rounded-lg">
+        <div className="bg-white px-6 py-4 rounded-xl shadow">
           No Question Today
         </div>
       </div>
@@ -83,7 +96,6 @@ export default function QOTDPage() {
   }
 
   /* ================= UI ================= */
-
   return (
     <div className="fixed inset-0 z-[9999] bg-black/50 flex items-end sm:items-center justify-center">
       {/* MAIN MODAL */}
@@ -91,49 +103,68 @@ export default function QOTDPage() {
         initial={{ y: 40, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.25 }}
-        className="w-full sm:max-w-xl bg-white rounded-t-2xl sm:rounded-2xl max-h-[92vh] flex flex-col"
+        className="w-full sm:max-w-xl bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl max-h-[92vh] flex flex-col"
       >
         {/* HEADER */}
-        <div className="flex justify-between items-center px-5 py-4 border-b">
+        <div className="flex justify-between items-center px-6 py-4 border-b">
           <div>
             <h2 className="text-lg font-semibold">Question of the Day</h2>
-            <p className="text-xs text-slate-500">EduDarshi</p>
+            <p className="text-xs text-indigo-600 font-medium">
+              Daily Challenge
+            </p>
           </div>
-          <button onClick={closeAll}>✕</button>
+          <button
+            onClick={closeAll}
+            className="text-xl text-slate-500 hover:text-black"
+          >
+            ✕
+          </button>
         </div>
 
         {/* BODY */}
-        <div className="flex-1 overflow-y-auto px-5 py-4">
-          <h3 className="text-base sm:text-lg font-semibold">
-            {question.question}
-          </h3>
+        <div className="flex-1 overflow-y-auto px-6 py-5 space-y-6">
+          {/* QUESTION */}
+          <div className="text-base sm:text-lg font-semibold leading-relaxed">
+            <LatexText text={question.question} />
+          </div>
 
-          <div className="mt-4 space-y-3">
-            {question.options.map((opt, idx) => (
-              <label
-                key={idx}
-                className={`flex gap-3 p-3 rounded-lg border cursor-pointer text-sm ${
-                  selected === opt
-                    ? "border-indigo-600 bg-indigo-50"
-                    : "border-slate-200"
-                }`}
-              >
-                <input
-                  type="radio"
-                  checked={selected === opt}
-                  onChange={() => setSelected(opt)}
-                />
-                {opt}
-              </label>
-            ))}
+          {/* OPTIONS */}
+          <div className="space-y-3">
+            {question.options.map((opt, idx) => {
+              const isSelected = selected === opt;
+              const isCorrect = result && opt === question.correctAnswer;
+              const isWrong = result && isSelected && !result.correct;
+
+              return (
+                <button
+                  key={idx}
+                  disabled={!!result}
+                  onClick={() => setSelected(opt)}
+                  className={`w-full text-left p-4 rounded-xl border transition
+                    ${
+                      isCorrect
+                        ? "border-green-500 bg-green-50"
+                        : isWrong
+                          ? "border-red-500 bg-red-50"
+                          : isSelected
+                            ? "border-indigo-600 bg-indigo-50"
+                            : "border-slate-200 hover:border-indigo-300"
+                    }
+                  `}
+                >
+                  <LatexText text={opt} />
+                </button>
+              );
+            })}
           </div>
         </div>
 
         {/* FOOTER */}
-        <div className="px-5 py-4 border-t flex gap-3">
+        <div className="px-6 py-4 border-t flex gap-3">
           <button
             onClick={submitAnswer}
-            className="flex-1 py-2.5 rounded-lg bg-indigo-600 text-white font-medium"
+            disabled={!selected || !!result}
+            className="flex-1 py-2.5 rounded-lg bg-indigo-600 text-white font-medium disabled:opacity-50"
           >
             Submit
           </button>
@@ -152,7 +183,7 @@ export default function QOTDPage() {
           <motion.div
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="bg-white rounded-xl p-6 w-full max-w-md"
+            className="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl"
           >
             <h3
               className={`text-xl font-bold ${
@@ -165,15 +196,17 @@ export default function QOTDPage() {
             {!result.correct && (
               <p className="mt-2 text-sm">
                 Correct answer:
-                <strong className="ml-1">
-                  {question.correctAnswer}
-                </strong>
+                <span className="ml-1 font-semibold">
+                  <LatexText text={question.correctAnswer} />
+                </span>
               </p>
             )}
 
-            <div className="mt-4 text-sm">
+            <div className="mt-4 text-sm leading-relaxed">
               <strong>Explanation</strong>
-              <p className="mt-1">{result.explanation}</p>
+              <div className="mt-2 text-slate-700">
+                <LatexText text={result.explanation} />
+              </div>
             </div>
 
             <div className="mt-5 flex gap-3">

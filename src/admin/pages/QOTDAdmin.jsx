@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SingleQuestionForm from "./SingleQuestionForm";
 import BulkQuestionUpload from "./BulkQuestionUpload";
-
+import QuestionsTable from "./QuestionsTable";
 export default function AdminQOTD() {
   const [tab, setTab] = useState("single");
 
@@ -14,9 +14,7 @@ export default function AdminQOTD() {
         <button
           onClick={() => setTab("single")}
           className={`px-4 py-2 rounded-lg ${
-            tab === "single"
-              ? "bg-indigo-600 text-white"
-              : "bg-slate-100"
+            tab === "single" ? "bg-indigo-600 text-white" : "bg-slate-100"
           }`}
         >
           Add Single Question
@@ -25,17 +23,26 @@ export default function AdminQOTD() {
         <button
           onClick={() => setTab("bulk")}
           className={`px-4 py-2 rounded-lg ${
-            tab === "bulk"
+            tab === "bulk" ? "bg-indigo-600 text-white" : "bg-slate-100"
+          }`}
+        >
+          Bulk Upload (Excel / CSV)
+        </button>
+        <button
+          onClick={() => setTab("Questions List")}
+          className={`px-4 py-2 rounded-lg ${
+            tab === "Questions List"
               ? "bg-indigo-600 text-white"
               : "bg-slate-100"
           }`}
         >
-          Bulk Upload (Excel / CSV)
+          Questions List{" "}
         </button>
       </div>
 
       {tab === "single" && <SingleQuestionForm />}
       {tab === "bulk" && <BulkQuestionUpload />}
+      {tab === "Questions List" && <QuestionsTable />}
     </div>
   );
 }

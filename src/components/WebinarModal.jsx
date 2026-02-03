@@ -22,6 +22,7 @@ export default function WebinarModal({ data, onClose }) {
 
   // ✅ Flexible date handling
   const startDate = data.startDate || data.date || data.publishedDate || "TBA";
+  const redirectLink = data.registrationLink || data.externalLink;
 
   const deadline = data.time || data.endDate || data.source || "TBA";
 
@@ -121,15 +122,15 @@ export default function WebinarModal({ data, onClose }) {
             </div>
 
             <div className="pt-4 flex justify-end border-t border-slate-200">
-              {data.registrationLink && (
+              {redirectLink && (
                 <button
-                  onClick={() => window.open(data.registrationLink, "_blank")}
+                  onClick={() => window.open(redirectLink, "_blank")}
                   className="px-6 py-3 rounded-full text-sm font-bold text-white
-                    bg-gradient-to-r from-indigo-600 to-purple-600
-                    shadow-xl shadow-indigo-500/30
-                    hover:scale-[1.05] transition-transform"
+      bg-gradient-to-r from-indigo-600 to-purple-600
+      shadow-xl shadow-indigo-500/30
+      hover:scale-[1.05] transition-transform"
                 >
-                  More Details{" "}
+                  More Details
                 </button>
               )}
               <button
