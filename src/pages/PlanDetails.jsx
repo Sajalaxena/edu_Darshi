@@ -163,7 +163,7 @@ export default function PlanDetails() {
           className="text-3xl md:text-4xl font-extrabold text-center mb-8"
           style={{ color: "var(--brand, #2563EB)" }}
         >
-          Our Plans — Full Details{" "}
+          Our Services — Full Details{" "}
         </h2>
 
         <p className="text-slate-600 mb-10 text-center">

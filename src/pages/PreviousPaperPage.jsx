@@ -10,6 +10,11 @@ const EXAMS = [
   "CSIR-NET/JRF",
   "CUET",
   "PhD Entrance",
+  "UP-GDS",
+  "UPHESC",
+  "MPPSC",
+  "Assistant Professor",
+  "JOB EXAMS"
 ];
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
