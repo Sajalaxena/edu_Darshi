@@ -60,12 +60,12 @@ export default function QuestionTable({ onEdit }) {
               </td>
               <td className="p-3 line-clamp-2">{q.question}</td>
               <td className="p-3 flex gap-2 justify-center">
-                <button
+                {/* <button
                   onClick={() => onEdit(q)}
                   className="px-3 py-1 rounded bg-indigo-600 text-white"
                 >
                   Edit
-                </button>
+                </button> */}
                 <button
                   onClick={() => deleteQuestion(q._id)}
                   className="px-3 py-1 rounded bg-red-500 text-white"

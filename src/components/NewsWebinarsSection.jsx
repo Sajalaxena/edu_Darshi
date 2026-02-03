@@ -4,6 +4,18 @@ import { motion, AnimatePresence } from "framer-motion";
 import WebinarModal from "./WebinarModal";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
+function formatDateDDMMYYYY(dateStr) {
+  if (!dateStr) return "—";
+
+  const d = new Date(dateStr);
+  if (isNaN(d)) return dateStr;
+
+  const day = String(d.getDate()).padStart(2, "0");
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const year = d.getFullYear();
+
+  return `${day}-${month}-${year}`;
+}
 
 // Demo data fallback
 const DEMO_NEWS = [
@@ -138,7 +150,7 @@ export default function NewsWebinarsCompact() {
             </div>
 
             {/* Rows */}
-            <div className="p-4 space-y-3 max-h-[380px] overflow-y-auto no-scrollbar">
+<div className="p-6 space-y-4">
               {news.slice(0, 4).map((n) => (
                 <div
                   key={n._id}
@@ -166,7 +178,7 @@ export default function NewsWebinarsCompact() {
                         <span className="text-emerald-600 font-medium">
                           Starts:
                         </span>
-                        <span className="text-gray-600">{n.publishedDate}</span>
+                        <span className="text-gray-600">{formatDateDDMMYYYY(n.publishedDate)}</span>
 
                         <span className="text-gray-400">•</span>
 
@@ -216,7 +228,7 @@ export default function NewsWebinarsCompact() {
             </div>
 
             {/* Rows */}
-            <div className="p-4 space-y-3 max-h-[380px] overflow-y-auto no-scrollbar">
+<div className="p-6 space-y-4">
               {webinars.slice(0, 4).map((w) => (
                 <div
                   key={w._id}

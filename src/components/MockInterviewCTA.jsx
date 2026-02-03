@@ -16,15 +16,25 @@ export default function MockInterviewCTA() {
 
           <div className="relative text-center text-white px-6 py-14">
             {/* Badge */}
-            <div className="inline-block mb-6">
-              <span
-                className="px-5 py-2 rounded-full text-lg font-semibold tracking-wide
-                               bg-gradient-to-r from-pink-500 to-yellow-400
-                               border border-white/30"
-              >
-                🎯 MOCK INTERVIEW PROGRAM
-              </span>
-            </div>
+           <div className="mb-6 flex justify-center">
+  <span
+    className="
+      px-4 py-2
+      sm:px-5 sm:py-2
+      text-sm sm:text-lg
+      font-semibold
+      tracking-normal sm:tracking-wide
+      rounded-full
+      bg-gradient-to-r from-pink-500 to-yellow-400
+      border border-white/30
+      text-center
+      whitespace-normal
+      max-w-[90vw]
+    "
+  >
+    🎯 MOCK INTERVIEW PROGRAM
+  </span>
+</div>
 
             {/* Heading */}
             <h2 className="text-2xl md:text-4xl font-bold leading-tight max-w-4xl mx-auto">

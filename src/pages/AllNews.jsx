@@ -4,6 +4,18 @@ import { motion } from "framer-motion";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
+function formatDateDDMMYYYY(dateStr) {
+  if (!dateStr) return "—";
+
+  const d = new Date(dateStr);
+  if (isNaN(d)) return dateStr;
+
+  const day = String(d.getDate()).padStart(2, "0");
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const year = d.getFullYear();
+
+  return `${day}-${month}-${year}`;
+}
 function normalizeLink(url) {
   if (!url) return null;
   return url.startsWith("http") ? url : `https://${url}`;
@@ -67,7 +79,7 @@ export default function AllNews() {
               <span>
                 📅 Posted:{" "}
                 <strong className="text-slate-600">
-                  {n.publishedDate}
+                  {formatDateDDMMYYYY(n.publishedDate)}
                 </strong>
               </span>
 
