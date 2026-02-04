@@ -3,15 +3,22 @@ import toast from "react-hot-toast";
 
 const API = import.meta.env.VITE_API_BASE_URL;
 
+// ---- date normalizer (SAFE) ----
+const normalizeDate = (d) => {
+  if (!d) return "";
+  return d.split("T")[0]; // "2026-02-04"
+};
+
 export default function SingleQuestionForm({ editData, onSaved }) {
-  const [form, setForm] = useState({
+  const emptyForm = {
     question: "",
     options: ["", "", "", ""],
     correctAnswer: "",
     explanation: "",
     scheduledDate: "",
-  });
+  };
 
+  const [form, setForm] = useState(emptyForm);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -23,7 +30,7 @@ export default function SingleQuestionForm({ editData, onSaved }) {
         options: [...editData.options, "", "", ""].slice(0, 4),
         correctAnswer: editData.correctAnswer,
         explanation: editData.explanation || "",
-        scheduledDate: editData.scheduledDate.slice(0, 10),
+        scheduledDate: normalizeDate(editData.scheduledDate),
       });
     }
   }, [editData]);
@@ -34,6 +41,7 @@ export default function SingleQuestionForm({ editData, onSaved }) {
     setForm({ ...form, options: updated });
   };
 
+  /* ===== Validation ===== */
   const validate = () => {
     const e = {};
     const validOptions = form.options.filter((o) => o.trim());
@@ -48,9 +56,53 @@ export default function SingleQuestionForm({ editData, onSaved }) {
     return Object.keys(e).length === 0;
   };
 
+  /* ===== Date Conflict Check ===== */
+  const checkDateConflict = async () => {
+    try {
+      // If editing and date unchanged → skip check
+      if (
+        editData &&
+        normalizeDate(editData.scheduledDate) ===
+          normalizeDate(form.scheduledDate)
+      ) {
+        return false;
+      }
+
+      const res = await fetch(`${API}/question/admin/all`);
+      const data = await res.json();
+
+      const selectedDate = normalizeDate(form.scheduledDate);
+
+      const conflict = data.find((q) => {
+        if (editData && q._id === editData._id) return false;
+        return normalizeDate(q.scheduledDate) === selectedDate;
+      });
+
+      if (conflict) {
+        setErrors((e) => ({
+          ...e,
+          scheduledDate: "Question already exists for this date",
+        }));
+        return true;
+      }
+
+      return false;
+    } catch (err) {
+      toast.error("Failed to validate date");
+      return true;
+    }
+  };
+
+  /* ===== Submit ===== */
   const submit = async () => {
     if (!validate()) {
       toast.error("Fix validation errors");
+      return;
+    }
+
+    const hasConflict = await checkDateConflict();
+    if (hasConflict) {
+      toast.error("Question already exists for this date");
       return;
     }
 
@@ -73,7 +125,7 @@ export default function SingleQuestionForm({ editData, onSaved }) {
           method: editData ? "PUT" : "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
-        },
+        }
       );
 
       if (!res.ok) {
@@ -83,19 +135,18 @@ export default function SingleQuestionForm({ editData, onSaved }) {
 
       toast.success(editData ? "Question updated" : "Question added");
       onSaved?.();
-
-      setForm({
-        question: "",
-        options: ["", "", "", ""],
-        correctAnswer: "",
-        explanation: "",
-        scheduledDate: "",
-      });
+      setForm(emptyForm);
     } catch (err) {
       toast.error(err.message);
     } finally {
       setLoading(false);
     }
+  };
+
+  /* ===== Reset ===== */
+  const resetForm = () => {
+    setForm(emptyForm);
+    setErrors({});
   };
 
   return (
@@ -106,7 +157,7 @@ export default function SingleQuestionForm({ editData, onSaved }) {
 
       <textarea
         className={`input ${errors.question && "border-red-500"}`}
-        placeholder="Question (LaTeX allowed)"
+        placeholder="Question (KaTeX allowed)"
         value={form.question}
         onChange={(e) => setForm({ ...form, question: e.target.value })}
       />
@@ -127,30 +178,55 @@ export default function SingleQuestionForm({ editData, onSaved }) {
         className={`input ${errors.correctAnswer && "border-red-500"}`}
         placeholder="Correct Answer"
         value={form.correctAnswer}
-        onChange={(e) => setForm({ ...form, correctAnswer: e.target.value })}
+        onChange={(e) =>
+          setForm({ ...form, correctAnswer: e.target.value })
+        }
       />
 
       <textarea
         className="input"
-        placeholder="Explanation (LaTeX allowed)"
+        placeholder="Explanation (KaTeX allowed)"
         value={form.explanation}
-        onChange={(e) => setForm({ ...form, explanation: e.target.value })}
+        onChange={(e) =>
+          setForm({ ...form, explanation: e.target.value })
+        }
       />
 
       <input
         type="date"
         className={`input ${errors.scheduledDate && "border-red-500"}`}
         value={form.scheduledDate}
-        onChange={(e) => setForm({ ...form, scheduledDate: e.target.value })}
+        onChange={(e) => {
+          setForm({ ...form, scheduledDate: e.target.value });
+          setErrors((prev) => ({ ...prev, scheduledDate: "" }));
+        }}
       />
 
-      <button
-        onClick={submit}
-        disabled={loading}
-        className="btn-primary w-full"
-      >
-        {loading ? "Saving..." : editData ? "Update Question" : "Save Question"}
-      </button>
+      {errors.scheduledDate && (
+        <p className="text-sm text-red-600">{errors.scheduledDate}</p>
+      )}
+
+      <div className="flex gap-3">
+        <button
+          onClick={submit}
+          disabled={loading}
+          className="btn-primary w-full"
+        >
+          {loading
+            ? "Saving..."
+            : editData
+            ? "Update Question"
+            : "Save Question"}
+        </button>
+
+        <button
+          onClick={resetForm}
+          type="button"
+          className="px-4 py-2 rounded-lg bg-slate-200"
+        >
+          Refresh
+        </button>
+      </div>
     </div>
   );
 }
