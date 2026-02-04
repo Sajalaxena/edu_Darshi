@@ -61,7 +61,18 @@ body {
   isolation: isolate;
 }
 
-/* Navbar glass */
+/* Hide scrollbar but keep scrolling */
+.hide-scrollbar {
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE / Edge */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+  /* Chrome / Safari */
+}/* Navbar glass */
 .navbar-blur {
   backdrop-filter: blur(6px);
   background-color: rgba(255, 255, 255, 0.75);
