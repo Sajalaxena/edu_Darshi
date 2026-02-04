@@ -18,7 +18,7 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <div className="flex items-center ">
               <img
-                src="/logo.png"
+                src="/logo2.png"
                 alt="EduDarshi"
                 className="h-12 w-auto mb-4"
               />

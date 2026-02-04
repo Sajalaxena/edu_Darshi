@@ -203,7 +203,7 @@ export default function QOTDPage() {
             )}
 
             <div className="mt-4 text-sm leading-relaxed">
-              <strong>Explanation</strong>
+              <strong>How to Approach</strong>
               <div className="mt-2 text-slate-700">
                 <LatexText text={result.explanation} />
               </div>
