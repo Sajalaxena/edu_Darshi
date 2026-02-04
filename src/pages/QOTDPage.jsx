@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { BlockMath, InlineMath } from "react-katex";
+import{ useRef } from "react";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
@@ -33,6 +34,7 @@ function LatexText({ text }) {
 
 export default function QOTDPage() {
   const navigate = useNavigate();
+const explanationRef = useRef(null);
 
   const [question, setQuestion] = useState(null);
   const [selected, setSelected] = useState(null);
@@ -47,6 +49,15 @@ export default function QOTDPage() {
     loadQOTD();
   }, []);
 
+
+useEffect(() => {
+  if (result && explanationRef.current) {
+    explanationRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
+}, [result]);
   async function submitAnswer() {
     if (!selected || result) return;
 
@@ -171,10 +182,11 @@ export default function QOTDPage() {
                   {result.correct ? "Correct 🎉" : "Incorrect ❌"}
                 </h3>
 
-                <div className="mt-3">
-                  <h4 className="text-center text-sm sm:text-lg font-bold text-indigo-700">
-                    How to Approach
-                  </h4>
+               <div ref={explanationRef} className="mt-4">
+  <h4 className="text-center text-base sm:text-lg font-bold text-indigo-700">
+    How to Approach
+  </h4>
+
 
                   <div
                     className="
