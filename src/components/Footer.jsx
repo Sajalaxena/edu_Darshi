@@ -20,10 +20,10 @@ export default function Footer() {
               <img
                 src="/logo2.png"
                 alt="EduDarshi"
-                className="h-12 w-auto mb-4"
+                className="h-20 w-auto "
               />
               <h1 className="text-2xl font-bold mb-6">EduDarshi</h1>
-              <span className="absolute text-sm text-white/70 ml-12 mt-6">
+              <span className="absolute text-sm text-white/70 ml-20 mt-6">
                 Mentorship & Exams
               </span>
             </div>
