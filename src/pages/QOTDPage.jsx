@@ -1,9 +1,8 @@
 // src/pages/QOTDPage.jsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { BlockMath, InlineMath } from "react-katex";
-import{ useRef } from "react";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
@@ -17,10 +16,7 @@ function LatexText({ text }) {
     if (part.startsWith("$$")) {
       return (
         <div key={i} className="text-[0.9rem] sm:text-base">
-          <BlockMath
-            math={part.slice(2, -2)}
-            trust={true}
-          />
+          <BlockMath math={part.slice(2, -2)} trust />
         </div>
       );
     }
@@ -28,10 +24,7 @@ function LatexText({ text }) {
     if (part.startsWith("$")) {
       return (
         <span key={i} className="text-[0.9rem] sm:text-base">
-          <InlineMath
-            math={part.slice(1, -1)}
-            trust={true}
-          />
+          <InlineMath math={part.slice(1, -1)} trust />
         </span>
       );
     }
@@ -40,15 +33,16 @@ function LatexText({ text }) {
   });
 }
 
-
+/* ================= MAIN COMPONENT ================= */
 export default function QOTDPage() {
   const navigate = useNavigate();
-const explanationRef = useRef(null);
+  const explanationRef = useRef(null);
 
   const [question, setQuestion] = useState(null);
   const [selected, setSelected] = useState(null);
   const [result, setResult] = useState(null);
 
+  /* -------- Load QOTD -------- */
   useEffect(() => {
     async function loadQOTD() {
       const res = await fetch(`${API_BASE}/question/today`);
@@ -58,15 +52,17 @@ const explanationRef = useRef(null);
     loadQOTD();
   }, []);
 
+  /* -------- Auto-scroll to explanation -------- */
+  useEffect(() => {
+    if (result && explanationRef.current) {
+      explanationRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [result]);
 
-useEffect(() => {
-  if (result && explanationRef.current) {
-    explanationRef.current.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  }
-}, [result]);
+  /* -------- Submit Answer -------- */
   async function submitAnswer() {
     if (!selected || result) return;
 
@@ -80,7 +76,7 @@ useEffect(() => {
     });
 
     const json = await res.json();
-    setResult({ ...json, selected });
+    setResult(json);
   }
 
   function closeAll() {
@@ -130,17 +126,7 @@ useEffect(() => {
         <div className="flex-1 px-4 sm:px-6 py-4 overflow-hidden">
           <div className="h-full overflow-y-auto hide-scrollbar space-y-5">
             {/* QUESTION */}
-            <div
-              className="
-                text-sm
-                sm:text-base
-                md:text-lg
-                font-semibold
-                leading-snug
-                sm:leading-relaxed
-                text-slate-800
-              "
-            >
+            <div className="text-sm sm:text-base md:text-lg font-semibold leading-snug sm:leading-relaxed text-slate-800">
               <LatexText text={question.question} />
             </div>
 
@@ -191,31 +177,57 @@ useEffect(() => {
                   {result.correct ? "Correct 🎉" : "Incorrect ❌"}
                 </h3>
 
-               <div ref={explanationRef} className="mt-4">
-  <h4 className="text-center text-base sm:text-lg font-bold text-indigo-700">
-    How to Approach
-  </h4>
+                {/* EXPLANATION */}
+                <div ref={explanationRef} className="mt-4">
+                  <h4 className="text-center text-base sm:text-lg font-bold text-indigo-700">
+                    How to Approach
+                  </h4>
 
-
-                  <div
-                    className="
-                      mt-3
-                      bg-white
-                      rounded-xl
-                      border
-                      p-3
-                      max-h-[35vh]
-                      overflow-y-auto
-                      hide-scrollbar
-                      text-xs
-                      sm:text-base
-                      leading-relaxed
-                      text-slate-700
-                    "
-                  >
+                  <div className="
+                    mt-3
+                    bg-white
+                    rounded-xl
+                    border
+                    p-3
+                    max-h-[35vh]
+                    overflow-y-auto
+                    hide-scrollbar
+                    text-xs
+                    sm:text-base
+                    leading-relaxed
+                    text-slate-700
+                  ">
                     <LatexText text={result.explanation} />
                   </div>
                 </div>
+
+                {/* SOLUTION BUTTON */}
+                {result.solutionVideoUrl && (
+                  <div className="mt-4 flex justify-center">
+                    <a
+                      href={result.solutionVideoUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="
+                        inline-flex
+                        items-center
+                        gap-2
+                        px-5
+                        py-2.5
+                        rounded-lg
+                        bg-indigo-600
+                        text-white
+                        text-sm
+                        sm:text-base
+                        font-medium
+                        hover:bg-indigo-700
+                        transition
+                      "
+                    >
+                      📄 View Solution
+                    </a>
+                  </div>
+                )}
               </div>
             )}
           </div>

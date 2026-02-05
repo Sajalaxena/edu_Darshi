@@ -6,7 +6,7 @@ const API = import.meta.env.VITE_API_BASE_URL;
 // ---- date normalizer (SAFE) ----
 const normalizeDate = (d) => {
   if (!d) return "";
-  return d.split("T")[0]; // "2026-02-04"
+  return d.split("T")[0];
 };
 
 export default function SingleQuestionForm({ editData, onSaved }) {
@@ -16,6 +16,7 @@ export default function SingleQuestionForm({ editData, onSaved }) {
     correctAnswer: "",
     explanation: "",
     scheduledDate: "",
+    solutionVideoUrl: "", // ✅ NEW
   };
 
   const [form, setForm] = useState(emptyForm);
@@ -31,6 +32,7 @@ export default function SingleQuestionForm({ editData, onSaved }) {
         correctAnswer: editData.correctAnswer,
         explanation: editData.explanation || "",
         scheduledDate: normalizeDate(editData.scheduledDate),
+        solutionVideoUrl: editData.solutionVideoUrl || "", // ✅ NEW
       });
     }
   }, [editData]);
@@ -59,7 +61,6 @@ export default function SingleQuestionForm({ editData, onSaved }) {
   /* ===== Date Conflict Check ===== */
   const checkDateConflict = async () => {
     try {
-      // If editing and date unchanged → skip check
       if (
         editData &&
         normalizeDate(editData.scheduledDate) ===
@@ -87,7 +88,7 @@ export default function SingleQuestionForm({ editData, onSaved }) {
       }
 
       return false;
-    } catch (err) {
+    } catch {
       toast.error("Failed to validate date");
       return true;
     }
@@ -114,6 +115,7 @@ export default function SingleQuestionForm({ editData, onSaved }) {
       correctAnswer: form.correctAnswer,
       explanation: form.explanation,
       scheduledDate: form.scheduledDate,
+      solutionVideoUrl: form.solutionVideoUrl || null, // ✅ NEW
     };
 
     try {
@@ -189,6 +191,17 @@ export default function SingleQuestionForm({ editData, onSaved }) {
         value={form.explanation}
         onChange={(e) =>
           setForm({ ...form, explanation: e.target.value })
+        }
+      />
+
+      {/* ✅ SOLUTION URL INPUT */}
+      <input
+        type="url"
+        className="input"
+        placeholder="Solution URL (PDF / YouTube / Drive)"
+        value={form.solutionVideoUrl}
+        onChange={(e) =>
+          setForm({ ...form, solutionVideoUrl: e.target.value })
         }
       />
 
