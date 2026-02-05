@@ -16,21 +16,30 @@ function LatexText({ text }) {
   return parts.map((part, i) => {
     if (part.startsWith("$$")) {
       return (
-        <div className="text-[0.9rem] sm:text-base">
-          <BlockMath key={i} math={part.slice(2, -2)} />
+        <div key={i} className="text-[0.9rem] sm:text-base">
+          <BlockMath
+            math={part.slice(2, -2)}
+            trust={true}
+          />
         </div>
       );
     }
+
     if (part.startsWith("$")) {
       return (
-        <span className="text-[0.9rem] sm:text-base">
-          <InlineMath key={i} math={part.slice(1, -1)} />
+        <span key={i} className="text-[0.9rem] sm:text-base">
+          <InlineMath
+            math={part.slice(1, -1)}
+            trust={true}
+          />
         </span>
       );
     }
+
     return <span key={i}>{part}</span>;
   });
 }
+
 
 export default function QOTDPage() {
   const navigate = useNavigate();
