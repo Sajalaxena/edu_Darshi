@@ -31,20 +31,23 @@ export default function AdminApp() {
         path="*"
         element={
           <Protected>
-            <div className="min-h-screen flex bg-gray-50">
+            <div className="admin-layout flex">
               <AdminSidebar />
-              <main className="flex-1 p-6">
-                <div className="flex justify-between items-center mb-4">
-                  <h1 className="text-xl font-semibold">Admin Panel</h1>
+              <main className="flex-1 p-6 lg:p-8 ml-0 lg:ml-64 transition-all duration-300">
+                <div className="admin-header mb-8">
+                  <div>
+                    <h1 className="text-2xl font-bold tracking-tight">Admin Dashboard</h1>
+                    <p className="text-blue-100 text-sm mt-1">Manage platform content and queries</p>
+                  </div>
                   <div>
                     <button
-                      className="btn-secondary mr-2"
+                      className="btn-secondary flex items-center gap-2 px-4 py-2 hover:bg-white/20 transition-colors"
                       onClick={() => {
                         logout();
-                        // using absolute redirect is fine here
                         window.location.href = "/admin/login";
                       }}
                     >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
                       Logout
                     </button>
                   </div>
