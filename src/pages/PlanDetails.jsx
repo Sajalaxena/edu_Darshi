@@ -247,10 +247,14 @@ export default function PlanDetails() {
                   {plan.description}
                 </p>
 
-                <div className={`w-full border rounded-2xl p-4 mb-2 ${visual.durationBg} backdrop-blur-sm`}>
+                <div className={`w-full border rounded-2xl p-4 mb-6 ${visual.durationBg} backdrop-blur-sm`}>
                   <span className={`text-[10px] font-black uppercase tracking-widest opacity-80 block mb-1`}>Duration</span>
                   <span className={`text-sm font-bold ${visual.textMain}`}>{visual.duration}</span>
                 </div>
+
+                <button className={`w-full py-4 rounded-xl font-black uppercase tracking-widest text-xs transition-all shadow-lg hover:scale-[1.02] active:scale-[0.98] ${visual.btnAccent}`}>
+                  Get Started
+                </button>
               </motion.article>
             );
           })}
@@ -259,16 +263,16 @@ export default function PlanDetails() {
 
       {/* ── Detailed Features Table/List ── */}
       <section className="container mx-auto px-4 sm:px-6 mt-32 max-w-6xl relative">
-        <div className="mb-16 text-center">
+        <div className="mb-12 text-center">
           <motion.h2 
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            className="text-3xl md:text-5xl font-black text-slate-900 mb-4 tracking-tight"
+            className="text-2xl md:text-4xl font-black text-slate-900 mb-2 tracking-tight"
           >
             Compare <span className="text-indigo-600">Features</span>
           </motion.h2>
-          <p className="text-slate-500 text-lg md:text-xl font-medium max-w-2xl mx-auto">
-            Find the perfect balance of support and flexibility for your career goals.
+          <p className="text-slate-500 text-base md:text-lg font-medium max-w-xl mx-auto">
+            Find the perfect balance of support for your career goals.
           </p>
         </div>
 
@@ -276,23 +280,23 @@ export default function PlanDetails() {
         <div className="hidden md:block bg-white/70 backdrop-blur-2xl rounded-[2.5rem] shadow-[0_30px_60px_-15px_rgba(30,27,75,0.08)] border border-white/60 overflow-hidden relative">
           
           {/* Table Header (Sticky) */}
-          <div className="sticky top-16 z-30 grid grid-cols-4 bg-white/90 backdrop-blur-xl border-b border-slate-100 shadow-sm">
-            <div className="p-8 font-black text-slate-400 uppercase tracking-[0.2em] text-xs self-center">
+          <div className="sticky top-16 z-30 grid grid-cols-4 bg-white/95 backdrop-blur-xl border-b border-slate-100 shadow-sm">
+            <div className="p-5 font-black text-slate-400 uppercase tracking-[0.2em] text-[10px] self-center pl-8">
               Feature List
             </div>
             {PLANS.map(plan => {
               const visual = VISUALS[plan.id];
               return (
-                <div key={plan.id} className="p-8 flex flex-col items-center justify-center border-l border-slate-50 relative group">
+                <div key={plan.id} className="p-4 flex flex-col items-center justify-center border-l border-slate-50 relative group">
                   {plan.id === "premium" && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-[10px] font-black uppercase tracking-widest rounded-full shadow-lg z-10 border border-white/20">
-                      Most Popular
+                    <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 px-3 py-0.5 bg-indigo-600 text-white text-[8px] font-black uppercase tracking-widest rounded-full shadow-lg z-10">
+                      Popular
                     </div>
                   )}
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-3 shadow-md border ${visual.cardBg} transition-transform group-hover:scale-110`}>
-                    {React.cloneElement(visual.icon, { size: 24 })}
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center mb-1.5 shadow-sm border ${visual.cardBg} transition-transform group-hover:scale-110`}>
+                    {React.cloneElement(visual.icon, { size: 16 })}
                   </div>
-                  <span className="font-extrabold text-slate-800 text-sm tracking-tight">{plan.name}</span>
+                  <span className="font-bold text-slate-800 text-[11px] tracking-tight">{plan.name}</span>
                 </div>
               );
             })}
@@ -310,10 +314,10 @@ export default function PlanDetails() {
                 className="grid grid-cols-4 items-stretch group hover:bg-slate-50/80 transition-all duration-300"
               >
                 {/* Feature Label */}
-                <div className="p-8 border-r border-slate-50 flex items-center">
+                <div className="p-4 px-8 border-r border-slate-50 flex items-center">
                   <div className="flex items-center gap-3">
                     <div className="w-1.5 h-1.5 rounded-full bg-indigo-200 group-hover:bg-indigo-500 transition-colors" />
-                    <span className="font-bold text-slate-700 group-hover:text-slate-900 transition-colors">{feature}</span>
+                    <span className="font-bold text-slate-700 group-hover:text-slate-900 text-sm transition-colors">{feature}</span>
                   </div>
                 </div>
 
@@ -322,19 +326,19 @@ export default function PlanDetails() {
                   const included = plan.includes.includes(feature);
                   const visual = VISUALS[plan.id];
                   return (
-                    <div key={plan.id} className={`p-8 flex items-center justify-center border-l border-slate-50 transition-colors ${plan.id === "premium" ? "bg-indigo-50/20" : ""}`}>
+                    <div key={plan.id} className={`p-4 flex items-center justify-center border-l border-slate-50 transition-colors ${plan.id === "premium" ? "bg-indigo-50/10" : ""}`}>
                       <AnimatePresence mode="wait">
                         {included ? (
                           <motion.div
                             initial={{ scale: 0, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
-                            className={`w-10 h-10 rounded-full flex items-center justify-center shadow-lg shadow-${visual.checkColor.split("-")[1]}-500/20 bg-white border border-${visual.checkColor.split("-")[1]}-100`}
+                            className={`w-8 h-8 rounded-full flex items-center justify-center shadow-lg shadow-${visual.checkColor.split("-")[1]}-500/10 bg-white border border-${visual.checkColor.split("-")[1]}-100`}
                           >
-                            <CheckCircle size={22} weight="fill" className={visual.checkColor} />
+                            <CheckCircle size={18} weight="fill" className={visual.checkColor} />
                           </motion.div>
                         ) : (
                           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="opacity-10 grayscale">
-                            <XCircle size={22} weight="bold" className="text-slate-400" />
+                            <XCircle size={18} weight="bold" className="text-slate-400" />
                           </motion.div>
                         )}
                       </AnimatePresence>
@@ -430,7 +434,7 @@ export default function PlanDetails() {
 
                   <button
                     onClick={() => window.open("https://forms.gle/j79LRuzWo5q7CxJL8", "_blank")}
-                    className={`w-full md:w-auto px-8 py-4 rounded-xl text-white font-bold text-lg tracking-wide shadow-lg transition-all duration-300 hover:-translate-y-1 ${visual.btnAccent}`}
+                    className={`w-full md:w-auto px-10 py-4 rounded-2xl text-white font-black text-lg tracking-wide shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-95 ${visual.cardBg}`}
                   >
                     Proceed with {plan.name.split(" ")[0]}
                   </button>
