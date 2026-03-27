@@ -32,11 +32,13 @@ body {
 
 /* Global */
 html,
-body,
-#root {
+body {
   height: 100%;
   overflow-x: hidden;
-  behavior: "auto"
+}
+#root {
+  min-height: 100%;
+  overflow-x: hidden;
 }
 body {
   font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,

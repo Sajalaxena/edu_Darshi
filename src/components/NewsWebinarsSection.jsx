@@ -212,7 +212,7 @@ export default function NewsWebinarsCompact() {
                   Conferences, Seminars & Workshops Updates
                 </h3>
                 <Link
-                  to="/news"
+                  to="/webinars"
                   className="inline-flex items-center justify-center
              px-5 py-2
              text-sm font-semibold
