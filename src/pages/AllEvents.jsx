@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, Filter, MapPin, Calendar, ExternalLink, ArrowRight, BookOpen } from "lucide-react";
+import MathematicalBackground from "../components/MathematicalBackground";
+import MathLoader from "../components/MathLoader";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
