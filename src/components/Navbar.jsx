@@ -15,13 +15,13 @@ export default function Navbar() {
 
   const navItems = [
     { to: "/", label: "Home" },
-    // { to: "/gallery", label: "Gallery" },
-    // { to: "/blogs", label: "Blog" },
     { to: "/mentors", label: "Mentors" },
-    // { to: "/test-series", label: "Test Series" },
-    { to: "/previous-papers", label: "Previous Papers" },
+    // { to: "/events", label: "News" },
+    { to: "/jobs", label: "Jobs" },
+    { to: "/academic-positions", label: "Academic Positions" },
+    { to: "/previous-papers", label: "Previous Year Papers" },
+    // { to: "/blogs", label: "Blogs" },
     { to: "/plans", label: "Our Services" },
-
   ];
 
   return (
@@ -53,16 +53,16 @@ export default function Navbar() {
             </Link>
 
             {/* ===== DESKTOP NAV ===== */}
-            <nav className="hidden lg:flex items-center gap-2">
+            <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
               {navItems.map((n) => (
                 <NavLink key={n.to} to={n.to}>
                   {({ isActive }) => (
                     <motion.div
-                      whileHover={{ y: -2 }}
-                      className={`relative px-4 py-2 rounded-full text-sm font-semibold transition
+                      whileHover={{ y: -1, scale: 1.02 }}
+                      className={`relative px-3 py-1.5 xl:px-4 xl:py-2 rounded-full text-[13px] xl:text-sm font-bold transition
                         ${isActive
-                          ? "text-white bg-gradient-to-r from-indigo-600 to-purple-600 shadow-md"
-                          : "text-slate-700 hover:bg-indigo-100"
+                          ? "text-white bg-gradient-to-r from-indigo-600 to-purple-600 shadow-lg shadow-indigo-500/20"
+                          : "text-slate-600 hover:text-indigo-600 hover:bg-indigo-50"
                         }`}
                     >
                       {n.label}
@@ -73,13 +73,14 @@ export default function Navbar() {
             </nav>
 
             {/* ===== CTA ===== */}
-            <div className="hidden lg:block">
+            <div className="hidden lg:block shrink-0 ms-2">
               <Link
                 to="/plans"
-                className="px-7 py-3 rounded-full text-sm font-bold text-white
-                           bg-gradient-to-r from-indigo-600 to-purple-600
-                           shadow-xl shadow-indigo-500/30
-                           hover:scale-[1.05] transition-transform"
+                className="px-5 py-2.5 xl:px-7 xl:py-3 rounded-full text-[13px] xl:text-sm font-black text-white
+                           bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600
+                           bg-[length:200%_auto] hover:bg-right transition-all duration-500
+                           shadow-lg shadow-indigo-500/25
+                           hover:scale-[1.05] active:scale-95 inline-block whitespace-nowrap"
               >
                 Register Now
               </Link>
@@ -99,7 +100,7 @@ export default function Navbar() {
       </header>
 
       {/* Spacer */}
-      <div className="h-[80px]" />
+      <div className="h-[100px]" />
 
       {/* ===== MOBILE DRAWER ===== */}
       <AnimatePresence>
