@@ -15,12 +15,13 @@ export default function Navbar() {
 
   const navItems = [
     { to: "/", label: "Home" },
-    { to: "/plans", label: "Our Services" },
-    { to: "/gallery", label: "Gallery" },
-    { to: "/blogs", label: "Blog" },
+    // { to: "/gallery", label: "Gallery" },
+    // { to: "/blogs", label: "Blog" },
     { to: "/mentors", label: "Mentors" },
-    { to: "/test-series", label: "Test Series" },
+    // { to: "/test-series", label: "Test Series" },
     { to: "/previous-papers", label: "Previous Papers" },
+    { to: "/plans", label: "Our Services" },
+
   ];
 
   return (
@@ -59,10 +60,9 @@ export default function Navbar() {
                     <motion.div
                       whileHover={{ y: -2 }}
                       className={`relative px-4 py-2 rounded-full text-sm font-semibold transition
-                        ${
-                          isActive
-                            ? "text-white bg-gradient-to-r from-indigo-600 to-purple-600 shadow-md"
-                            : "text-slate-700 hover:bg-indigo-100"
+                        ${isActive
+                          ? "text-white bg-gradient-to-r from-indigo-600 to-purple-600 shadow-md"
+                          : "text-slate-700 hover:bg-indigo-100"
                         }`}
                     >
                       {n.label}
@@ -141,11 +141,10 @@ export default function Navbar() {
                     onClick={() => setOpen(false)}
                     className={({ isActive }) =>
                       `block px-5 py-3 rounded-xl font-semibold transition
-                       ${
-                         isActive
-                           ? "bg-white text-indigo-700"
-                           : "hover:bg-white/10"
-                       }`
+                       ${isActive
+                        ? "bg-white text-indigo-700"
+                        : "hover:bg-white/10"
+                      }`
                     }
                   >
                     {n.label}

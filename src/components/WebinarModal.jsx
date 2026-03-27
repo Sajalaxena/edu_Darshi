@@ -20,11 +20,12 @@ export default function WebinarModal({ data, onClose }) {
 
   if (!data) return null;
 
-  // ✅ Flexible date handling
-  const startDate = data.startDate || data.date || data.publishedDate || "TBA";
-  const redirectLink = data.registrationLink || data.externalLink;
+  // ✅ Flexible data handling for Events, Jobs, and Academic Positions
+  const title = data.title || data.courseName || "Details";
+  const startDate = data.startDate || data.postedDate || "Not Specified";
+  const deadline = data.applicationDeadline || data.deadline || data.lastDate || "Not Specified";
+  const redirectLink = data.externalLink || data.registrationLink || "";
 
-  const deadline = data.time || data.endDate || data.source || "TBA";
 
   return (
     <AnimatePresence>
@@ -61,7 +62,7 @@ export default function WebinarModal({ data, onClose }) {
               {/* Left Section */}
               <div className="flex-1">
                 <h3 className="text-2xl font-semibold leading-snug">
-                  {data.title}
+                  {title}
                 </h3>
 
                 {/* Starts / Deadline */}

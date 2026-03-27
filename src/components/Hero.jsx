@@ -48,9 +48,6 @@ function useCounter(end, duration = 2000) {
   return count;
 }
 
-const t = setInterval(() => {
-  setIndex((i) => (i + 1) % IMAGES.length);
-}, 2000);
 
 export default function Hero() {
   const [index, setIndex] = useState(0);

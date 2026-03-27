@@ -13,7 +13,11 @@ import AdminResearchNews from "./pages/AdminResearchNews";
 import AdminWebinars from "./pages/AdminUpcomingWebinars";
 import AdminBlogs from "./pages/AdminBlogs";
 import QOTDAdmin from "./pages/QOTDAdmin";
+import AdminEvents from "./pages/AdminEvents";
+import AdminAcademicPositions from "./pages/AdminAcademicPositions";
+import AdminJobs from "./pages/AdminJobs";
 import "./admin.css";
+
 function Protected({ children }) {
   // if not logged in, redirect to the nested "login" route
   if (!isAuthenticated()) return <Navigate to="login" replace />;
@@ -60,8 +64,11 @@ export default function AdminApp() {
                   <Route path="mentors" element={<AddMentors />} />
                   <Route path="reviews" element={<AddReviews />} />
                   <Route path="previous-paper/add" element={<AddPreviousPaper />} />
-                <Route path="research-news" element={<AdminResearchNews />} />
-                      <Route path="webinars" element={<AdminWebinars />} />
+                  <Route path="research-news" element={<AdminResearchNews />} />
+                  <Route path="webinars" element={<AdminWebinars />} />
+                  <Route path="events" element={<AdminEvents />} />
+                  <Route path="academic-positions" element={<AdminAcademicPositions />} />
+                  <Route path="jobs" element={<AdminJobs />} />
                   <Route path="blogs" element={<AdminBlogs />} />
                   <Route path="qotd" element={<QOTDAdmin />} />
                   {/* default when /admin is visited -> go to queries */}

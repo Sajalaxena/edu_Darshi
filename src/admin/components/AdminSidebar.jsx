@@ -6,7 +6,10 @@ import {
   Video,
   Newspaper,
   MessageSquare,
-  LayoutDashboard
+  LayoutDashboard,
+  CalendarDays,
+  GraduationCap,
+  Briefcase,
 } from "lucide-react";
 
 export default function AdminSidebar() {
@@ -15,9 +18,13 @@ export default function AdminSidebar() {
     { to: "/admin/previous-paper/add", label: "Add Previous Paper", icon: FileText },
     { to: "/admin/research-news", label: "Research & News", icon: Newspaper },
     { to: "/admin/webinars", label: "Upcoming Webinars", icon: Video },
+    { to: "/admin/events", label: "Events", icon: CalendarDays },
+    { to: "/admin/academic-positions", label: "Academic Positions", icon: GraduationCap },
+    { to: "/admin/jobs", label: "Jobs", icon: Briefcase },
     { to: "/admin/blogs", label: "Blogs", icon: LayoutDashboard },
     { to: "/admin/qotd", label: "Question of the Day", icon: Lightbulb },
   ];
+
 
   return (
     <aside className="w-64 hidden lg:flex flex-col fixed inset-y-0 left-0 admin-glass z-50 border-r border-[#e2e8f0]">

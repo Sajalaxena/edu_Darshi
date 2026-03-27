@@ -1,15 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import {
-  Star,
-  Crown,
-  RocketLaunch,
-  CheckCircle,
-  XCircle,
-} from "phosphor-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Star, Crown, RocketLaunch, CheckCircle, XCircle } from "phosphor-react";
+import MathematicalBackground from "../components/MathematicalBackground";
 
 /* ---------- DATA ---------- */
-
 const ALL_FEATURES = [
   "Webinars (live + recordings)",
   "Adaptive Mock Tests",
@@ -78,7 +73,6 @@ const PLAN_FULL_DETAILS = {
       "Community Access: Read discussions and mentor-verified answers.",
     ],
   },
-
   premium: {
     title: "Basic Service",
     subtitle: "Everything you need for focused exam preparation",
@@ -91,7 +85,6 @@ const PLAN_FULL_DETAILS = {
       "Interview Practice sessions to build confidence and clarity.",
     ],
   },
-
   elite: {
     title: "Personalised Service",
     subtitle: "High-touch mentorship with career-focused guidance",
@@ -114,229 +107,340 @@ const PLAN_FULL_DETAILS = {
 const VISUALS = {
   free: {
     price: "₹0",
-    accent: "text-blue-600",
-    icon: <Star size={28} weight="duotone" />,
+    accent: "text-blue-100",
+    bgAccent: "bg-blue-500",
+    cardBg: "bg-gradient-to-br from-blue-600 to-sky-500",
+    textMain: "text-white",
+    textSub: "text-blue-100",
+    borderAccent: "border-blue-400 ring-blue-500",
+    btnAccent: "bg-white text-blue-700 hover:bg-blue-50 shadow-blue-900/20",
+    icon: <Star size={32} weight="duotone" className="text-white" />,
     duration: "6 Months",
+    durationBg: "bg-blue-700/50 border-blue-500 text-blue-100",
+    tableRowActive: "bg-blue-50",
+    checkColor: "text-blue-600",
   },
   premium: {
     price: "₹499",
-    accent: "text-indigo-600",
-    icon: <Crown size={28} weight="duotone" />,
+    accent: "text-indigo-100",
+    bgAccent: "bg-indigo-500",
+    cardBg: "bg-gradient-to-br from-indigo-600 to-purple-600 text-white",
+    textMain: "text-white",
+    textSub: "text-indigo-100",
+    borderAccent: "border-indigo-400 ring-indigo-500",
+    btnAccent: "bg-white text-indigo-700 hover:bg-indigo-50 shadow-indigo-900/20",
+    icon: <Crown size={32} weight="duotone" className="text-white" />,
     duration: "6 Months",
+    durationBg: "bg-indigo-800/50 border-indigo-500 text-indigo-100",
+    tableRowActive: "bg-indigo-50",
+    checkColor: "text-indigo-600",
   },
   elite: {
     price: "₹999",
-    accent: "text-emerald-600",
-    icon: <RocketLaunch size={28} weight="duotone" />,
+    accent: "text-fuchsia-100",
+    bgAccent: "bg-fuchsia-500",
+    cardBg: "bg-gradient-to-br from-violet-700 to-fuchsia-600 text-white",
+    textMain: "text-white",
+    textSub: "text-fuchsia-100",
+    borderAccent: "border-fuchsia-400 ring-fuchsia-500",
+    btnAccent: "bg-white text-fuchsia-700 hover:bg-fuchsia-50 shadow-fuchsia-900/20",
+    icon: <RocketLaunch size={32} weight="duotone" className="text-white" />,
     duration: "6 Months",
+    durationBg: "bg-fuchsia-800/50 border-fuchsia-500 text-fuchsia-100",
+    tableRowActive: "bg-fuchsia-50",
+    checkColor: "text-fuchsia-600",
   },
 };
-
-/* ---------- COMPONENT ---------- */
 
 export default function PlanDetails() {
   const { id } = useParams();
   const location = useLocation();
-  const navigate = useNavigate();
-
   const selectedFromNav = id || location.state?.selected || null;
   const [activePlan, setActivePlan] = useState(selectedFromNav);
-
   const refs = useRef({});
 
   useEffect(() => {
     if (activePlan && refs.current[activePlan]) {
-      refs.current[activePlan].scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
+      const yOffset = -120; // Offset for sticky navbar
+      const element = refs.current[activePlan];
+      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
     }
   }, [activePlan]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 via-indigo-50 to-white">
-      <section className="container mx-auto px-6 py-14">
-        {/* BACK */}
+    <div className="bg-slate-50 min-h-screen pb-20">
+      <MathematicalBackground />
+      {/* ── Animated Hero Section ── */}
+      <section className="relative bg-[#0E0B16] overflow-hidden pt-24 pb-32">
+        {/* Animated Background Gradients & Shapes */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-[50%] -left-[10%] w-[70%] h-[100%] rounded-full bg-gradient-to-br from-white/5 to-transparent blur-3xl opacity-50 pointer-events-none" />
+          <div className="absolute top-[20%] right-[-10%] w-[70%] h-[100%] rounded-full bg-gradient-to-bl from-white/5 to-transparent blur-3xl opacity-50 pointer-events-none" />
+          <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 "></div>
+        </div>
 
-        {/* HEADER */}
-        <h2
-          className="text-3xl md:text-4xl font-extrabold text-center mb-8"
-          style={{ color: "var(--brand, #2563EB)" }}
-        >
-          Our Services — Full Details{" "}
-        </h2>
+        <div className="relative container mx-auto px-4 sm:px-6 z-10 text-center">
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="inline-block mb-4 px-4 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-xs font-bold uppercase tracking-widest backdrop-blur-md">
+            Premium Offerings
+          </motion.div>
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 drop-shadow-2xl tracking-tight leading-tight"
+          >
+            Choose Your <br className="hidden md:block"/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-200">
+              Preparation Journey
+            </span>
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-lg md:text-xl text-indigo-100/80 max-w-2xl mx-auto mb-10 leading-relaxed font-light"
+          >
+            Explore our meticulously crafted service plans designed to support every stage of your academic career.
+          </motion.p>
+        </div>
+      </section>
 
-        <p className="text-slate-600 mb-10 text-center">
-          Choose the plan that best fits your preparation journey.
-        </p>
-
-        {/* PLANS GRID */}
-        <div className="grid gap-8 md:grid-cols-3">
-          {PLANS.map((plan) => {
+      {/* ── Pricing Overview ── */}
+      <section className="container mx-auto px-4 sm:px-6 relative z-20 -mt-20">
+        <div className="grid gap-8 md:grid-cols-3 max-w-6xl mx-auto">
+          {PLANS.map((plan, i) => {
             const visual = VISUALS[plan.id];
             const active = activePlan === plan.id;
 
             return (
-              <article
+              <motion.article
+                initial={{ opacity: 0, y: 30 }} 
+                animate={{ opacity: 1, y: 0 }} 
+                transition={{ duration: 0.5, delay: 0.2 + (i * 0.1) }}
                 key={plan.id}
-                ref={(el) => (refs.current[plan.id] = el)}
                 onClick={() => setActivePlan(plan.id)}
-                className={`cursor-pointer rounded-2xl p-7 bg-white border transition
-                  ${
-                    active
-                      ? "border-indigo-400 ring-2 ring-indigo-200 scale-[1.02]"
-                      : "border-blue-100 hover:shadow-md"
-                  }`}
+                className={`cursor-pointer rounded-[2rem] p-8 md:p-10 ${visual.cardBg} border transition-all duration-300 shadow-xl flex flex-col items-center text-center relative overflow-hidden
+                  ${active 
+                    ? `border-white ring-4 scale-[1.03] shadow-2xl z-10 ${visual.borderAccent}` 
+                    : "border-white/20 hover:border-white/40 hover:shadow-2xl hover:-translate-y-2"}
+                `}
               >
-                {/* HEADER */}
-                <div className="text-center">
-                  <div
-                    className={`mx-auto mb-3 w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center ${visual.accent}`}
-                  >
-                    {visual.icon}
-                  </div>
+                <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 blur-3xl rounded-full pointer-events-none"></div>
 
-                  <h3 className="text-lg font-semibold text-slate-900">
-                    {plan.name}
-                  </h3>
+                <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 shadow-sm border border-white/30 bg-white/10 backdrop-blur-sm`}>
+                  {visual.icon}
+                </div>
 
+                <h3 className={`text-2xl font-bold ${visual.textMain} mb-2`}>{plan.name}</h3>
+
+                <div className="mb-6 min-h-[50px] flex flex-col justify-end">
                   {plan.id === "premium" ? (
-                    <div className="mt-1">
-                      <div className="text-2xl font-bold text-slate-400">
-                        ₹499
-                      </div>
-                      <div
-                        className="mt-1 inline-block px-3 py-1 rounded-full
-      bg-gradient-to-r from-purple-500 to-pink-500
-      text-white text-xs font-semibold shadow"
-                      >
-                        🎉 Registration FREE till March
+                    <div>
+                      <div className="text-3xl font-black text-white/50 line-through decoration-white/50 decoration-2 mb-1">₹499</div>
+                      <div className="inline-flex px-4 py-1.5 rounded-full bg-white text-purple-700 text-[11px] font-black uppercase tracking-wider shadow-lg">
+                        Registration FREE till March 🎉
                       </div>
                     </div>
                   ) : (
-                    <p className={`mt-1 text-3xl font-bold ${visual.accent}`}>
-                      {visual.price}
-                    </p>
+                    <div className={`text-5xl font-black tracking-tight ${visual.textMain}`}>{visual.price}</div>
                   )}
-
-                  <div className="mt-2 text-xs text-slate-500 space-y-0.5">
-                    <div>
-                      <span className="font-medium">Duration:</span>{" "}
-                      {visual.duration}
-                    </div>
-                    {/* <div>
-                      <span className="font-medium">Per Session:</span>{" "}
-                      <span className="text-slate-700">
-                        {visual.perSession}
-                      </span>
-                    </div> */}
-                  </div>
                 </div>
 
-                {/* FEATURES */}
-                <ul className="mt-6 space-y-2 text-sm">
-                  {ALL_FEATURES.map((feature) => {
-                    const included = plan.includes.includes(feature);
-                    return (
-                      <li
-                        key={feature}
-                        className={`flex items-center gap-2 ${
-                          included ? "text-slate-700" : "text-slate-400 "
-                        }`}
-                      >
-                        {included ? (
-                          <CheckCircle size={18} className="text-green-500" />
-                        ) : (
-                          <XCircle size={18} className="text-red-400" />
-                        )}
-                        {feature}
-                      </li>
-                    );
-                  })}
-                </ul>
-              </article>
-            );
-          })}
-        </div>
+                <p className={`text-sm font-medium ${visual.textSub} mb-8 max-w-[200px] leading-relaxed`}>
+                  {plan.description}
+                </p>
 
-        {/* BRIEF DESCRIPTION */}
-        {/* ================= PLAN DETAILS (ALWAYS VISIBLE) ================= */}
-        <div className="mt-20 space-y-16">
-          {PLANS.map((plan) => {
-            const detail = PLAN_FULL_DETAILS[plan.id];
-            const visual = VISUALS[plan.id];
-
-            return (
-              <section
-                key={plan.id}
-                className="max-w-5xl mx-auto bg-white border border-blue-100 rounded-2xl p-8 shadow-sm"
-              >
-                {/* Header */}
-                <div className="flex items-center gap-4 mb-4">
-                  <div
-                    className={`w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center ${visual.accent}`}
-                  >
-                    {visual.icon}
-                  </div>
-
-                  <div>
-                    <h3 className="text-2xl font-bold text-slate-900">
-                      {detail.title}
-                    </h3>
-                    <p className="text-sm text-slate-500">{detail.subtitle}</p>
-                    {plan.id === "premium" ? (
-                      <div className="mt-1">
-                        <div className="text-2xl font-bold text-slate-400 ">
-                          ₹499
-                        </div>
-                        <div
-                          className="mt-1 inline-block px-3 py-1 rounded-full
-      bg-gradient-to-r from-purple-500 to-pink-500
-      text-white text-xs font-semibold shadow"
-                        >
-                          🎉 Registration FREE till March
-                        </div>
-                      </div>
-                    ) : (
-                      <p className={`mt-1 text-3xl font-bold ${visual.accent}`}>
-                        {visual.price}
-                      </p>
-                    )}
-                  </div>
+                <div className={`w-full border rounded-2xl p-4 mb-2 ${visual.durationBg} backdrop-blur-sm`}>
+                  <span className={`text-[10px] font-black uppercase tracking-widest opacity-80 block mb-1`}>Duration</span>
+                  <span className={`text-sm font-bold ${visual.textMain}`}>{visual.duration}</span>
                 </div>
-
-                {/* Points */}
-                <ul className="mt-6 space-y-3 text-sm text-slate-700">
-                  {detail.points.map((point, i) => (
-                    <li key={i} className="flex gap-3">
-                      <CheckCircle
-                        size={18}
-                        className="text-green-500 mt-0.5"
-                      />
-                      <span>{point}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                {/* CTA */}
-                <div className="mt-6">
-                  <button
-                    onClick={() =>
-                      window.open(
-                        "https://forms.gle/j79LRuzWo5q7CxJL8",
-                        "_blank",
-                      )
-                    }
-                    className="px-6 py-2.5 rounded-lg bg-indigo-600 text-white font-medium hover:bg-indigo-700"
-                  >
-                    Proceed with {detail.title}
-                  </button>
-                </div>
-              </section>
+              </motion.article>
             );
           })}
         </div>
       </section>
+
+      {/* ── Detailed Features Table/List ── */}
+      <section className="container mx-auto px-4 sm:px-6 mt-32 max-w-6xl relative">
+        <div className="mb-16 text-center">
+          <motion.h2 
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            className="text-3xl md:text-5xl font-black text-slate-900 mb-4 tracking-tight"
+          >
+            Compare <span className="text-indigo-600">Features</span>
+          </motion.h2>
+          <p className="text-slate-500 text-lg md:text-xl font-medium max-w-2xl mx-auto">
+            Find the perfect balance of support and flexibility for your career goals.
+          </p>
+        </div>
+
+        {/* ── Desktop Table ── */}
+        <div className="hidden md:block bg-white/70 backdrop-blur-2xl rounded-[2.5rem] shadow-[0_30px_60px_-15px_rgba(30,27,75,0.08)] border border-white/60 overflow-hidden relative">
+          
+          {/* Table Header (Sticky) */}
+          <div className="sticky top-16 z-30 grid grid-cols-4 bg-white/90 backdrop-blur-xl border-b border-slate-100 shadow-sm">
+            <div className="p-8 font-black text-slate-400 uppercase tracking-[0.2em] text-xs self-center">
+              Feature List
+            </div>
+            {PLANS.map(plan => {
+              const visual = VISUALS[plan.id];
+              return (
+                <div key={plan.id} className="p-8 flex flex-col items-center justify-center border-l border-slate-50 relative group">
+                  {plan.id === "premium" && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-[10px] font-black uppercase tracking-widest rounded-full shadow-lg z-10 border border-white/20">
+                      Most Popular
+                    </div>
+                  )}
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-3 shadow-md border ${visual.cardBg} transition-transform group-hover:scale-110`}>
+                    {React.cloneElement(visual.icon, { size: 24 })}
+                  </div>
+                  <span className="font-extrabold text-slate-800 text-sm tracking-tight">{plan.name}</span>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Table Body */}
+          <div className="divide-y divide-slate-50">
+            {ALL_FEATURES.map((feature, idx) => (
+              <motion.div 
+                key={feature} 
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.05 }}
+                className="grid grid-cols-4 items-stretch group hover:bg-slate-50/80 transition-all duration-300"
+              >
+                {/* Feature Label */}
+                <div className="p-8 border-r border-slate-50 flex items-center">
+                  <div className="flex items-center gap-3">
+                    <div className="w-1.5 h-1.5 rounded-full bg-indigo-200 group-hover:bg-indigo-500 transition-colors" />
+                    <span className="font-bold text-slate-700 group-hover:text-slate-900 transition-colors">{feature}</span>
+                  </div>
+                </div>
+
+                {/* Plan Cells */}
+                {PLANS.map(plan => {
+                  const included = plan.includes.includes(feature);
+                  const visual = VISUALS[plan.id];
+                  return (
+                    <div key={plan.id} className={`p-8 flex items-center justify-center border-l border-slate-50 transition-colors ${plan.id === "premium" ? "bg-indigo-50/20" : ""}`}>
+                      <AnimatePresence mode="wait">
+                        {included ? (
+                          <motion.div
+                            initial={{ scale: 0, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            className={`w-10 h-10 rounded-full flex items-center justify-center shadow-lg shadow-${visual.checkColor.split("-")[1]}-500/20 bg-white border border-${visual.checkColor.split("-")[1]}-100`}
+                          >
+                            <CheckCircle size={22} weight="fill" className={visual.checkColor} />
+                          </motion.div>
+                        ) : (
+                          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="opacity-10 grayscale">
+                            <XCircle size={22} weight="bold" className="text-slate-400" />
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })}
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── Mobile View (Compact Cards) ── */}
+        <div className="md:hidden space-y-6">
+          {ALL_FEATURES.map((feature) => (
+            <div key={feature} className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100">
+              <h4 className="font-extrabold text-slate-800 mb-4 border-b border-slate-50 pb-4 flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-indigo-500" />
+                {feature}
+              </h4>
+              <div className="grid grid-cols-3 gap-3">
+                {PLANS.map(plan => {
+                  const included = plan.includes.includes(feature);
+                  const visual = VISUALS[plan.id];
+                  return (
+                    <div key={plan.id} className="flex flex-col items-center p-3 rounded-2xl bg-slate-50/50">
+                      <span className="text-[9px] font-black uppercase tracking-tight text-slate-400 mb-2">{plan.name.split(" ")[0]}</span>
+                      {included ? (
+                        <CheckCircle size={20} weight="fill" className={visual.checkColor} />
+                      ) : (
+                        <XCircle size={20} className="text-slate-200" />
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── In-Depth Plan Explanations ── */}
+      <section className="container mx-auto px-4 sm:px-6 mt-32 space-y-16 max-w-4xl pb-16">
+        {PLANS.map((plan) => {
+          const detail = PLAN_FULL_DETAILS[plan.id];
+          const visual = VISUALS[plan.id];
+
+          return (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              key={plan.id}
+              ref={(el) => (refs.current[plan.id] = el)}
+              className={`bg-white rounded-[2rem] border shadow-xl p-8 md:p-12 overflow-hidden relative ${visual.borderAccent} border-opacity-30`}
+            >
+              {/* Decorative side accent blur */}
+              <div className={`absolute -right-20 -bottom-20 w-64 h-64 rounded-full blur-[80px] opacity-20 pointer-events-none ${visual.bgAccent}`}></div>
+
+              <div className="relative z-10 flex flex-col md:flex-row gap-8 items-start">
+                <div className={`w-20 h-20 shrink-0 rounded-2xl flex items-center justify-center border shadow-inner ${visual.bgAccent} ${visual.accent} ${visual.borderAccent} border-opacity-40`}>
+                  {visual.icon}
+                </div>
+
+                <div className="flex-1">
+                  <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 pb-6 border-b border-slate-100">
+                    <div>
+                      <h3 className="text-3xl font-bold text-slate-900 mb-2">{detail.title}</h3>
+                      <p className="text-slate-500 font-medium">{detail.subtitle}</p>
+                    </div>
+                    
+                    <div className="text-left md:text-right shrink-0">
+                      {plan.id === "premium" ? (
+                        <div>
+                          <p className="text-2xl font-black text-slate-300 line-through decoration-slate-300 decoration-2 mb-1">₹499</p>
+                          <p className="text-sm font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500 uppercase tracking-wide">
+                            FREE till March 🎉
+                          </p>
+                        </div>
+                      ) : (
+                        <p className={`text-4xl font-black tracking-tight ${visual.accent}`}>{visual.price}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  <ul className="space-y-4 text-slate-700 leading-relaxed font-medium mb-10">
+                    {detail.points.map((point, i) => (
+                      <li key={i} className="flex gap-4 items-start">
+                        <CheckCircle size={22} weight="fill" className={`shrink-0 mt-0.5 opacity-90 ${visual.accent}`} />
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <button
+                    onClick={() => window.open("https://forms.gle/j79LRuzWo5q7CxJL8", "_blank")}
+                    className={`w-full md:w-auto px-8 py-4 rounded-xl text-white font-bold text-lg tracking-wide shadow-lg transition-all duration-300 hover:-translate-y-1 ${visual.btnAccent}`}
+                  >
+                    Proceed with {plan.name.split(" ")[0]}
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          );
+        })}
+      </section>
     </div>
   );
 }
+

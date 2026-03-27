@@ -92,3 +92,4 @@ export default function RisingStars({ imageMap = {} }) {
     </section>
   );
 }
+
