@@ -69,10 +69,6 @@ export default function AdminJobs() {
       toast.error("Title and Deadline are required");
       return;
     }
-    if (form.postedDate && form.deadline && form.postedDate > form.deadline) {
-      toast.error("Posted Date cannot be greater than Deadline");
-      return;
-    }
     try {
       setLoading(true);
       const url = editingId ? `${API_BASE}/jobs/admin/${editingId}` : `${API_BASE}/jobs/admin/upload`;

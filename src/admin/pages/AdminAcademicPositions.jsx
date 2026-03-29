@@ -79,10 +79,6 @@ export default function AdminAcademicPositions() {
       toast.error("Position Type and Last Date are required");
       return;
     }
-    if (form.startDate && form.lastDate && form.startDate > form.lastDate) {
-      toast.error("Start Date cannot be greater than Last Date");
-      return;
-    }
     try {
       setLoading(true);
       const url = editingId ? `${API_BASE}/academic-positions/admin/${editingId}` : `${API_BASE}/academic-positions/admin/upload`;

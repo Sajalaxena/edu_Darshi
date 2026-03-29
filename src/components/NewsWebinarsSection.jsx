@@ -182,6 +182,8 @@ export default function NewsWebinarsSection() {
                 title={e.title}
                 meta1Label="Event Date"
                 meta1={formatDate(e.startDate)}
+                meta2Label="Deadline"
+                meta2={formatDate(e.applicationDeadline) || "—"}
                 onClick={() => setOpen({ ...e, _modalType: "event" })}
               />
             ))}

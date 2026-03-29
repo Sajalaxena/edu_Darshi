@@ -93,10 +93,6 @@ export default function AdminEvents() {
       toast.error("Title and Start Date are required");
       return;
     }
-    if (form.startDate && form.applicationDeadline && parseDate(form.startDate) > parseDate(form.applicationDeadline)) {
-      toast.error("Start Date cannot be greater than Application Deadline");
-      return;
-    }
     try {
       setLoading(true);
       const url = editingId ? `${API_BASE}/events/admin/${editingId}` : `${API_BASE}/events/admin/upload`;
