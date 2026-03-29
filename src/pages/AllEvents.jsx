@@ -17,9 +17,30 @@ const LEVELS = ["All", "UG", "PG", "School", "Teaching Enrichment"];
 const EVENT_TYPES = ["All", "conference", "seminar", "workshop"];
 
 const TYPE_COLORS = {
-  conference: "bg-blue-50 text-blue-600 border-blue-200",
-  seminar: "bg-purple-50 text-purple-600 border-purple-200",
-  workshop: "bg-emerald-50 text-emerald-600 border-emerald-200",
+  conference: "bg-blue-50 text-blue-700 border-blue-200",
+  seminar: "bg-purple-50 text-purple-700 border-purple-200",
+  workshop: "bg-emerald-50 text-emerald-700 border-emerald-200",
+};
+
+const CARD_BG = {
+  conference: "bg-gradient-to-br from-blue-50/50 to-white border-blue-100",
+  seminar: "bg-gradient-to-br from-purple-50/50 to-white border-purple-100",
+  workshop: "bg-gradient-to-br from-emerald-50/50 to-white border-emerald-100",
+};
+
+const parseDateString = (d) => {
+  if (!d) return 0;
+  let s = String(d).trim();
+  // Transform "January 12-16, 2026" into "January 16, 2026"
+  s = s.replace(/([a-zA-Z]+)\s+\d+\s*-\s*(\d+)/, "$1 $2");
+
+  const p = s.split("-");
+  if (p.length === 3) {
+    if (p[0].length === 4) return new Date(`${p[0]}-${p[1]}-${p[2]}T23:59:59`).getTime();
+    if (p[2].length === 4) return new Date(`${p[2]}-${p[1]}-${p[0]}T23:59:59`).getTime();
+  }
+  let testT = new Date(s).getTime();
+  return isNaN(testT) ? 0 : testT;
 };
 
 export default function AllEvents() {
@@ -55,6 +76,17 @@ export default function AllEvents() {
     const matchLevel = levelFilter === "All" || e.level === levelFilter;
     const matchSub = subFilter === "All" || e.subSubject === subFilter;
     return matchSearch && matchType && matchLevel && matchSub;
+  }).sort((a, b) => {
+    const now = new Date().getTime();
+    const timeA = parseDateString(a.applicationDeadline || a.startDate);
+    const timeB = parseDateString(b.applicationDeadline || b.startDate);
+    const isCrossedA = timeA < now && timeA !== 0;
+    const isCrossedB = timeB < now && timeB !== 0;
+
+    if (isCrossedA !== isCrossedB) return isCrossedA ? 1 : -1;
+    if (timeA === 0 && timeB !== 0) return 1;
+    if (timeB === 0 && timeA !== 0) return -1;
+    return timeA - timeB;
   });
 
   return (
@@ -73,16 +105,16 @@ export default function AllEvents() {
           <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="inline-block mb-4 px-4 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-300 text-xs font-bold uppercase tracking-widest backdrop-blur-md">
             Academic Network
           </motion.div>
-          <motion.h1 
+          <motion.h1
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}
             className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 drop-shadow-2xl tracking-tight leading-tight"
           >
-            Discover Academic <br className="hidden md:block"/>
+            Discover Academic <br className="hidden md:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-teal-200">
               Workshops & Events
             </span>
           </motion.h1>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}
             className="text-lg md:text-xl text-blue-100/80 max-w-2xl mx-auto mb-10 leading-relaxed font-light"
           >
@@ -93,7 +125,7 @@ export default function AllEvents() {
 
       {/* ── Floating Search & Filters ── */}
       <section className="container mx-auto px-4 sm:px-6 relative z-20 -mt-24">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }}
           className="bg-white/80 backdrop-blur-sm rounded-3xl border border-white/60 shadow-[0_20px_40px_-15px_rgba(37,99,235,0.15)] p-6 md:p-8 max-w-5xl mx-auto"
         >
@@ -107,7 +139,7 @@ export default function AllEvents() {
               className="w-full pl-14 pr-6 py-4 rounded-2xl border-2 border-slate-100 bg-slate-50/50 text-slate-800 text-lg font-medium focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 transition-all placeholder:text-slate-400"
             />
           </div>
-          
+
           <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full md:w-auto">
               {/* Type Filter */}
@@ -172,7 +204,7 @@ export default function AllEvents() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.4, delay: i * 0.05 }}
-                  className="group relative bg-white rounded-3xl border border-slate-200 shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-all duration-300 flex flex-col overflow-hidden"
+                  className={`group relative rounded-3xl shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-all duration-300 flex flex-col overflow-hidden border ${CARD_BG[e.eventType] || "bg-white border-slate-200"}`}
                 >
                   <div className="p-6 md:p-8 flex flex-col flex-1">
                     <div className="flex flex-wrap items-start gap-2 mb-4">
@@ -185,7 +217,7 @@ export default function AllEvents() {
                         </span>
                       )}
                     </div>
-                    
+
                     <h3 className="text-xl font-bold text-slate-900 leading-snug mb-3 group-hover:text-blue-600 transition-colors line-clamp-2">
                       {e.title}
                     </h3>
@@ -195,26 +227,26 @@ export default function AllEvents() {
                         <BookOpen size={14} /> {e.subSubject}
                       </div>
                     )}
-                    
-                    <div className="space-y-2.5 mt-auto pt-4 border-t border-slate-100">
+
+                    <div className="space-y-3 mt-auto pt-4 border-t border-slate-100/50">
                       {e.venue && (
-                        <div className="flex items-start gap-3 text-slate-600">
-                          <MapPin size={16} className="text-slate-400 mt-0.5 shrink-0" />
-                          <span className="text-sm font-medium leading-tight">{e.venue}</span>
+                        <div className={`flex items-start gap-3 p-3.5 rounded-xl ${TYPE_COLORS[e.eventType] || "bg-slate-50 text-slate-700"}`}>
+                          <MapPin size={18} className="mt-0.5 shrink-0 opacity-80" />
+                          <span className="text-[14px] font-bold leading-snug">{e.venue}</span>
                         </div>
                       )}
-                      
+
                       <div className="grid grid-cols-2 gap-3 mt-4 bg-slate-50 p-3 rounded-xl">
                         {e.startDate && (
                           <div>
-                            <span className="block text-[10px] uppercase font-bold text-slate-400 mb-0.5">Starts</span>
+                            <span className="block text-[10px] uppercase font-bold text-slate-400 mb-0.5">Event Start </span>
                             <span className="block text-sm font-semibold text-emerald-600">{e.startDate}</span>
                           </div>
                         )}
                         {e.applicationDeadline && (
                           <div>
-                            <span className="block text-[10px] uppercase font-bold text-slate-400 mb-0.5">Deadline</span>
-                            <span className="block text-sm font-semibold text-rose-600">{e.applicationDeadline}</span>
+                            <span className="block text-[10px] uppercase font-bold text-slate-400 mb-0.5 animate-pulse text-rose-500">Deadline</span>
+                            <span className="block text-sm font-bold text-rose-600 animate-pulse">{e.applicationDeadline}</span>
                           </div>
                         )}
                       </div>
@@ -241,6 +273,6 @@ export default function AllEvents() {
 
 // Simple generic icons instead of large lucide imports to avoid error on GraduationCap missing
 function GraduationCapIcon(props) {
-  return <svg {...props} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>;
+  return <svg {...props} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z" /><path d="M6 12v5c3 3 9 3 12 0v-5" /></svg>;
 }
 

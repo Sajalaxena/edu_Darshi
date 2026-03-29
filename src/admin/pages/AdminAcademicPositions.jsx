@@ -1,21 +1,33 @@
 import React, { useEffect, useState } from "react";
-import { Trash2, Edit2, Calendar, Link as LinkIcon, CheckCircle2, XCircle, Search, MapPin } from "lucide-react";
+import { Trash2, Edit2, Calendar, Link as LinkIcon, CheckCircle2, XCircle, Search, MapPin, FileSpreadsheet } from "lucide-react";
 import toast from "react-hot-toast";
+import BulkUploadModal from "../components/BulkUploadModal";
+import DeleteModal from "../components/DeleteModal";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
-const POSITION_TYPES = ["masters", "phd", "postdoc", "project"];
+const POSITION_TYPES = ["masters", "phd", "postdoc", "project", "bs/bsc/b.tech"];
 
 const POSITION_LABELS = {
   masters: "Masters (MBA/MTech/MSc)",
   phd: "PhD",
   postdoc: "Post-Doctoral",
-  project: "Project Position"
+  project: "Project Position",
+  "bs/bsc/b.tech": "BS / BSc / B.Tech"
 };
 
 const emptyForm = {
   positionType: "phd", courseName: "", institution: "", location: "",
   areaOfResearch: "", startDate: "", lastDate: "", description: "", externalLink: ""
+};
+
+const formatDate = (d) => {
+  if (!d) return "—";
+  if (d.includes("-")) {
+    const p = d.split("-");
+    if (p.length === 3 && p[0].length === 4) return `${p[2]}-${p[1]}-${p[0]}`;
+  }
+  return d;
 };
 
 export default function AdminAcademicPositions() {
@@ -24,6 +36,9 @@ export default function AdminAcademicPositions() {
   const [editingId, setEditingId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState(emptyForm);
+  const [bulkUploadOpen, setBulkUploadOpen] = useState(false);
+  const [selectedIds, setSelectedIds] = useState(new Set());
+  const [deleteModal, setDeleteModal] = useState({ isOpen: false, id: null });
 
   const fetchItems = async () => {
     try {
@@ -64,6 +79,10 @@ export default function AdminAcademicPositions() {
       toast.error("Position Type and Last Date are required");
       return;
     }
+    if (form.startDate && form.lastDate && form.startDate > form.lastDate) {
+      toast.error("Start Date cannot be greater than Last Date");
+      return;
+    }
     try {
       setLoading(true);
       const url = editingId ? `${API_BASE}/academic-positions/admin/${editingId}` : `${API_BASE}/academic-positions/admin/upload`;
@@ -77,15 +96,24 @@ export default function AdminAcademicPositions() {
     finally { setLoading(false); }
   };
 
-  const deleteItem = async (id) => {
-    if (!confirm("Delete this position?")) return;
+  const confirmDelete = async () => {
     try {
       setLoading(true);
-      await fetch(`${API_BASE}/academic-positions/admin/${id}`, { method: "DELETE" });
-      toast.success("Position deleted");
+      if (deleteModal.id) {
+        await fetch(`${API_BASE}/academic-positions/admin/${deleteModal.id}`, { method: "DELETE" });
+      } else {
+        await Promise.all(
+          Array.from(selectedIds).map(id => fetch(`${API_BASE}/academic-positions/admin/${id}`, { method: "DELETE" }))
+        );
+      }
+      toast.success(deleteModal.id ? "Position deleted" : "Selected positions deleted");
+      setSelectedIds(new Set());
       fetchItems();
     } catch { toast.error("Delete failed"); }
-    finally { setLoading(false); }
+    finally {
+      setLoading(false);
+      setDeleteModal({ isOpen: false, id: null });
+    }
   };
 
   const filtered = items.filter(i =>
@@ -97,12 +125,37 @@ export default function AdminAcademicPositions() {
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
+  const toggleAll = (e) => {
+    if (e.target.checked) setSelectedIds(new Set(filtered.map(i => i._id)));
+    else setSelectedIds(new Set());
+  };
+
+  const toggleOne = (id) => {
+    const newSet = new Set(selectedIds);
+    if (newSet.has(id)) newSet.delete(id);
+    else newSet.add(id);
+    setSelectedIds(newSet);
+  };
+
   return (
     <section>
       <div className="flex justify-between items-center mb-6">
         <div>
           <h2 className="text-xl font-bold text-slate-800">{editingId ? "Edit Academic Position" : "Academic Positions"}</h2>
           <p className="text-slate-500 text-sm mt-1">Masters, PhD, Post-Doctoral & Project positions</p>
+        </div>
+        <div className="flex gap-2">
+          {selectedIds.size > 0 && (
+            <button onClick={() => setDeleteModal({ isOpen: true, id: null })} className="btn-secondary !text-rose-600 !bg-white hover:!bg-rose-50 border-rose-200 shadow-sm flex items-center gap-2 font-medium">
+              <Trash2 size={16} /> Delete Selected ({selectedIds.size})
+            </button>
+          )}
+          {!editingId && (
+            <button onClick={() => setBulkUploadOpen(true)} className="btn-secondary !text-slate-700 !bg-white hover:!bg-slate-50 border-slate-200 shadow-sm flex items-center gap-2 font-medium">
+              <FileSpreadsheet size={16} className="text-indigo-600" />
+              Bulk Upload
+            </button>
+          )}
         </div>
       </div>
 
@@ -186,13 +239,17 @@ export default function AdminAcademicPositions() {
         <div className="admin-table-wrapper">
           <table className="admin-table">
             <thead>
-              <tr><th>Position</th><th>Type</th><th>Location</th><th>Start Date</th><th>Last Date</th><th className="text-right">Actions</th></tr>
+              <tr>
+                <th className="w-12"><input type="checkbox" checked={filtered.length > 0 && selectedIds.size === filtered.length} onChange={toggleAll} className="w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" /></th>
+                <th>Position</th><th>Type</th><th>Location</th><th>Start Date</th><th>Last Date</th><th className="text-right">Actions</th>
+              </tr>
             </thead>
             <tbody>
               {filtered.length === 0 ? (
-                <tr><td colSpan="6" className="text-center py-8 text-slate-500">No positions found.</td></tr>
+                <tr><td colSpan="7" className="text-center py-8 text-slate-500">No positions found.</td></tr>
               ) : filtered.map(i => (
                 <tr key={i._id}>
+                  <td><input type="checkbox" checked={selectedIds.has(i._id)} onChange={() => toggleOne(i._id)} className="w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" /></td>
                   <td>
                     <div className="font-semibold text-slate-800 line-clamp-1">{i.courseName || "—"}</div>
                     {i.institution && <div className="text-xs text-slate-500 mt-0.5">{i.institution}</div>}
@@ -200,12 +257,12 @@ export default function AdminAcademicPositions() {
                   </td>
                   <td><span className="badge capitalize">{POSITION_LABELS[i.positionType] || i.positionType}</span></td>
                   <td className="text-sm text-slate-600">{i.location || "—"}</td>
-                  <td className="text-sm text-emerald-600 font-medium">{i.startDate || "—"}</td>
-                  <td className="text-sm text-rose-600 font-medium">{i.lastDate || "—"}</td>
+                  <td className="text-sm text-emerald-600 font-medium">{formatDate(i.startDate)}</td>
+                  <td className="text-sm text-rose-600 font-medium">{formatDate(i.lastDate)}</td>
                   <td>
                     <div className="flex items-center justify-end gap-2">
                       <button onClick={() => startEdit(i._id)} className="edit-btn" title="Edit"><Edit2 size={18} /></button>
-                      <button onClick={() => deleteItem(i._id)} className="delete-btn" title="Delete"><Trash2 size={18} /></button>
+                      <button onClick={() => setDeleteModal({ isOpen: true, id: i._id })} className="delete-btn" title="Delete"><Trash2 size={18} /></button>
                     </div>
                   </td>
                 </tr>
@@ -214,6 +271,25 @@ export default function AdminAcademicPositions() {
           </table>
         </div>
       </div>
+
+      <BulkUploadModal
+        isOpen={bulkUploadOpen}
+        onClose={() => setBulkUploadOpen(false)}
+        endpoint={`${API_BASE}/academic-positions/admin/bulk-upload`}
+        title="Bulk Upload Academic Positions"
+        instructions={`Upload an Excel or CSV file.
+Required columns: 'positionType' (masters/phd/postdoc/project), 'lastDate'
+Optional columns: 'courseName', 'institution', 'location', 'areaOfResearch', 'startDate', 'description', 'externalLink'`}
+        onUploadSuccess={fetchItems}
+      />
+
+      <DeleteModal
+        isOpen={deleteModal.isOpen}
+        onClose={() => setDeleteModal({ isOpen: false, id: null })}
+        onConfirm={confirmDelete}
+        title={deleteModal.id ? "Delete Academic Position" : "Delete Selected Positions"}
+        message={deleteModal.id ? "Are you sure you want to delete this position? This action cannot be undone." : `Are you sure you want to delete ${selectedIds.size} positions? This action cannot be undone.`}
+      />
     </section>
   );
 }

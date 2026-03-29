@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import MathLoader from "../components/MathLoader";
 import WebinarModal from "../components/WebinarModal";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
@@ -15,12 +16,17 @@ function formatDateTime(value) {
 
 export default function AllWebinars() {
   const [webinars, setWebinars] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(null);
 
   useEffect(() => {
     fetch(`${API_BASE}/webinars`)
       .then((r) => r.json())
-      .then((j) => setWebinars(j.data || []));
+      .then((j) => {
+        setWebinars(j.data || []);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   }, []);
 
   return (
@@ -32,8 +38,13 @@ export default function AllWebinars() {
         Conferences, Seminars & Workshops Updates
       </h2>
 
-      <div className="grid md:grid-cols-2 gap-4">
-        {webinars.map((w) => (
+      {loading ? (
+        <div className="min-h-[60vh] flex flex-col justify-center">
+          <MathLoader text="Loading Events..." />
+        </div>
+      ) : (
+        <div className="grid md:grid-cols-2 gap-4">
+          {webinars.map((w) => (
           <motion.div
             key={w._id}
             initial={{ opacity: 0, y: 8 }}
@@ -97,6 +108,7 @@ export default function AllWebinars() {
           </motion.div>
         ))}
       </div>
+      )}
 
       {open && <WebinarModal webinar={open} onClose={() => setOpen(null)} />}
     </section>

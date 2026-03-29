@@ -21,9 +21,18 @@ export default function WebinarModal({ data, onClose }) {
   if (!data) return null;
 
   // ✅ Flexible data handling for Events, Jobs, and Academic Positions
+  const formatDate = (s) => {
+    if (!s) return "—";
+    if (typeof s === 'string' && s.includes("-")) {
+      const p = s.split("-");
+      if (p.length === 3 && p[0].length === 4) return `${p[2]}-${p[1]}-${p[0]}`;
+    }
+    return s;
+  };
+
   const title = data.title || data.courseName || "Details";
-  const startDate = data.startDate || data.postedDate || "Not Specified";
-  const deadline = data.applicationDeadline || data.deadline || data.lastDate || "Not Specified";
+  const startDate = formatDate(data.startDate || data.postedDate || "Not Specified");
+  const deadline = formatDate(data.applicationDeadline || data.deadline || data.lastDate || "Not Specified");
   const redirectLink = data.externalLink || data.registrationLink || "";
 
 

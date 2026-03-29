@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import MathLoader from "../components/MathLoader";
 import MathematicalBackground from "../components/MathematicalBackground";
 import rehypeRaw from "rehype-raw";
 
@@ -22,7 +23,13 @@ export default function BlogDetails() {
       .catch(() => setLoading(false));
   }, [id]);
 
-  if (loading) return <div className="text-center py-10">Loading blog...</div>;
+  if (loading) {
+    return (
+      <div className="container mx-auto py-10 min-h-[60vh] flex flex-col justify-center">
+        <MathLoader text="Loading Article..." />
+      </div>
+    );
+  }
   if (!blog) return <div className="text-center py-10">Blog Not Found</div>;
 
   return (

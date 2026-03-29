@@ -6,6 +6,29 @@ import { Search, MapPin, Calendar, ExternalLink, Briefcase, Building2, ArrowRigh
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
+const formatDate = (d) => {
+  if (!d) return "—";
+  if (d.includes("-")) {
+    const p = d.split("-");
+    if (p.length === 3 && p[0].length === 4) return `${p[2]}-${p[1]}-${p[0]}`;
+  }
+  return d;
+};
+
+const parseDateString = (d) => {
+  if (!d) return 0;
+  let s = String(d).trim();
+  s = s.replace(/([a-zA-Z]+)\s+\d+\s*-\s*(\d+)/, "$1 $2");
+  
+  const p = s.split("-");
+  if (p.length === 3) {
+    if (p[0].length === 4) return new Date(`${p[0]}-${p[1]}-${p[2]}T23:59:59`).getTime();
+    if (p[2].length === 4) return new Date(`${p[2]}-${p[1]}-${p[0]}T23:59:59`).getTime();
+  }
+  let testT = new Date(s).getTime();
+  return isNaN(testT) ? 0 : testT;
+};
+
 export default function AllJobs() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -35,6 +58,17 @@ export default function AllJobs() {
       i.area?.toLowerCase().includes(q) ||
       i.location?.toLowerCase().includes(q) ||
       i.description?.toLowerCase().includes(q);
+  }).sort((a, b) => {
+    const now = new Date().getTime();
+    const timeA = parseDateString(a.deadline);
+    const timeB = parseDateString(b.deadline);
+    const isCrossedA = timeA < now && timeA !== 0;
+    const isCrossedB = timeB < now && timeB !== 0;
+
+    if (isCrossedA !== isCrossedB) return isCrossedA ? 1 : -1;
+    if (timeA === 0 && timeB !== 0) return 1;
+    if (timeB === 0 && timeA !== 0) return -1;
+    return timeA - timeB;
   });
 
   return (
@@ -170,13 +204,13 @@ export default function AllJobs() {
                         {j.postedDate && (
                           <div>
                             <span className="block text-[10px] uppercase font-bold text-slate-400 mb-0.5">Posted</span>
-                            <span className="block text-sm font-semibold text-slate-700">{j.postedDate}</span>
+                            <span className="block text-sm font-semibold text-slate-700">{formatDate(j.postedDate)}</span>
                           </div>
                         )}
                         {j.deadline && (
                           <div>
-                            <span className="block text-[10px] uppercase font-bold text-slate-400 mb-0.5">Deadline</span>
-                            <span className="block text-sm font-semibold text-rose-600">{j.deadline}</span>
+                            <span className="block text-[10px] uppercase font-bold text-slate-400 mb-0.5 animate-pulse text-rose-500">Deadline</span>
+                            <span className="block text-sm font-bold text-rose-600 animate-pulse">{formatDate(j.deadline)}</span>
                           </div>
                         )}
                       </div>

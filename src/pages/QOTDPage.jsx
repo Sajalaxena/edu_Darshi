@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { BlockMath, InlineMath } from "react-katex";
+import MathLoader from "../components/MathLoader";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
@@ -83,7 +84,11 @@ export default function QOTDPage() {
     navigate("/", { replace: true });
   }
 
-  if (!question) return null;
+  if (!question) return (
+    <div className="fixed inset-0 z-[9999] bg-white flex items-center justify-center">
+      <MathLoader text="Loading Challenge..." />
+    </div>
+  );
 
   return (
     <div className="fixed inset-0 z-[9999] bg-black/50 flex items-end sm:items-center justify-center">

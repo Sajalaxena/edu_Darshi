@@ -6,13 +6,14 @@ import { Search, MapPin, Calendar, ExternalLink, ArrowRight, BookOpen, Graduatio
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
-const POSITION_TYPES = ["All", "masters", "phd", "postdoc", "project"];
+const POSITION_TYPES = ["All", "masters", "phd", "postdoc", "project", "bs/bsc/b.tech"];
 
 const POSITION_LABELS = {
   masters: "Masters (MBA/MTech/MSc)",
   phd: "PhD",
   postdoc: "Post-Doctoral",
-  project: "Project Position"
+  project: "Project Position",
+  "bs/bsc/b.tech": "BS / BSc / B.Tech",
 };
 
 const POS_BADGE = {
@@ -20,6 +21,30 @@ const POS_BADGE = {
   phd: "bg-violet-50 text-violet-700 border-violet-200",
   postdoc: "bg-emerald-50 text-emerald-700 border-emerald-200",
   project: "bg-amber-50 text-amber-700 border-amber-200",
+  "bs/bsc/b.tech": "bg-cyan-50 text-cyan-700 border-cyan-200",
+};
+
+const formatDate = (d) => {
+  if (!d) return "—";
+  if (d.includes("-")) {
+    const p = d.split("-");
+    if (p.length === 3 && p[0].length === 4) return `${p[2]}-${p[1]}-${p[0]}`;
+  }
+  return d;
+};
+
+const parseDateString = (d) => {
+  if (!d) return 0;
+  let s = String(d).trim();
+  s = s.replace(/([a-zA-Z]+)\s+\d+\s*-\s*(\d+)/, "$1 $2");
+  
+  const p = s.split("-");
+  if (p.length === 3) {
+    if (p[0].length === 4) return new Date(`${p[0]}-${p[1]}-${p[2]}T23:59:59`).getTime();
+    if (p[2].length === 4) return new Date(`${p[2]}-${p[1]}-${p[0]}T23:59:59`).getTime();
+  }
+  let testT = new Date(s).getTime();
+  return isNaN(testT) ? 0 : testT;
 };
 
 export default function AllAcademicPositions() {
@@ -53,6 +78,17 @@ export default function AllAcademicPositions() {
       i.description?.toLowerCase().includes(q);
     const matchType = typeFilter === "All" || i.positionType === typeFilter;
     return matchSearch && matchType;
+  }).sort((a, b) => {
+    const now = new Date().getTime();
+    const timeA = parseDateString(a.lastDate);
+    const timeB = parseDateString(b.lastDate);
+    const isCrossedA = timeA < now && timeA !== 0;
+    const isCrossedB = timeB < now && timeB !== 0;
+
+    if (isCrossedA !== isCrossedB) return isCrossedA ? 1 : -1;
+    if (timeA === 0 && timeB !== 0) return 1;
+    if (timeB === 0 && timeA !== 0) return -1;
+    return timeA - timeB;
   });
 
   return (
@@ -176,13 +212,13 @@ export default function AllAcademicPositions() {
                         {i.startDate && (
                           <div>
                             <span className="block text-[10px] uppercase font-bold text-slate-400 mb-0.5">Start Date</span>
-                            <span className="block text-sm font-semibold text-emerald-600">{i.startDate}</span>
+                            <span className="block text-sm font-semibold text-emerald-600">{formatDate(i.startDate)}</span>
                           </div>
                         )}
                         {i.lastDate && (
                           <div>
-                            <span className="block text-[10px] uppercase font-bold text-slate-400 mb-0.5">Deadline</span>
-                            <span className="block text-sm font-semibold text-rose-600">{i.lastDate}</span>
+                            <span className="block text-[10px] uppercase font-bold text-slate-400 mb-0.5 animate-pulse text-rose-500">Deadline</span>
+                            <span className="block text-sm font-bold text-rose-600 animate-pulse">{formatDate(i.lastDate)}</span>
                           </div>
                         )}
                       </div>

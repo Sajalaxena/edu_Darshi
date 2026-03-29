@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Trash2, Edit2, Calendar, Link as LinkIcon, CheckCircle2, XCircle, Search, MapPin, Briefcase } from "lucide-react";
+import { Trash2, Edit2, Calendar, Link as LinkIcon, CheckCircle2, XCircle, Search, MapPin, Briefcase, FileSpreadsheet } from "lucide-react";
 import toast from "react-hot-toast";
+import BulkUploadModal from "../components/BulkUploadModal";
+import DeleteModal from "../components/DeleteModal";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
@@ -9,12 +11,24 @@ const emptyForm = {
   location: "", postedDate: "", deadline: "", description: "", externalLink: ""
 };
 
+const formatDate = (d) => {
+  if (!d) return "—";
+  if (d.includes("-")) {
+    const p = d.split("-");
+    if (p.length === 3 && p[0].length === 4) return `${p[2]}-${p[1]}-${p[0]}`;
+  }
+  return d;
+};
+
 export default function AdminJobs() {
   const [items, setItems] = useState([]);
   const [search, setSearch] = useState("");
   const [editingId, setEditingId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState(emptyForm);
+  const [bulkUploadOpen, setBulkUploadOpen] = useState(false);
+  const [selectedIds, setSelectedIds] = useState(new Set());
+  const [deleteModal, setDeleteModal] = useState({ isOpen: false, id: null });
 
   const fetchItems = async () => {
     try {
@@ -55,6 +69,10 @@ export default function AdminJobs() {
       toast.error("Title and Deadline are required");
       return;
     }
+    if (form.postedDate && form.deadline && form.postedDate > form.deadline) {
+      toast.error("Posted Date cannot be greater than Deadline");
+      return;
+    }
     try {
       setLoading(true);
       const url = editingId ? `${API_BASE}/jobs/admin/${editingId}` : `${API_BASE}/jobs/admin/upload`;
@@ -68,15 +86,24 @@ export default function AdminJobs() {
     finally { setLoading(false); }
   };
 
-  const deleteItem = async (id) => {
-    if (!confirm("Delete this job?")) return;
+  const confirmDelete = async () => {
     try {
       setLoading(true);
-      await fetch(`${API_BASE}/jobs/admin/${id}`, { method: "DELETE" });
-      toast.success("Job deleted");
+      if (deleteModal.id) {
+        await fetch(`${API_BASE}/jobs/admin/${deleteModal.id}`, { method: "DELETE" });
+      } else {
+        await Promise.all(
+          Array.from(selectedIds).map(id => fetch(`${API_BASE}/jobs/admin/${id}`, { method: "DELETE" }))
+        );
+      }
+      toast.success(deleteModal.id ? "Job deleted" : "Selected jobs deleted");
+      setSelectedIds(new Set());
       fetchItems();
     } catch { toast.error("Delete failed"); }
-    finally { setLoading(false); }
+    finally {
+      setLoading(false);
+      setDeleteModal({ isOpen: false, id: null });
+    }
   };
 
   const filtered = items.filter(i =>
@@ -88,12 +115,36 @@ export default function AdminJobs() {
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
+  const toggleAll = (e) => {
+    if (e.target.checked) setSelectedIds(new Set(filtered.map(i => i._id)));
+    else setSelectedIds(new Set());
+  };
+
+  const toggleOne = (id) => {
+    const newSet = new Set(selectedIds);
+    if (newSet.has(id)) newSet.delete(id); else newSet.add(id);
+    setSelectedIds(newSet);
+  };
+
   return (
     <section>
       <div className="flex justify-between items-center mb-6">
         <div>
           <h2 className="text-xl font-bold text-slate-800">{editingId ? "Edit Job" : "Jobs"}</h2>
           <p className="text-slate-500 text-sm mt-1">Manage faculty and academic job listings</p>
+        </div>
+        <div className="flex gap-2">
+          {selectedIds.size > 0 && (
+            <button onClick={() => setDeleteModal({ isOpen: true, id: null })} className="btn-secondary !text-rose-600 !bg-white hover:!bg-rose-50 border-rose-200 shadow-sm flex items-center gap-2 font-medium">
+              <Trash2 size={16} /> Delete Selected ({selectedIds.size})
+            </button>
+          )}
+          {!editingId && (
+            <button onClick={() => setBulkUploadOpen(true)} className="btn-secondary !text-slate-700 !bg-white hover:!bg-slate-50 border-slate-200 shadow-sm flex items-center gap-2 font-medium">
+              <FileSpreadsheet size={16} className="text-indigo-600" />
+              Bulk Upload
+            </button>
+          )}
         </div>
       </div>
 
@@ -178,13 +229,17 @@ export default function AdminJobs() {
         <div className="admin-table-wrapper">
           <table className="admin-table">
             <thead>
-              <tr><th>Job</th><th>Designation</th><th>Location</th><th>Posted</th><th>Deadline</th><th className="text-right">Actions</th></tr>
+              <tr>
+                <th className="w-12"><input type="checkbox" checked={filtered.length > 0 && selectedIds.size === filtered.length} onChange={toggleAll} className="w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" /></th>
+                <th>Job</th><th>Designation</th><th>Location</th><th>Posted</th><th>Deadline</th><th className="text-right">Actions</th>
+              </tr>
             </thead>
             <tbody>
               {filtered.length === 0 ? (
-                <tr><td colSpan="6" className="text-center py-8 text-slate-500">No jobs found.</td></tr>
+                <tr><td colSpan="7" className="text-center py-8 text-slate-500">No jobs found.</td></tr>
               ) : filtered.map(i => (
                 <tr key={i._id}>
+                  <td><input type="checkbox" checked={selectedIds.has(i._id)} onChange={() => toggleOne(i._id)} className="w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" /></td>
                   <td>
                     <div className="font-semibold text-slate-800 line-clamp-1">{i.title}</div>
                     {i.institution && <div className="text-xs text-slate-500 mt-0.5">{i.institution}</div>}
@@ -192,12 +247,12 @@ export default function AdminJobs() {
                   </td>
                   <td className="text-sm text-slate-600">{i.designation || "—"}</td>
                   <td className="text-sm text-slate-600">{i.location || "—"}</td>
-                  <td className="text-sm text-slate-500">{i.postedDate || "—"}</td>
-                  <td className="text-sm text-rose-600 font-medium">{i.deadline || "—"}</td>
+                  <td className="text-sm text-slate-500">{formatDate(i.postedDate)}</td>
+                  <td className="text-sm text-rose-600 font-medium">{formatDate(i.deadline)}</td>
                   <td>
                     <div className="flex items-center justify-end gap-2">
                       <button onClick={() => startEdit(i._id)} className="edit-btn" title="Edit"><Edit2 size={18} /></button>
-                      <button onClick={() => deleteItem(i._id)} className="delete-btn" title="Delete"><Trash2 size={18} /></button>
+                      <button onClick={() => setDeleteModal({ isOpen: true, id: i._id })} className="delete-btn" title="Delete"><Trash2 size={18} /></button>
                     </div>
                   </td>
                 </tr>
@@ -206,6 +261,25 @@ export default function AdminJobs() {
           </table>
         </div>
       </div>
+
+      <BulkUploadModal
+        isOpen={bulkUploadOpen}
+        onClose={() => setBulkUploadOpen(false)}
+        endpoint={`${API_BASE}/jobs/admin/bulk-upload`}
+        title="Bulk Upload Jobs"
+        instructions={`Upload an Excel or CSV file.
+Required columns: 'title', 'deadline'
+Optional columns: 'institution', 'designation', 'area', 'location', 'postedDate', 'description', 'externalLink'`}
+        onUploadSuccess={fetchItems}
+      />
+
+      <DeleteModal
+        isOpen={deleteModal.isOpen}
+        onClose={() => setDeleteModal({ isOpen: false, id: null })}
+        onConfirm={confirmDelete}
+        title={deleteModal.id ? "Delete Job" : "Delete Selected Jobs"}
+        message={deleteModal.id ? "Are you sure you want to delete this job? This action cannot be undone." : `Are you sure you want to delete ${selectedIds.size} jobs? This action cannot be undone.`}
+      />
     </section>
   );
 }

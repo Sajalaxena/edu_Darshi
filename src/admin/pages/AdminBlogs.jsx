@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Trash2, Edit2, LayoutDashboard, Image as ImageIcon, User, AlignLeft, Send, CheckCircle2, XCircle, Search } from "lucide-react";
 import toast from "react-hot-toast";
+import DeleteModal from "../components/DeleteModal";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
@@ -10,6 +11,8 @@ export default function AdminBlogs() {
   const [page, setPage] = useState(1);
   const [editingId, setEditingId] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [selectedIds, setSelectedIds] = useState(new Set());
+  const [deleteModal, setDeleteModal] = useState({ isOpen: false, id: null });
 
   const [form, setForm] = useState({
     title: "",
@@ -125,23 +128,23 @@ export default function AdminBlogs() {
   };
 
   /* ---------------- DELETE BLOG ---------------- */
-  const deleteBlog = async (id) => {
-    if (loading) return;
-    if (!confirm("Delete this blog?")) return;
-
+  const confirmDelete = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`${API_BASE}/blogs/admin/${id}`, {
-        method: "DELETE",
-      });
-
-      if (!res.ok) throw new Error();
-      toast.success("Blog deleted");
+      if (deleteModal.id) {
+        await fetch(`${API_BASE}/blogs/admin/${deleteModal.id}`, { method: "DELETE" });
+      } else {
+        await Promise.all(
+          Array.from(selectedIds).map(id => fetch(`${API_BASE}/blogs/admin/${id}`, { method: "DELETE" }))
+        );
+      }
+      toast.success(deleteModal.id ? "Blog deleted" : "Selected blogs deleted");
+      setSelectedIds(new Set());
       fetchBlogs();
-    } catch {
-      toast.error("Delete failed");
-    } finally {
+    } catch { toast.error("Delete failed"); }
+    finally {
       setLoading(false);
+      setDeleteModal({ isOpen: false, id: null });
     }
   };
 
@@ -157,6 +160,17 @@ export default function AdminBlogs() {
   const paginatedBlogs = filteredBlogs.slice(start, start + PAGE_SIZE);
   const totalPages = Math.ceil(filteredBlogs.length / PAGE_SIZE) || 1;
 
+  const toggleAll = (e) => {
+    if (e.target.checked) setSelectedIds(new Set(paginatedBlogs.map(i => i._id)));
+    else setSelectedIds(new Set());
+  };
+
+  const toggleOne = (id) => {
+    const newSet = new Set(selectedIds);
+    if (newSet.has(id)) newSet.delete(id); else newSet.add(id);
+    setSelectedIds(newSet);
+  };
+
   return (
     <section>
       {/* ---------- HEADER ---------- */}
@@ -166,6 +180,13 @@ export default function AdminBlogs() {
             {editingId ? "Edit Blog Post" : "Manage Blogs"}
           </h2>
           <p className="text-slate-500 text-sm mt-1">Create engaging articles and manage existing ones</p>
+        </div>
+        <div className="flex gap-2">
+          {selectedIds.size > 0 && (
+            <button onClick={() => setDeleteModal({ isOpen: true, id: null })} className="btn-secondary !text-rose-600 !bg-white hover:!bg-rose-50 border-rose-200 shadow-sm flex items-center gap-2 font-medium">
+              <Trash2 size={16} /> Delete Selected ({selectedIds.size})
+            </button>
+          )}
         </div>
       </div>
 
@@ -328,6 +349,7 @@ export default function AdminBlogs() {
           <table className="admin-table">
             <thead>
               <tr>
+                <th className="w-12"><input type="checkbox" checked={paginatedBlogs.length > 0 && selectedIds.size === paginatedBlogs.length} onChange={toggleAll} className="w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" /></th>
                 <th>Blog Post</th>
                 <th>Category</th>
                 <th>Author</th>
@@ -337,13 +359,14 @@ export default function AdminBlogs() {
             <tbody>
               {filteredBlogs.length === 0 ? (
                 <tr>
-                  <td colSpan="4" className="text-center py-8 text-slate-500">
+                  <td colSpan="5" className="text-center py-8 text-slate-500">
                     <LayoutDashboard size={32} className="mx-auto mb-2 text-slate-300" />
                     No blogs found. Start writing your first post!
                   </td>
                 </tr>
               ) : paginatedBlogs.map((b) => (
                 <tr key={b._id}>
+                  <td><input type="checkbox" checked={selectedIds.has(b._id)} onChange={() => toggleOne(b._id)} className="w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" /></td>
                   <td>
                     <div className="font-semibold text-slate-800 line-clamp-1">{b.title}</div>
                     <div className="text-sm text-slate-500 line-clamp-1 mt-0.5">{b.summary}</div>
@@ -372,7 +395,7 @@ export default function AdminBlogs() {
                       </button>
                       <button
                         disabled={loading}
-                        onClick={() => deleteBlog(b._id)}
+                        onClick={() => setDeleteModal({ isOpen: true, id: b._id })}
                         className="delete-btn"
                         title="Delete"
                       >
@@ -411,6 +434,14 @@ export default function AdminBlogs() {
           </div>
         )}
       </div>
+
+      <DeleteModal
+        isOpen={deleteModal.isOpen}
+        onClose={() => setDeleteModal({ isOpen: false, id: null })}
+        onConfirm={confirmDelete}
+        title={deleteModal.id ? "Delete Blog" : "Delete Selected Blogs"}
+        message={deleteModal.id ? "Are you sure you want to delete this blog post? This action cannot be undone." : `Are you sure you want to delete ${selectedIds.size} blog posts? This action cannot be undone.`}
+      />
     </section>
   );
 }

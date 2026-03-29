@@ -8,17 +8,35 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 function formatDate(s) {
   if (!s) return "—";
+  if (typeof s === 'string' && s.includes("-")) {
+    const p = s.split("-");
+    if (p.length === 3 && p[0].length === 4) return `${p[2]}-${p[1]}-${p[0]}`;
+  }
   return s;
 }
+
+const parseDateString = (d) => {
+  if (!d) return 0;
+  let s = String(d).trim();
+  s = s.replace(/([a-zA-Z]+)\s+\d+\s*-\s*(\d+)/, "$1 $2");
+  
+  const p = s.split("-");
+  if (p.length === 3) {
+    if (p[0].length === 4) return new Date(`${p[0]}-${p[1]}-${p[2]}T23:59:59`).getTime();
+    if (p[2].length === 4) return new Date(`${p[2]}-${p[1]}-${p[0]}T23:59:59`).getTime();
+  }
+  let testT = new Date(s).getTime();
+  return isNaN(testT) ? 0 : testT;
+};
 
 // ─────────────────────────────────────────
 // Single compact row card
 // ─────────────────────────────────────────
-function CompactRow({ badge, badgeClass, title, meta1, meta1Label, onClick }) {
+function CompactRow({ badge, badgeClass, title, meta1, meta1Label, meta2, meta2Label, onClick }) {
   return (
     <div
       onClick={onClick}
-      className="group p-4 rounded-xl bg-white border border-slate-100 hover:border-blue-300 hover:shadow-md transition cursor-pointer"
+      className="group p-4 rounded-xl bg-white/70 backdrop-blur-md border border-white/50 hover:border-blue-300 hover:shadow-md hover:bg-white/90 transition cursor-pointer"
     >
       <div className="flex items-center gap-3">
         <div className={`w-11 h-11 flex-shrink-0 flex items-center justify-center rounded-xl bg-gradient-to-br shadow-sm ${badgeClass}`}>
@@ -26,9 +44,19 @@ function CompactRow({ badge, badgeClass, title, meta1, meta1Label, onClick }) {
         </div>
         <div className="flex-1 min-w-0">
           <h4 className="text-sm font-semibold text-slate-900 group-hover:text-blue-700 transition line-clamp-2">{title}</h4>
-          <div className="mt-1 flex items-center gap-1.5 text-xs">
-            {meta1Label && <span className="text-emerald-600 font-medium">{meta1Label}:</span>}
-            <span className="text-slate-600">{meta1}</span>
+          <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
+            {meta1Label && (
+              <div className="flex items-center gap-1">
+                <span className="text-emerald-600 font-medium">{meta1Label}:</span>
+                <span className="text-slate-600">{meta1}</span>
+              </div>
+            )}
+            {meta2Label && (
+              <div className="flex items-center gap-1 animate-pulse text-rose-500">
+                <span className="font-bold">{meta2Label}:</span>
+                <span className="font-bold text-rose-600">{meta2}</span>
+              </div>
+            )}
           </div>
         </div>
         <span className="text-slate-400 group-hover:text-blue-500 transition translate-x-0 group-hover:translate-x-1 duration-300">›</span>
@@ -42,8 +70,8 @@ function CompactRow({ badge, badgeClass, title, meta1, meta1Label, onClick }) {
 // ─────────────────────────────────────────
 function SectionBox({ title, subtitle, gradientFrom, gradientTo, borderColor, shadowColor, children, viewAllTo }) {
   return (
-    <div className={`rounded-2xl overflow-hidden border ${borderColor} shadow-lg ${shadowColor} flex flex-col h-full`}
-      style={{ background: "linear-gradient(135deg, #f8faff 0%, #fff 60%, #f0f4ff 100%)" }}>
+    <div className={`rounded-2xl overflow-hidden border ${borderColor} shadow-lg ${shadowColor} flex flex-col h-full bg-white/40 backdrop-blur-xl`}
+      style={{ background: "linear-gradient(135deg, rgba(248,250,255,0.7) 0%, rgba(255,255,255,0.8) 60%, rgba(240,244,255,0.7) 100%)" }}>
       <div className={`px-6 py-4 bg-gradient-to-r ${gradientFrom} ${gradientTo} text-white flex justify-between items-start min-h-[88px]`}>
         <div>
           <h3 className="text-base md:text-lg font-semibold tracking-wide leading-snug">{title}</h3>
@@ -82,10 +110,31 @@ export default function NewsWebinarsSection() {
 
       const [evJson, posJson, jobJson] = await Promise.all([p1, p2, p3]);
 
+      const sortByDeadline = (arr, dateFieldArr) => {
+        if (!arr) return [];
+        return [...arr].sort((a, b) => {
+          const now = new Date().getTime();
+          let timeA = 0, timeB = 0;
+          for (let field of dateFieldArr) {
+            if (a[field]) { timeA = parseDateString(a[field]); break; }
+          }
+          for (let field of dateFieldArr) {
+            if (b[field]) { timeB = parseDateString(b[field]); break; }
+          }
+          const isCrossedA = timeA < now && timeA !== 0;
+          const isCrossedB = timeB < now && timeB !== 0;
+
+          if (isCrossedA !== isCrossedB) return isCrossedA ? 1 : -1;
+          if (timeA === 0 && timeB !== 0) return 1;
+          if (timeB === 0 && timeA !== 0) return -1;
+          return timeA - timeB;
+        });
+      };
+
       if (active) {
-        setEvents(evJson?.data || []);
-        setPositions(posJson?.data || []);
-        setJobs(jobJson?.data || []);
+        setEvents(sortByDeadline(evJson?.data, ['applicationDeadline', 'startDate']) || []);
+        setPositions(sortByDeadline(posJson?.data, ['lastDate', 'startDate']) || []);
+        setJobs(sortByDeadline(jobJson?.data, ['deadline', 'postedDate']) || []);
         setLoading(false);
       }
     }
@@ -131,7 +180,7 @@ export default function NewsWebinarsSection() {
                 badge={<CalendarDays size={20} />}
                 badgeClass={EVENT_BADGE[e.eventType] || "from-blue-100 to-indigo-100 text-blue-700"}
                 title={e.title}
-                meta1Label="Starts"
+                meta1Label="Event Date"
                 meta1={formatDate(e.startDate)}
                 onClick={() => setOpen({ ...e, _modalType: "event" })}
               />
@@ -159,7 +208,9 @@ export default function NewsWebinarsSection() {
                 badgeClass={POS_BADGE[p.positionType] || "from-violet-100 to-purple-100 text-violet-700"}
                 title={p.courseName || p.institution || "Position"}
                 meta1Label="Start Date"
-                meta1={p.startDate || "Not Specified"}
+                meta1={formatDate(p.startDate) || "Not Specified"}
+                meta2Label="Deadline"
+                meta2={formatDate(p.lastDate) || "—"}
                 onClick={() => setOpen({ ...p, _modalType: "position" })}
               />
             ))}
@@ -186,7 +237,9 @@ export default function NewsWebinarsSection() {
                 badgeClass="from-rose-100 to-red-100 text-rose-700"
                 title={j.title}
                 meta1Label="Posted"
-                meta1={j.postedDate || "—"}
+                meta1={formatDate(j.postedDate) || "—"}
+                meta2Label="Deadline"
+                meta2={formatDate(j.deadline) || "—"}
                 onClick={() => setOpen({ ...j, _modalType: "job" })}
               />
             ))}

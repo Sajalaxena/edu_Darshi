@@ -1,6 +1,7 @@
 // src/pages/AllNews.jsx
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import MathLoader from "../components/MathLoader";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
@@ -41,7 +42,11 @@ export default function AllNews() {
   }, []);
 
   if (loading) {
-    return <div className="text-center py-10">Loading news…</div>;
+    return (
+      <section className="container mx-auto px-6 py-10 min-h-[60vh] flex flex-col justify-center">
+        <MathLoader text="Loading Updates..." />
+      </section>
+    );
   }
 
   return (

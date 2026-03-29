@@ -16,10 +16,10 @@ export default function Navbar() {
   const navItems = [
     { to: "/", label: "Home" },
     { to: "/mentors", label: "Mentors" },
-    // { to: "/events", label: "News" },
+    { to: "/events", label: "Events" },
     { to: "/jobs", label: "Jobs" },
     { to: "/academic-positions", label: "Academic Positions" },
-    { to: "/previous-papers", label: "Previous Year Papers" },
+    { to: "/previous-papers", label: "PYQ" },
     // { to: "/blogs", label: "Blogs" },
     { to: "/plans", label: "Our Services" },
   ];
