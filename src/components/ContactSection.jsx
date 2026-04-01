@@ -1,5 +1,5 @@
 // src/components/ContactSectionModern.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PaperPlaneTilt, Clock, Users, CheckCircle } from "phosphor-react";
 
@@ -16,6 +16,229 @@ const QUALIFICATIONS = [
   "Ph.D / Postdoc",
   "Other",
 ];
+
+/* ─── Institutions Sticky Note ─── */
+function InstitutionStickyNote() {
+  useEffect(() => {
+    const styleId = "sticky-note-keyframes";
+    if (!document.getElementById(styleId)) {
+      const style = document.createElement("style");
+      style.id = styleId;
+      style.textContent = `
+        @keyframes stickyFloat {
+          0%   { transform: rotate(-2deg) translateY(0px); }
+          33%  { transform: rotate(-1deg) translateY(-6px); }
+          66%  { transform: rotate(-3deg) translateY(-3px); }
+          100% { transform: rotate(-2deg) translateY(0px); }
+        }
+        @keyframes shimmerSlide {
+          0%   { transform: translateX(-100%) skewX(-20deg); }
+          100% { transform: translateX(250%) skewX(-20deg); }
+        }
+        @keyframes pinBounce {
+          0%, 100% { transform: translateY(0) scale(1); }
+          50%        { transform: translateY(-3px) scale(1.15); }
+        }
+        @keyframes tapePulse {
+          0%, 100% { opacity: 0.85; }
+          50%        { opacity: 1; }
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }, []);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30, rotate: -4 }}
+      whileInView={{ opacity: 1, y: 0, rotate: -2 }}
+      viewport={{ once: true }}
+      transition={{ type: "spring", stiffness: 120, damping: 14, delay: 0.3 }}
+      style={{ animation: "stickyFloat 5s ease-in-out infinite" }}
+      className="relative group mt-2"
+    >
+      {/* Tape strip */}
+      <div
+        style={{
+          position: "absolute",
+          top: "-14px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "64px",
+          height: "22px",
+          background: "rgba(253,224,71,0.70)",
+          borderRadius: "3px",
+          backdropFilter: "blur(2px)",
+          boxShadow: "0 1px 4px rgba(0,0,0,0.12)",
+          animation: "tapePulse 3s ease-in-out infinite",
+          zIndex: 10,
+        }}
+      />
+
+      {/* Pin */}
+      <div
+        style={{
+          position: "absolute",
+          top: "-22px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 20,
+          animation: "pinBounce 3s ease-in-out infinite",
+        }}
+      >
+        <svg width="22" height="32" viewBox="0 0 22 32" fill="none">
+          <ellipse cx="11" cy="11" rx="9" ry="9" fill="#ef4444" stroke="#b91c1c" strokeWidth="1.5"/>
+          <ellipse cx="8" cy="8" rx="3" ry="2.5" fill="rgba(255,255,255,0.45)" transform="rotate(-30 8 8)"/>
+          <line x1="11" y1="20" x2="11" y2="32" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round"/>
+        </svg>
+      </div>
+
+      {/* Note body */}
+      <div
+        style={{
+          background: "linear-gradient(145deg, #fef08a 0%, #fde047 60%, #facc15 100%)",
+          borderRadius: "4px",
+          padding: "22px 20px 18px 20px",
+          boxShadow:
+            "4px 4px 10px rgba(0,0,0,0.18), -2px -2px 6px rgba(255,255,255,0.6), inset 0 -3px 6px rgba(0,0,0,0.06)",
+          position: "relative",
+          overflow: "hidden",
+          cursor: "default",
+          transition: "box-shadow 0.3s, transform 0.3s",
+          borderTop: "3px solid rgba(234,179,8,0.6)",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.boxShadow =
+            "8px 8px 20px rgba(0,0,0,0.22), -2px -2px 8px rgba(255,255,255,0.7), inset 0 -3px 6px rgba(0,0,0,0.06)";
+          e.currentTarget.style.transform = "rotate(0deg) scale(1.02)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.boxShadow =
+            "4px 4px 10px rgba(0,0,0,0.18), -2px -2px 6px rgba(255,255,255,0.6), inset 0 -3px 6px rgba(0,0,0,0.06)";
+          e.currentTarget.style.transform = "rotate(0deg) scale(1)";
+        }}
+      >
+        {/* Ruled lines */}
+        {[0,1,2,3,4].map((i) => (
+          <div
+            key={i}
+            style={{
+              position: "absolute",
+              left: 0, right: 0,
+              top: `${54 + i * 20}px`,
+              height: "1px",
+              background: "rgba(161,120,0,0.12)",
+            }}
+          />
+        ))}
+
+        {/* Shimmer on hover */}
+        <div
+          className="sticky-shimmer"
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.55) 50%, transparent 70%)",
+            opacity: 0,
+            pointerEvents: "none",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.opacity = "1";
+            e.currentTarget.style.animation = "shimmerSlide 0.7s ease-out";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.opacity = "0";
+            e.currentTarget.style.animation = "none";
+          }}
+        />
+
+        {/* Folded corner */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: 0, right: 0,
+            width: 0, height: 0,
+            borderStyle: "solid",
+            borderWidth: "0 0 28px 28px",
+            borderColor: "transparent transparent rgba(161,120,0,0.25) transparent",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            bottom: 0, right: 0,
+            width: 0, height: 0,
+            borderStyle: "solid",
+            borderWidth: "0 0 26px 26px",
+            borderColor: "transparent transparent #fef9c3 transparent",
+          }}
+        />
+
+        {/* Content */}
+        <div style={{ position: "relative", zIndex: 2 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px" }}>
+            <span style={{ fontSize: "18px" }}>🏫</span>
+            <span
+              style={{
+                fontSize: "13px",
+                fontWeight: 800,
+                color: "#78350f",
+                letterSpacing: "0.04em",
+                textTransform: "uppercase",
+              }}
+            >
+              For Institutions
+            </span>
+          </div>
+
+          <p
+            style={{
+              fontSize: "13px",
+              color: "#451a03",
+              lineHeight: 1.65,
+              margin: "0 0 12px 0",
+              fontFamily: "'Segoe UI', system-ui, sans-serif",
+              fontWeight: 500,
+            }}
+          >
+            Institutions&nbsp;&amp;&nbsp;Colleges interested in organizing
+            <strong> seminars or workshops</strong> on career counselling or
+            internships with us are invited to contact us at:
+          </p>
+
+          <a
+            href="mailto:contact@edudarshi.in"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "6px",
+              fontSize: "13px",
+              fontWeight: 700,
+              color: "#92400e",
+              background: "rgba(120,53,15,0.1)",
+              padding: "5px 12px",
+              borderRadius: "999px",
+              border: "1.5px solid rgba(120,53,15,0.25)",
+              textDecoration: "none",
+              transition: "all 0.2s",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "rgba(120,53,15,0.18)";
+              e.currentTarget.style.transform = "scale(1.04)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "rgba(120,53,15,0.1)";
+              e.currentTarget.style.transform = "scale(1)";
+            }}
+          >
+            <span>✉️</span>
+            contact@edudarshi.in
+          </a>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
 export default function ContactSectionModern() {
   const SUBJECTS = ["Mathematics"];
@@ -226,6 +449,9 @@ export default function ContactSectionModern() {
                   </div>
                 </motion.div> */}
               </div>
+
+              {/* Institutions Sticky Note */}
+              <InstitutionStickyNote />
             </motion.div>
 
             {/* RIGHT: Form */}
