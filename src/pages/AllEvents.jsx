@@ -13,7 +13,7 @@ const SUB_SUBJECTS = [
   "Interdisciplinary Mathematics", "Other"
 ];
 
-const LEVELS = ["All", "UG", "PG", "School", "Teaching Enrichment"];
+const LEVELS = ["All", "UG", "PG", "PhD", "Postdoc", "Teaching Enrichment", "Faculty", "Research"];
 const EVENT_TYPES = ["All", "conference", "seminar", "workshop"];
 
 const TYPE_COLORS = {
@@ -73,7 +73,8 @@ export default function AllEvents() {
       e.venue?.toLowerCase().includes(q) ||
       e.description?.toLowerCase().includes(q);
     const matchType = typeFilter === "All" || e.eventType === typeFilter;
-    const matchLevel = levelFilter === "All" || e.level === levelFilter;
+    const matchLevel = levelFilter === "All" || 
+      (Array.isArray(e.level) ? e.level.includes(levelFilter) : e.level === levelFilter);
     const matchSub = subFilter === "All" || e.subSubject === subFilter;
     return matchSearch && matchType && matchLevel && matchSub;
   }).sort((a, b) => {
@@ -138,6 +139,21 @@ export default function AllEvents() {
               onChange={e => setSearch(e.target.value)}
               className="w-full pl-14 pr-6 py-4 rounded-2xl border-2 border-slate-100 bg-slate-50/50 text-slate-800 text-lg font-medium focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 transition-all placeholder:text-slate-400"
             />
+          </div>
+
+          <div className="flex flex-wrap gap-2 mb-8 no-scrollbar overflow-x-auto pb-2">
+            {EVENT_TYPES.map((type) => (
+              <button
+                key={type}
+                onClick={() => setTypeFilter(type)}
+                className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 capitalize whitespace-nowrap
+                ${typeFilter === type 
+                  ? "bg-blue-600 text-white shadow-md shadow-blue-500/30 scale-105 border border-blue-500" 
+                  : "bg-white border-2 border-slate-100 text-slate-600 hover:border-blue-200 hover:text-blue-600"}`}
+              >
+                {type === "All" ? "All Events" : type}
+              </button>
+            ))}
           </div>
 
           <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
@@ -211,11 +227,15 @@ export default function AllEvents() {
                       <span className={`text-[11px] uppercase tracking-wider font-bold px-3 py-1 rounded-full border ${TYPE_COLORS[e.eventType] || "bg-slate-50 text-slate-600 border-slate-200"}`}>
                         {e.eventType}
                       </span>
-                      {e.level && e.level !== "All" && (
+                      {Array.isArray(e.level) ? e.level.map(l => (
+                        <span key={l} className="text-[11px] uppercase tracking-wider font-bold px-3 py-1 rounded-full border bg-amber-50 text-amber-700 border-amber-200">
+                          {l}
+                        </span>
+                      )) : (e.level && e.level !== "All" && (
                         <span className="text-[11px] uppercase tracking-wider font-bold px-3 py-1 rounded-full border bg-amber-50 text-amber-700 border-amber-200">
                           {e.level}
                         </span>
-                      )}
+                      ))}
                     </div>
 
                     <h3 className="text-xl font-bold text-slate-900 leading-snug mb-3 group-hover:text-blue-600 transition-colors line-clamp-2">
@@ -239,14 +259,14 @@ export default function AllEvents() {
                       <div className="grid grid-cols-2 gap-3 mt-4 bg-slate-50 p-3 rounded-xl">
                         {e.startDate && (
                           <div>
-                            <span className="block text-[10px] uppercase font-bold text-slate-400 mb-0.5">Event Start </span>
+                            <span className="block text-[10px] uppercase font-bold text-slate-400 mb-0.5">📅 Event Start </span>
                             <span className="block text-sm font-semibold text-emerald-600">{e.startDate}</span>
                           </div>
                         )}
                         {e.applicationDeadline && (
                           <div>
-                            <span className="block text-[10px] uppercase font-bold text-slate-400 mb-0.5 animate-pulse text-rose-500">Deadline</span>
-                            <span className="block text-sm font-bold text-rose-600 animate-pulse">{e.applicationDeadline}</span>
+                            <span className="block text-[10px] uppercase font-bold text-slate-400 mb-0.5 text-rose-500">Deadline</span>
+                            <span className="block text-sm font-bold text-rose-600">{e.applicationDeadline}</span>
                           </div>
                         )}
                       </div>

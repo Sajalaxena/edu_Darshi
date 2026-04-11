@@ -138,6 +138,21 @@ export default function AllAcademicPositions() {
               className="w-full pl-14 pr-6 py-4 rounded-2xl border-2 border-slate-100 bg-slate-50/50 text-slate-800 text-lg font-medium focus:bg-white focus:outline-none focus:border-violet-500 focus:ring-4 focus:ring-violet-500/15 transition-all placeholder:text-slate-400"
             />
           </div>
+
+          <div className="flex flex-wrap gap-2 mb-8 no-scrollbar overflow-x-auto pb-2">
+            {POSITION_TYPES.map((type) => (
+              <button
+                key={type}
+                onClick={() => setTypeFilter(type)}
+                className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 whitespace-nowrap
+                ${typeFilter === type 
+                  ? "bg-violet-600 text-white shadow-md shadow-violet-500/30 scale-105 border border-violet-500" 
+                  : "bg-white border-2 border-slate-100 text-slate-600 hover:border-violet-200 hover:text-violet-600"}`}
+              >
+                {type === "All" ? "All Positions" : POSITION_LABELS[type] || type}
+              </button>
+            ))}
+          </div>
           
           <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
             <div className="w-full md:w-auto relative">
@@ -211,14 +226,14 @@ export default function AllAcademicPositions() {
                       <div className="grid grid-cols-2 gap-3 mt-4 bg-slate-50 p-3 rounded-xl">
                         {i.startDate && (
                           <div>
-                            <span className="block text-[10px] uppercase font-bold text-slate-400 mb-0.5">Start Date</span>
+                            <span className="block text-[10px] uppercase font-bold text-slate-400 mb-0.5">📅 Start Date</span>
                             <span className="block text-sm font-semibold text-emerald-600">{formatDate(i.startDate)}</span>
                           </div>
                         )}
                         {i.lastDate && (
                           <div>
-                            <span className="block text-[10px] uppercase font-bold text-slate-400 mb-0.5 animate-pulse text-rose-500">Deadline</span>
-                            <span className="block text-sm font-bold text-rose-600 animate-pulse">{formatDate(i.lastDate)}</span>
+                            <span className="block text-[10px] uppercase font-bold text-slate-400 mb-0.5 text-rose-500">Deadline</span>
+                            <span className="block text-sm font-bold text-rose-600">{formatDate(i.lastDate)}</span>
                           </div>
                         )}
                       </div>

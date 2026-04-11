@@ -14,11 +14,11 @@ const SUB_SUBJECTS = [
   "Interdisciplinary Mathematics", "Other"
 ];
 
-const LEVELS = ["All", "UG", "PG", "School", "Teaching Enrichment"];
+const LEVELS = ["UG", "PG", "PhD", "Postdoc", "Faculty", "Research", "Teaching Enrichment"];
 const EVENT_TYPES = ["conference", "seminar", "workshop"];
 
 const emptyForm = {
-  title: "", eventType: "conference", subSubject: "", level: "All",
+  title: "", eventType: "conference", subSubject: "", level: ["UG"],
   venue: "", startDate: "", applicationDeadline: "", description: "", externalLink: ""
 };
 
@@ -74,7 +74,7 @@ export default function AdminEvents() {
       setEditingId(item._id);
       setForm({
         title: item.title || "", eventType: item.eventType || "conference",
-        subSubject: item.subSubject || "", level: item.level || "All",
+        subSubject: item.subSubject || "", level: Array.isArray(item.level) ? item.level : item.level ? [item.level] : [],
         venue: item.venue || "", startDate: item.startDate || "",
         applicationDeadline: item.applicationDeadline || "",
         description: item.description || "", externalLink: item.externalLink || ""
@@ -184,11 +184,43 @@ export default function AdminEvents() {
             </select>
           </div>
 
-          <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium text-slate-700">Level</label>
-            <select className="admin-input" value={form.level} onChange={e => set("level", e.target.value)} disabled={loading}>
-              {LEVELS.map(l => <option key={l} value={l}>{l}</option>)}
-            </select>
+          <div className="flex flex-col gap-1.5 md:col-span-3">
+            <label className="text-sm font-medium text-slate-700 mb-1">Level (Select all that apply)</label>
+            <div className="bg-slate-50 border-2 border-slate-100 rounded-2xl p-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 transition-all focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-500/10">
+              {LEVELS.map(l => (
+                <label key={l} className={`
+                  flex items-center gap-3 p-2.5 rounded-xl border-2 cursor-pointer transition-all duration-200
+                  ${form.level.includes(l) 
+                    ? "bg-blue-50 border-blue-200 text-blue-700 shadow-sm" 
+                    : "bg-white border-transparent text-slate-600 hover:border-slate-200 hover:bg-slate-50"}
+                `}>
+                  <div className={`
+                    w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all
+                    ${form.level.includes(l) 
+                      ? "bg-blue-600 border-blue-600" 
+                      : "bg-white border-slate-300"}
+                  `}>
+                    <input
+                      type="checkbox"
+                      checked={form.level.includes(l)}
+                      onChange={e => {
+                        const newLevels = e.target.checked 
+                          ? [...form.level, l] 
+                          : form.level.filter(x => x !== l);
+                        set("level", newLevels);
+                      }}
+                      className="sr-only"
+                    />
+                    {form.level.includes(l) && (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                    )}
+                  </div>
+                  <span className="text-[13px] font-bold uppercase tracking-tight leading-tight">{l}</span>
+                </label>
+              ))}
+            </div>
           </div>
 
           <div className="flex flex-col gap-1.5">
@@ -271,7 +303,13 @@ export default function AdminEvents() {
                     {i.subSubject && <div className="text-xs text-indigo-600 mt-0.5">{i.subSubject}</div>}
                   </td>
                   <td><span className="badge capitalize">{i.eventType}</span></td>
-                  <td><span className="badge">{i.level}</span></td>
+                  <td>
+                    <div className="flex flex-wrap gap-1">
+                      {Array.isArray(i.level) ? i.level.map(l => (
+                        <span key={l} className="badge bg-slate-50 text-slate-600 border-slate-200">{l}</span>
+                      )) : <span className="badge">{i.level}</span>}
+                    </div>
+                  </td>
                   <td className="text-sm text-slate-600">{i.startDate || "—"}</td>
                   <td className="text-sm text-rose-600">{i.applicationDeadline || "—"}</td>
                   <td>
