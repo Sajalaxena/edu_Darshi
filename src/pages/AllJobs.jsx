@@ -119,8 +119,7 @@ export default function AllJobs() {
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}
             className="text-lg md:text-xl text-blue-100/80 max-w-2xl mx-auto mb-10 leading-relaxed font-light"
           >
-            Discover prestigious faculty openings, research positions, and teaching opportunities across top universities.
-          </motion.p>
+Explore prestigious faculty openings, teaching opportunities, and industrial job opportunities across leading universities and institutes.          </motion.p>
         </div>
       </section>
 

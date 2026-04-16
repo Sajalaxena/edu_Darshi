@@ -159,7 +159,7 @@ export default function AllEvents() {
           <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full md:w-auto">
               {/* Type Filter */}
-              <div className="relative">
+              {/* <div className="relative">
                 <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)}
                   className="w-full appearance-none px-5 py-3.5 bg-white border-2 border-slate-100 hover:border-slate-200 rounded-xl font-semibold text-sm text-slate-700 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 cursor-pointer transition-all shadow-sm">
                   {EVENT_TYPES.map(t => <option key={t} value={t} className="capitalize">{t === "All" ? "All Types" : t.charAt(0).toUpperCase() + t.slice(1)}</option>)}
@@ -167,7 +167,7 @@ export default function AllEvents() {
                 <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-slate-400">
                   <Filter size={16} />
                 </div>
-              </div>
+              </div> */}
               {/* Level Filter */}
               <div className="relative">
                 <select value={levelFilter} onChange={e => setLevelFilter(e.target.value)}
@@ -259,7 +259,7 @@ export default function AllEvents() {
                       <div className="grid grid-cols-2 gap-3 mt-4 bg-slate-50 p-3 rounded-xl">
                         {e.startDate && (
                           <div>
-                            <span className="block text-[10px] uppercase font-bold text-slate-400 mb-0.5">📅 Event Start </span>
+                            <span className="block text-[10px] uppercase font-bold text-slate-400 mb-0.5">📅</span>
                             <span className="block text-sm font-semibold text-emerald-600">{e.startDate}</span>
                           </div>
                         )}

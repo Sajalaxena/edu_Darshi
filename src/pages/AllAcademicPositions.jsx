@@ -117,8 +117,7 @@ export default function AllAcademicPositions() {
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}
             className="text-lg md:text-xl text-violet-100/80 max-w-2xl mx-auto mb-10 leading-relaxed font-light"
           >
-            Find your next big step. Masters, PhD, Post-doctoral, and Research Project positions available across leading institutions.
-          </motion.p>
+Take your next big step. Discover Master’s, PhD, postdoctoral, and research project opportunities across leading universities and institutes.          </motion.p>
         </div>
       </section>
 
@@ -154,7 +153,7 @@ export default function AllAcademicPositions() {
             ))}
           </div>
           
-          <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+          {/* <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
             <div className="w-full md:w-auto relative">
               <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)}
                 className="w-full md:w-64 appearance-none px-5 py-3.5 bg-white border-2 border-slate-100 hover:border-slate-200 rounded-xl font-semibold text-sm text-slate-700 focus:outline-none focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 cursor-pointer transition-all shadow-sm">
@@ -167,7 +166,7 @@ export default function AllAcademicPositions() {
               <span className="text-3xl font-black text-violet-600 leading-none">{filtered.length}</span>
               <span className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Found</span>
             </div>
-          </div>
+          </div> */}
         </motion.div>
       </section>
 
