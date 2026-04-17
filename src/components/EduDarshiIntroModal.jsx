@@ -36,17 +36,17 @@ export default function EduDarshiIntroModal({ open, onClose }) {
         onClick={onClose}
       />
 
-      {/* Modal — larger max-w for desktop, still scrollable on small screens */}
+      {/* Modal — larger max-w for desktop */}
       <motion.div
         initial={{ opacity: 0, y: 20, scale: 0.96 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 20, scale: 0.96 }}
         transition={{ duration: 0.2 }}
-        className="relative z-10 w-full max-w-[900px] bg-white rounded-2xl md:rounded-3xl shadow-2xl overflow-hidden flex flex-col md:grid md:grid-cols-[40%_60%] max-h-[90vh] overflow-y-auto"
+        className="relative z-10 w-full max-w-[900px] bg-white rounded-2xl md:rounded-3xl shadow-2xl flex flex-col md:flex-row max-h-[90vh] overflow-y-auto md:overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* LEFT – Branding (shown as top bar on mobile) */}
-        <div className="relative flex md:flex-col flex-row items-center justify-center gap-3 text-white p-5 md:p-10 bg-[#0B1120] overflow-hidden shrink-0">
+        {/* LEFT – Branding (fixed on desktop) */}
+        <div className="relative flex md:flex-col flex-row items-center justify-center gap-3 text-white p-5 md:p-10 bg-[#0B1120] shrink-0 md:w-[40%]">
           <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/30 to-blue-900/50" />
           <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl" />
           
@@ -62,11 +62,14 @@ export default function EduDarshiIntroModal({ open, onClose }) {
               Your Academic Sarathi
               <span className="hidden md:inline w-6 h-[1px] bg-blue-400/50"></span>
             </p>
+            <p className="mt-2 text-emerald-400 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase">
+              Educate | Elevate | Empower
+            </p>
           </div>
         </div>
 
-        {/* RIGHT – Content */}
-        <div className="p-6 md:p-10 flex flex-col justify-between relative bg-white">
+        {/* RIGHT – Content (scrollable on desktop) */}
+        <div className="p-6 md:p-10 flex flex-col justify-between relative bg-white md:w-[60%] md:overflow-y-auto">
           {/* Close */}
           <button
             ref={closeRef}
@@ -123,7 +126,7 @@ export default function EduDarshiIntroModal({ open, onClose }) {
           </div>
 
           {/* Actions */}
-          <div className="mt-8 md:mt-10 pt-6 border-t border-slate-100 flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
+          <div className="mt-8 md:mt-10 pt-6 border-t border-slate-100 flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between shrink-0">
             <label className="inline-flex items-center gap-2.5 text-sm font-medium text-slate-500 cursor-pointer hover:text-slate-800 transition-colors">
               <input
                 type="checkbox"
