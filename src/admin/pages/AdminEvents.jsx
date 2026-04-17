@@ -244,7 +244,7 @@ export default function AdminEvents() {
 
           <div className="flex flex-col gap-1.5">
             <label className="text-sm font-medium text-slate-700 flex items-center">Start Date <span className="w-1.5 h-1.5 rounded-full bg-red-500 inline-block ml-1"></span></label>
-            <input type="text" placeholder="e.g. 15 March 2026" className="admin-input" value={form.startDate} onChange={e => set("startDate", e.target.value)} required disabled={loading} />
+            <input type="text" placeholder="e.g. 15 May 2026" className="admin-input" value={form.startDate} onChange={e => set("startDate", e.target.value)} required disabled={loading} />
           </div>
 
           <div className="flex flex-col gap-1.5">

@@ -16,8 +16,8 @@ export default function AdminSidebar() {
   const loc = useLocation().pathname;
   const items = [
     { to: "/admin/previous-paper/add", label: "Add Previous Paper", icon: FileText },
-    { to: "/admin/research-news", label: "Research & News", icon: Newspaper },
-    { to: "/admin/webinars", label: "Upcoming Webinars", icon: Video },
+    // { to: "/admin/research-news", label: "Research & News", icon: Newspaper },
+    // { to: "/admin/webinars", label: "Upcoming Webinars", icon: Video },
     { to: "/admin/events", label: "Events", icon: CalendarDays },
     { to: "/admin/academic-positions", label: "Academic Positions", icon: GraduationCap },
     { to: "/admin/jobs", label: "Jobs", icon: Briefcase },

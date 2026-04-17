@@ -414,7 +414,7 @@ export default function PlanDetails() {
                         <div>
                           <p className="text-2xl font-black text-slate-300 line-through decoration-slate-300 decoration-2 mb-1">₹499</p>
                           <p className="text-sm font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500 uppercase tracking-wide">
-                            FREE till March 🎉
+                            FREE till May 🎉
                           </p>
                         </div>
                       ) : (

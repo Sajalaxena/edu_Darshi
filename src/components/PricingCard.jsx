@@ -137,7 +137,7 @@ export default function PricingSection() {
           bg-gradient-to-r from-purple-500 to-pink-500
           text-white text-xs font-semibold shadow-md"
                         >
-                          🎉 Registration FREE till March
+                          🎉 Registration FREE till May
                         </span>
                       </div>
                     </>
