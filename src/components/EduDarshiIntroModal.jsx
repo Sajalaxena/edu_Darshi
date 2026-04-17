@@ -29,136 +29,107 @@ export default function EduDarshiIntroModal({ open, onClose }) {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:px-4">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-md"
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={onClose}
       />
 
-      {/* Modal */}
+      {/* Modal — compact, same proportions as before, scrollable on small screens */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.9, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.9, y: 20 }}
-        transition={{ duration: 0.3, ease: "easeOut" }}
-        className="relative z-10 w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col md:grid md:grid-cols-[40%_60%]"
+        initial={{ opacity: 0, y: 20, scale: 0.96 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 20, scale: 0.96 }}
+        transition={{ duration: 0.2 }}
+        className="relative z-10 w-full max-w-3xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col md:grid md:grid-cols-2 max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* LEFT – Branding */}
-        <div className="relative flex md:flex-col flex-row items-center justify-center gap-4 text-white p-8 md:p-12 bg-[#0B1120] overflow-hidden">
-          {/* Decorative background for the left part */}
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-indigo-900/40" />
-          <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl" />
-          
+        {/* LEFT – Branding (hidden on very small mobile, shown as top bar) */}
+        <div className="flex md:flex-col flex-row items-center justify-center gap-3 text-white p-5 md:p-8 bg-gradient-to-br from-indigo-600 to-blue-700">
           <img
             src="/logo.png"
             alt="EduDarshi"
-            className="relative z-10 w-20 h-20 md:w-64 md:h-64 object-contain drop-shadow-2xl"
+            className="w-12 h-12 md:w-36 md:h-36 object-contain"
           />
-
-          <div className="relative z-10 text-center">
-            <h2 className="text-2xl md:text-4xl font-black tracking-tight">EduDarshi</h2>
-            <p className="mt-2 text-blue-200 text-xs md:text-sm font-medium uppercase tracking-[0.2em]">
+          <div className="text-center">
+            <h2 className="text-lg md:text-2xl font-bold">EduDarshi</h2>
+            <p className="mt-0.5 text-blue-100 text-[11px] md:text-sm">
               Your Academic Sarathi
             </p>
           </div>
         </div>
 
-        {/* RIGHT – CONTENT */}
-        <div className="p-8 sm:p-12 flex flex-col justify-between relative bg-white">
+        {/* RIGHT – Content */}
+        <div className="p-5 sm:p-7 flex flex-col justify-between relative">
           {/* Close */}
           <button
             ref={closeRef}
             onClick={onClose}
-            className="absolute top-6 right-6 w-10 h-10 rounded-full border border-slate-100
-                       flex items-center justify-center hover:bg-slate-50 text-slate-400 hover:text-slate-600 transition-all"
+            className="absolute top-3 right-3 w-8 h-8 rounded-full border border-slate-200
+                       flex items-center justify-center hover:bg-slate-100 text-slate-500 text-sm"
             aria-label="Close"
           >
-            <span className="text-xl">✕</span>
+            ✕
           </button>
 
           <div>
-            <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight">
+            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 pr-6">
               Join EduDarshi
             </h3>
-            <p className="mt-4 text-slate-600 text-lg leading-relaxed">
+            <p className="mt-2 text-slate-600 text-sm leading-relaxed">
               A mentorship-driven platform built to support students throughout their academic and career journey.
             </p>
 
-            <div className="mt-8 grid gap-8 sm:grid-cols-2">
-              {/* Free Services */}
-              <div className="space-y-4">
-                <h4 className="font-bold text-slate-900 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-                  Our free services:
-                </h4>
-                <ul className="space-y-3 text-[14px] text-slate-600">
-                  <li className="flex gap-2 shrink-0">
-                    <span className="text-emerald-500">✔</span>
-                    <span>Updates on job opportunities, admission openings, conferences, and seminars</span>
-                  </li>
-                  <li className="flex gap-2 shrink-0">
-                    <span className="text-emerald-500">✔</span>
-                    <span>Previous year question papers with structured solutions</span>
-                  </li>
-                  <li className="flex gap-2 shrink-0">
-                    <span className="text-emerald-500">✔</span>
-                    <span>Daily question practice & concept reinforcement</span>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Limited Time Access */}
-              <div className="space-y-4">
-                <h4 className="font-bold text-slate-900 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-amber-500"></span>
-                  🌟 Limited time free access:
-                </h4>
-                <ul className="space-y-3 text-[14px] text-slate-600">
-                  <li className="flex gap-2 shrink-0">
-                    <span className="text-blue-500">✔</span>
-                    <span>Career counselling for informed academic and professional decisions</span>
-                  </li>
-                  <li className="flex gap-2 shrink-0">
-                    <span className="text-blue-500">✔</span>
-                    <span>Mock interviews for academic and career preparation</span>
-                  </li>
-                  <li className="flex gap-2 shrink-0">
-                    <span className="text-blue-500">✔</span>
-                    <span>Expert guidance sessions</span>
-                  </li>
-                  <li className="flex gap-2 shrink-0">
-                    <span className="text-blue-500">✔</span>
-                    <span>Live webinars, strategy sessions & doubt solving</span>
-                  </li>
-                </ul>
-              </div>
+            {/* Free Services */}
+            <div className="mt-4">
+              <h4 className="text-sm font-bold text-slate-800 flex items-center gap-2 mb-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
+                Our free services:
+              </h4>
+              <ul className="space-y-1.5 text-sm text-slate-600 pl-4">
+                <li className="flex gap-2"><span className="text-emerald-500 shrink-0">✔</span><span>Updates on job opportunities, admission openings, conferences & seminars</span></li>
+                <li className="flex gap-2"><span className="text-emerald-500 shrink-0">✔</span><span>Previous year question papers with structured solutions</span></li>
+                <li className="flex gap-2"><span className="text-emerald-500 shrink-0">✔</span><span>Daily question practice & concept reinforcement</span></li>
+              </ul>
             </div>
 
-            <p className="mt-10 font-bold text-blue-600 flex items-center gap-2">
-              <span>👉</span>
-              Register now and take the next step toward your dreams.
+            {/* Limited Time */}
+            <div className="mt-4">
+              <h4 className="text-sm font-bold text-slate-800 flex items-center gap-2 mb-2">
+                <span className="w-2 h-2 rounded-full bg-amber-500 shrink-0"></span>
+                🌟 Limited time free access:
+              </h4>
+              <ul className="space-y-1.5 text-sm text-slate-600 pl-4">
+                <li className="flex gap-2"><span className="text-blue-500 shrink-0">✔</span><span>Career counselling for informed academic & professional decisions</span></li>
+                <li className="flex gap-2"><span className="text-blue-500 shrink-0">✔</span><span>Mock interviews for academic and career preparation</span></li>
+                <li className="flex gap-2"><span className="text-blue-500 shrink-0">✔</span><span>Expert guidance sessions</span></li>
+                <li className="flex gap-2"><span className="text-blue-500 shrink-0">✔</span><span>Live webinars, strategy sessions & doubt solving</span></li>
+              </ul>
+            </div>
+
+            <p className="mt-4 text-sm font-semibold text-blue-600">
+              👉 Register now and take the next step toward your dreams.
             </p>
           </div>
 
           {/* Actions */}
-          <div className="mt-10 flex flex-col sm:flex-row gap-6 items-center justify-between border-t border-slate-50 pt-8">
-            <label className="inline-flex items-center gap-3 text-sm text-slate-500 cursor-pointer group">
+          <div className="mt-5 pt-4 border-t border-slate-100 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+            <label className="inline-flex items-center gap-2 text-sm text-slate-600 cursor-pointer">
               <input
                 type="checkbox"
-                className="w-5 h-5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                className="w-4 h-4"
                 onChange={(e) =>
                   e.target.checked &&
                   localStorage.setItem("hideIntroModal", "true")
                 }
               />
-              <span className="group-hover:text-slate-800 transition-colors">Don’t show again</span>
+              Don't show again
             </label>
 
             <button
               onClick={handleRegisterClick}
-              className="w-full sm:w-auto px-10 py-4 rounded-2xl bg-indigo-600 text-white font-bold shadow-xl shadow-indigo-200 hover:bg-indigo-700 hover:shadow-indigo-300 transition-all transform hover:-translate-y-1"
+              className="w-full sm:w-auto px-6 py-2.5 rounded-lg bg-indigo-600 text-white text-sm font-bold shadow hover:bg-indigo-700 transition-colors"
             >
               Register Now
             </button>
