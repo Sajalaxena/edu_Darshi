@@ -192,6 +192,16 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Disclaimer Section */}
+        <div className="mt-12 pt-8 border-t border-white/10 text-center">
+          <p className="text-xs text-white/50 leading-relaxed max-w-4xl mx-auto italic">
+            <span className="font-bold uppercase tracking-wider block mb-2 underline decoration-blue-500/50">Disclaimer</span>
+            EduDarshi is an information-sharing platform. We do not take responsibility for any
+            discrepancies or changes in the posted information. Please verify all details from the
+            official source at your end.
+          </p>
+        </div>
+
         {/* Bottom Copyright */}
         <div className="mt-12 pt-8 border-t border-white/10 text-center">
           <p className="text-sm text-white/60">

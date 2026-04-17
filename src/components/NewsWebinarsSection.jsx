@@ -52,7 +52,7 @@ function CompactRow({ badge, badgeClass, title, meta1, meta1Label, meta2, meta2L
               </div>
             )}
             {meta2Label && (
-              <div className="flex items-center gap-1 animate-pulse text-rose-500">
+              <div className="flex items-center gap-1 text-rose-500">
                 <span className="font-bold">{meta2Label}:</span>
                 <span className="font-bold text-rose-600">{meta2}</span>
               </div>
