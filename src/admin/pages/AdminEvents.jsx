@@ -19,7 +19,8 @@ const EVENT_TYPES = ["conference", "seminar", "workshop"];
 
 const emptyForm = {
   title: "", eventType: "conference", subSubject: "", level: ["UG"],
-  venue: "", startDate: "", applicationDeadline: "", description: "", externalLink: ""
+  venue: "", startDate: "", applicationDeadline: "", description: "", externalLink: "",
+  homePriority: ""
 };
 
 export default function AdminEvents() {
@@ -77,7 +78,8 @@ export default function AdminEvents() {
         subSubject: item.subSubject || "", level: Array.isArray(item.level) ? item.level : item.level ? [item.level] : [],
         venue: item.venue || "", startDate: item.startDate || "",
         applicationDeadline: item.applicationDeadline || "",
-        description: item.description || "", externalLink: item.externalLink || ""
+        description: item.description || "", externalLink: item.externalLink || "",
+        homePriority: item.homePriority != null ? String(item.homePriority) : ""
       });
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch { toast.error("Failed to load event"); }
@@ -97,7 +99,8 @@ export default function AdminEvents() {
       setLoading(true);
       const url = editingId ? `${API_BASE}/events/admin/${editingId}` : `${API_BASE}/events/admin/upload`;
       const method = editingId ? "PUT" : "POST";
-      const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
+      const payload = { ...form, homePriority: form.homePriority !== "" ? Number(form.homePriority) : null };
+      const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
       if (!res.ok) throw new Error();
       toast.success(editingId ? "Event updated" : "Event created");
       cancelEdit();
@@ -249,6 +252,27 @@ export default function AdminEvents() {
             <input type="date" className="admin-input" value={form.applicationDeadline} onChange={e => set("applicationDeadline", e.target.value)} disabled={loading} />
           </div>
 
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-slate-700 flex items-center gap-1.5">
+              🏠 Home Priority
+              {items.filter(i => i.homePriority != null && i._id !== editingId).length >= 4 && (
+                <span className="text-xs text-rose-500 font-normal">(4/4 slots used)</span>
+              )}
+            </label>
+            <select
+              className="admin-input"
+              value={form.homePriority}
+              onChange={e => set("homePriority", e.target.value)}
+              disabled={loading}
+            >
+              <option value="">— Not on Home Page —</option>
+              <option value="1">Priority 1 (Top)</option>
+              <option value="2">Priority 2</option>
+              <option value="3">Priority 3</option>
+              <option value="4">Priority 4</option>
+            </select>
+          </div>
+
           <div className="flex flex-col gap-1.5 md:col-span-2">
             <label className="text-sm font-medium text-slate-700">External Link</label>
             <div className="relative">
@@ -288,12 +312,12 @@ export default function AdminEvents() {
             <thead>
               <tr>
                 <th className="w-12"><input type="checkbox" checked={paginatedData.length > 0 && selectedIds.size === paginatedData.length} onChange={toggleAll} className="w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" /></th>
-                <th>Event</th><th>Type</th><th>Level</th><th>Start Date</th><th>Deadline</th><th className="text-right">Actions</th>
+                <th>Event</th><th>Type</th><th>Level</th><th>Start Date</th><th>Deadline</th><th>🏠 Priority ({items.filter(i => i.homePriority).length}/4)</th><th className="text-right">Actions</th>
               </tr>
             </thead>
             <tbody>
               {paginatedData.length === 0 ? (
-                <tr><td colSpan="7" className="text-center py-8 text-slate-500">No events found.</td></tr>
+                <tr><td colSpan="8" className="text-center py-8 text-slate-500">No events found.</td></tr>
               ) : paginatedData.map(i => (
                 <tr key={i._id}>
                   <td><input type="checkbox" checked={selectedIds.has(i._id)} onChange={() => toggleOne(i._id)} className="w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" /></td>
@@ -312,6 +336,11 @@ export default function AdminEvents() {
                   </td>
                   <td className="text-sm text-slate-600">{i.startDate || "—"}</td>
                   <td className="text-sm text-rose-600">{i.applicationDeadline || "—"}</td>
+                  <td className="text-center">
+                    {i.homePriority != null ? (
+                      <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-indigo-100 text-indigo-700 font-bold text-xs">{i.homePriority}</span>
+                    ) : <span className="text-slate-300 text-xs">—</span>}
+                  </td>
                   <td>
                     <div className="flex items-center justify-end gap-2">
                       <button onClick={() => startEdit(i._id)} className="edit-btn" title="Edit"><Edit2 size={18} /></button>

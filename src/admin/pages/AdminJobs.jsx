@@ -8,7 +8,8 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 const emptyForm = {
   title: "", institution: "", designation: "", area: "",
-  location: "", postedDate: "", deadline: "", description: "", externalLink: ""
+  location: "", postedDate: "", deadline: "", description: "", externalLink: "",
+  homePriority: ""
 };
 
 const formatDate = (d) => {
@@ -53,7 +54,8 @@ export default function AdminJobs() {
         designation: item.designation || "", area: item.area || "",
         location: item.location || "", postedDate: item.postedDate || "",
         deadline: item.deadline || "", description: item.description || "",
-        externalLink: item.externalLink || ""
+        externalLink: item.externalLink || "",
+        homePriority: item.homePriority != null ? String(item.homePriority) : ""
       });
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch { toast.error("Failed to load job"); }
@@ -73,7 +75,8 @@ export default function AdminJobs() {
       setLoading(true);
       const url = editingId ? `${API_BASE}/jobs/admin/${editingId}` : `${API_BASE}/jobs/admin/upload`;
       const method = editingId ? "PUT" : "POST";
-      const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
+      const payload = { ...form, homePriority: form.homePriority !== "" ? Number(form.homePriority) : null };
+      const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
       if (!res.ok) throw new Error();
       toast.success(editingId ? "Job updated" : "Job created");
       cancelEdit();
@@ -196,6 +199,27 @@ export default function AdminJobs() {
             </div>
           </div>
 
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-slate-700 flex items-center gap-1.5">
+              🏠 Home Priority
+              {items.filter(i => i.homePriority != null && i._id !== editingId).length >= 4 && (
+                <span className="text-xs text-rose-500 font-normal">(4/4 slots used)</span>
+              )}
+            </label>
+            <select
+              className="admin-input"
+              value={form.homePriority}
+              onChange={e => set("homePriority", e.target.value)}
+              disabled={loading}
+            >
+              <option value="">— Not on Home Page —</option>
+              <option value="1">Priority 1 (Top)</option>
+              <option value="2">Priority 2</option>
+              <option value="3">Priority 3</option>
+              <option value="4">Priority 4</option>
+            </select>
+          </div>
+
           <div className="flex flex-col gap-1.5 md:col-span-3">
             <label className="text-sm font-medium text-slate-700">Description</label>
             <textarea rows={3} className="admin-input resize-y" placeholder="Details about the job..." value={form.description} onChange={e => set("description", e.target.value)} disabled={loading} />
@@ -227,12 +251,12 @@ export default function AdminJobs() {
             <thead>
               <tr>
                 <th className="w-12"><input type="checkbox" checked={filtered.length > 0 && selectedIds.size === filtered.length} onChange={toggleAll} className="w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" /></th>
-                <th>Job</th><th>Designation</th><th>Location</th><th>Posted</th><th>Deadline</th><th className="text-right">Actions</th>
+                <th>Job</th><th>Designation</th><th>Location</th><th>Posted</th><th>Deadline</th><th>🏠 Priority ({items.filter(i => i.homePriority).length}/4)</th><th className="text-right">Actions</th>
               </tr>
             </thead>
             <tbody>
               {filtered.length === 0 ? (
-                <tr><td colSpan="7" className="text-center py-8 text-slate-500">No jobs found.</td></tr>
+                <tr><td colSpan="8" className="text-center py-8 text-slate-500">No jobs found.</td></tr>
               ) : filtered.map(i => (
                 <tr key={i._id}>
                   <td><input type="checkbox" checked={selectedIds.has(i._id)} onChange={() => toggleOne(i._id)} className="w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" /></td>
@@ -245,6 +269,11 @@ export default function AdminJobs() {
                   <td className="text-sm text-slate-600">{i.location || "—"}</td>
                   <td className="text-sm text-slate-500">{formatDate(i.postedDate)}</td>
                   <td className="text-sm text-rose-600 font-medium">{formatDate(i.deadline)}</td>
+                  <td className="text-center">
+                    {i.homePriority != null ? (
+                      <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-rose-100 text-rose-700 font-bold text-xs">{i.homePriority}</span>
+                    ) : <span className="text-slate-300 text-xs">—</span>}
+                  </td>
                   <td>
                     <div className="flex items-center justify-end gap-2">
                       <button onClick={() => startEdit(i._id)} className="edit-btn" title="Edit"><Edit2 size={18} /></button>

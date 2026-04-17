@@ -104,11 +104,15 @@ export default function NewsWebinarsSection() {
     async function fetchAll() {
       setLoading(true);
 
+      // Fetch homepage-pinned items (homePriority 1-4) and all items as fallback
+      const p1h = fetch(`${API_BASE}/events?homepage=true`).then(r => r.json()).catch(() => null);
+      const p2h = fetch(`${API_BASE}/academic-positions?homepage=true`).then(r => r.json()).catch(() => null);
+      const p3h = fetch(`${API_BASE}/jobs?homepage=true`).then(r => r.json()).catch(() => null);
       const p1 = fetch(`${API_BASE}/events`).then(r => r.json()).catch(() => null);
       const p2 = fetch(`${API_BASE}/academic-positions`).then(r => r.json()).catch(() => null);
       const p3 = fetch(`${API_BASE}/jobs`).then(r => r.json()).catch(() => null);
 
-      const [evJson, posJson, jobJson] = await Promise.all([p1, p2, p3]);
+      const [evHome, posHome, jobHome, evJson, posJson, jobJson] = await Promise.all([p1h, p2h, p3h, p1, p2, p3]);
 
       const sortByDeadline = (arr, dateFieldArr) => {
         if (!arr) return [];
@@ -132,9 +136,14 @@ export default function NewsWebinarsSection() {
       };
 
       if (active) {
-        setEvents(sortByDeadline(evJson?.data, ['applicationDeadline', 'startDate']) || []);
-        setPositions(sortByDeadline(posJson?.data, ['lastDate', 'startDate']) || []);
-        setJobs(sortByDeadline(jobJson?.data, ['deadline', 'postedDate']) || []);
+        // Use priority items if available (already sorted by priority from API), else fall back to latest
+        const evPriority = evHome?.data?.length > 0 ? evHome.data : null;
+        const posPriority = posHome?.data?.length > 0 ? posHome.data : null;
+        const jobPriority = jobHome?.data?.length > 0 ? jobHome.data : null;
+
+        setEvents(evPriority || sortByDeadline(evJson?.data, ['applicationDeadline', 'startDate']) || []);
+        setPositions(posPriority || sortByDeadline(posJson?.data, ['lastDate', 'startDate']) || []);
+        setJobs(jobPriority || sortByDeadline(jobJson?.data, ['deadline', 'postedDate']) || []);
         setLoading(false);
       }
     }
