@@ -21,6 +21,30 @@ const mentors = [
   },
 
   {
+    id: "dr-ritika-singhal",
+    name: "Dr. Ritika Singhal",
+    title: "Ph.D • IIT Delhi",
+    short: "Mathematics & Research Specialist",
+    bio: "Dr. Ritika focuses on advanced mathematics and research, guiding students through complex mathematical concepts and academic research methodology.",
+    qualifications: ["Ph.D — IIT Delhi", "Mathematics Researcher"],
+    tags: ["Mathematics", "Research"],
+    img: w2,
+    linkedin: "https://sites.google.com/view/ritikasinghal/home?authuser=0",
+  },
+
+  {
+    id: "dr-diksha-gupta",
+    name: "Dr. Diksha Gupta",
+    title: "Assistant Professor • Ph.D — IIT BHU",
+    short: "Mathematics & Academia",
+    bio: "Dr. Diksha is an Assistant Professor with a background in mathematical research from IIT BHU, dedicated to mentoring students for academic excellence.",
+    qualifications: ["Ph.D — IIT BHU", "Assistant Professor"],
+    tags: ["Mathematics", "Research", "Academia"],
+    img: w2,
+    linkedin: "https://www.jiit.ac.in/prospective-student/faculty/diksha-gupta",
+  },
+
+  {
     id: "dr-ashish-pandey",
     name: "Dr. Ashish K Pandey",
     title: "Ph.D • Allahabad University",
@@ -47,38 +71,6 @@ const mentors = [
     img: w2,
     linkedin: "http://linkedin.com/in/kavita-sonker-67021721b",
     // email: "kavita@example.com",
-  },
-  // {
-  //   id: "sajal-saxena",
-  //   name: "Sajal Saxena",
-  //   title: "MCA • NIT Patna",
-  //   short: "GEN AI • IIT Mandi",
-  //   bio: "Sajal is a full-stack engineer and AI mentor helping students in project building, ML concepts, interview prep, and career strategy.",
-  //   qualifications: ["MCA — NIT Patna", "GEN AI — IIT Mandi"],
-  //   tags: ["AI", "Projects"],
-  //   img: m2,
-  //   linkedin: "https://www.linkedin.com",
-  //   email: "sajal@example.com",
-  // },
-
-  // --------------------------
-  // New mentors added below
-  // --------------------------
-
-  {
-    id: "ms-ekta-pandey",
-    name: "Ms. Ekta Pandey",
-    title: "Bioinformatician • Industry",
-    short: "Allahabad University",
-    bio: "Ekta specializes in computational biology and bioinformatics. She guides students interested in research, genomics, and biotechnology careers.",
-    qualifications: [
-      "Bioinformatics — Allahabad University",
-      "Industry experience in genomics & data science",
-    ],
-    tags: ["Bioinformatics", "Industry"],
-    img: w2,
-    linkedin: "http://linkedin.com/in/ekta-pandey-3867321b6",
-    // email: "ekta@example.com",
   },
 
   {
@@ -123,35 +115,6 @@ const mentors = [
     // email: "himanshu@example.com",
   },
 
-  // {
-  //   id: "mr-aman-singh",
-  //   name: "Mr. Aman Singh (Chemistry)",
-  //   title: "Senior Research Scholar • IIT BHU",
-  //   short: "Allahabad University",
-  //   bio: "Aman specializes in physical and organic chemistry, mentoring students for competitive exams and research projects.",
-  //   qualifications: [
-  //     "Research Scholar — IIT BHU",
-  //     "M.Sc — Allahabad University",
-  //   ],
-  //   tags: ["Chemistry", "Research"],
-  //   img: m2,
-  //   linkedin: "#",
-  //   email: "aman@example.com",
-  // },
-
-  {
-    id: "dr-sarita",
-    name: "Dr. Sarita",
-    title: "Assistant Professor",
-    short: "Ph.D — IIT BHU",
-    bio: "Dr. Sarita guides students in foundational sciences and helps them prepare for higher studies and research opportunities.",
-    qualifications: ["Ph.D — IIT BHU", "Assistant Professor"],
-    tags: ["Academia", "Science"],
-    img: w2,
-    linkedin: "https://scholar.google.com/citations?user=2X_Ext4AAAAJ&hl=en&oi=sra",
-    // email: "sarita@example.com",
-  },
-
   {
     id: "dr-anurag-patel",
     name: "Dr. Anurag Patel",
@@ -164,32 +127,6 @@ const mentors = [
     linkedin: "https://scholar.google.com/citations?user=yt-kWkEAAAAJ&hl=en&oi=ao",
     // email: "anurag@example.com",
   },
-
-  {
-    id: "mr-ankit-chaudhary",
-    name: "Mr. Ankit Chaudhary",
-    title: "Senior Research Scholar • IIT Jodhpur",
-    short: "M.Sc — BHU",
-    bio: "Ankit guides students on research-oriented preparation, especially in mathematical sciences and engineering.",
-    qualifications: ["Senior Research Scholar — IIT Jodhpur", "M.Sc — BHU"],
-    tags: ["Research", "Mathematics"],
-    img: m2,
-    linkedin: "https://sites.google.com/view/ankit-chauhan-iitj",
-    // email: "ankit@example.com",
-  },
-
-  // {
-  //   id: "dr-manan-singh",
-  //   name: "Dr. Manan Singh",
-  //   title: "Postdoctoral Fellow • TIFR",
-  //   short: "Physics Specialist",
-  //   bio: "Dr. Manan mentors physics aspirants, focusing on intuition building, derivations, and research-oriented thinking.",
-  //   qualifications: ["Postdoctoral Fellow — TIFR", "Ph.D — Physics"],
-  //   tags: ["Physics", "Research"],
-  //   img: m2,
-  //   linkedin: "#",
-  //   email: "manan@example.com",
-  // },
 ];
 
 export default mentors;
