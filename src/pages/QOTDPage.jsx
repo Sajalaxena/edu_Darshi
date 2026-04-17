@@ -40,15 +40,27 @@ export default function QOTDPage() {
   const explanationRef = useRef(null);
 
   const [question, setQuestion] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
   const [result, setResult] = useState(null);
 
   /* -------- Load QOTD -------- */
   useEffect(() => {
     async function loadQOTD() {
-      const res = await fetch(`${API_BASE}/question/today`);
-      const json = await res.json();
-      setQuestion(json.data);
+      try {
+        const res = await fetch(`${API_BASE}/question/today`);
+        if (res.ok) {
+          const json = await res.json();
+          setQuestion(json.data);
+        } else {
+          setQuestion(null);
+        }
+      } catch (err) {
+        console.error("Failed to fetch QOTD:", err);
+        setQuestion(null);
+      } finally {
+        setLoading(false);
+      }
     }
     loadQOTD();
   }, []);
@@ -84,9 +96,35 @@ export default function QOTDPage() {
     navigate("/", { replace: true });
   }
 
-  if (!question) return (
+  if (loading) return (
     <div className="fixed inset-0 z-[9999] bg-white flex items-center justify-center">
       <MathLoader text="Loading Challenge..." />
+    </div>
+  );
+
+  if (!loading && !question) return (
+    <div className="fixed inset-0 z-[9999] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <motion.div
+        initial={{ y: 30, opacity: 0, scale: 0.95 }}
+        animate={{ y: 0, opacity: 1, scale: 1 }}
+        exit={{ y: 20, opacity: 0, scale: 0.95 }}
+        className="w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col"
+      >
+        <div className="px-5 py-4 bg-gradient-to-r from-red-500 to-pink-500 flex justify-between items-center">
+          <h2 className="text-lg font-bold text-white">Question of the Day</h2>
+          <button onClick={closeAll} className="text-white hover:text-white/80 transition-colors">
+            ✕
+          </button>
+        </div>
+        <div className="p-8 text-center">
+          <div className="text-4xl mb-4">🌟</div>
+          <p className="text-slate-800 text-xl font-bold mb-3">No question today!</p>
+          <p className="text-slate-500 text-sm mb-6 leading-relaxed">Check back soon for a new challenge.</p>
+          <button onClick={closeAll} className="px-6 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl transition-all active:scale-95 w-full">
+            Return Home
+          </button>
+        </div>
+      </motion.div>
     </div>
   );
 
