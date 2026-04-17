@@ -8,25 +8,25 @@ import w3 from "../assets/why3.png";
 
 const items = [
   {
+    id: "timely-updates",
+    title: "Timely Updates on Opportunities",
+    desc: "Stay informed with the latest job openings, admission notifications, conference announcements, and fellowship calls—all in one place so you never miss a deadline again.",
+    image: w3, // Swapping images to match theme if needed, w3 was workshops
+    color: "blue",
+  },
+  {
     id: "career-counselling",
-    title: "Career Counselling with Clarity & Confidence",
-    desc: "Personalized career guidance to help you choose the right path—whether you're confused about jobs, higher studies, or switching fields. We assess your interests, strengths, and goals to create a clear, actionable roadmap aligned with real-world opportunities.",
+    title: "Personalized Career Counselling",
+    desc: "Find clarity and make confident decisions about your academic and professional path. We help you create a personalized roadmap based on your strengths and goals.",
     image: w1,
     color: "rose",
   },
   {
-    id: "exam-job-preparation",
-    title: "Academia & Industry Exam Preparation",
-    desc: "End-to-end preparation for academic admissions, research roles, and industry jobs. From mock tests to interview simulations, we prepare you to perform with confidence in highly competitive environments.",
+    id: "mentorship-programs",
+    title: "Expert Mentorship Programs",
+    desc: "Prepare for PhD admissions, interviews, and faculty roles with guidance from top educators. Rebuild your confidence and articulate your ideas clearly with expert support.",
     image: w2,
     color: "purple",
-  },
-  {
-    id: "workshops-internships",
-    title: "Job-Oriented Workshops & Internships",
-    desc: "Hands-on workshops and real-world internship opportunities designed to build practical skills, professional confidence, and a strong career portfolio—guided by experienced mentors.",
-    image: w3,
-    color: "blue",
   },
 ];
 

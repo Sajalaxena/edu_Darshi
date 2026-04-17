@@ -41,17 +41,19 @@ export default function EduDarshiYoutubeSection() {
             </h2>
 
             <p className="mt-4 text-lg text-slate-600 max-w-xl">
-              EduDarshi is a mentorship-driven learning platform designed to help
-              students crack competitive exams with clarity, confidence, and
-              strategy.
+              EduDarshi is a mentorship-driven learning platform designed to be
+              your Sarathi throughout your academic journey, guiding you at every
+              step with clarity, confidence, and strategy.
             </p>
 
             <ul className="mt-6 space-y-4 text-slate-700">
               {[
-                "Personalized mentorship from top educators & researchers",
+                "Updates about job opportunities, admission openings, conferences & seminars",
+                "Personalized mentorship from top educators and researchers",
+                "Career counselling and guidance for informed academic and professional decisions",
                 "Previous year papers with structured solutions",
                 "Daily question practice & concept reinforcement",
-                "Research updates, exam insights & academic guidance",
+                "Mock interviews for academic and career preparation",
                 "Live webinars, strategy sessions & doubt solving",
               ].map((point, i) => (
                 <li key={i} className="flex items-start gap-3">
