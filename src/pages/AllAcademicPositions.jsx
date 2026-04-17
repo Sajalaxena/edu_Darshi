@@ -52,6 +52,7 @@ export default function AllAcademicPositions() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("All");
+  const [sortOrder, setSortOrder] = useState("asc");
 
   useEffect(() => {
     async function fetchItems() {
@@ -88,7 +89,8 @@ export default function AllAcademicPositions() {
     if (isCrossedA !== isCrossedB) return isCrossedA ? 1 : -1;
     if (timeA === 0 && timeB !== 0) return 1;
     if (timeB === 0 && timeA !== 0) return -1;
-    return timeA - timeB;
+    
+    return sortOrder === "asc" ? (timeA - timeB) : (timeB - timeA);
   });
 
   return (
@@ -138,19 +140,34 @@ Take your next big step. Discover Master’s, PhD, postdoctoral, and research pr
             />
           </div>
 
-          <div className="flex flex-wrap gap-2 mb-8 no-scrollbar overflow-x-auto pb-2">
-            {POSITION_TYPES.map((type) => (
-              <button
-                key={type}
-                onClick={() => setTypeFilter(type)}
-                className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 whitespace-nowrap
-                ${typeFilter === type 
-                  ? "bg-violet-600 text-white shadow-md shadow-violet-500/30 scale-105 border border-violet-500" 
-                  : "bg-white border-2 border-slate-100 text-slate-600 hover:border-violet-200 hover:text-violet-600"}`}
-              >
-                {type === "All" ? "All Positions" : POSITION_LABELS[type] || type}
-              </button>
-            ))}
+          <div className="flex flex-col md:flex-row items-end md:items-center justify-between gap-4 mb-8">
+            <div className="flex flex-wrap gap-2 w-full md:w-auto no-scrollbar overflow-x-auto pb-2">
+              {POSITION_TYPES.map((type) => (
+                <button
+                  key={type}
+                  onClick={() => setTypeFilter(type)}
+                  className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 whitespace-nowrap
+                  ${typeFilter === type 
+                    ? "bg-violet-600 text-white shadow-md shadow-violet-500/30 scale-105 border border-violet-500" 
+                    : "bg-white border-2 border-slate-100 text-slate-600 hover:border-violet-200 hover:text-violet-600"}`}
+                >
+                  {type === "All" ? "All Positions" : POSITION_LABELS[type] || type}
+                </button>
+              ))}
+            </div>
+            
+            <div className="flex items-center shrink-0 w-full md:w-auto">
+              <div className="relative w-full md:w-auto">
+                <select value={sortOrder} onChange={e => setSortOrder(e.target.value)}
+                  className="w-full md:w-auto appearance-none bg-white text-slate-600 text-sm font-semibold py-2.5 pl-4 pr-10 rounded-lg border border-slate-200 hover:border-violet-300 hover:text-violet-600 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 cursor-pointer shadow-sm transition-all">
+                  <option value="asc">Deadline: Soonest First</option>
+                  <option value="desc">Deadline: Latest First</option>
+                </select>
+                <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none text-slate-400">
+                  <Calendar size={14} />
+                </div>
+              </div>
+            </div>
           </div>
           
           {/* <div className="flex flex-col md:flex-row gap-4 items-center justify-between">

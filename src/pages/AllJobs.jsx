@@ -45,6 +45,7 @@ export default function AllJobs() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All");
+  const [sortOrder, setSortOrder] = useState("asc");
 
   useEffect(() => {
     async function fetchItems() {
@@ -90,7 +91,8 @@ export default function AllJobs() {
     if (isCrossedA !== isCrossedB) return isCrossedA ? 1 : -1;
     if (timeA === 0 && timeB !== 0) return 1;
     if (timeB === 0 && timeA !== 0) return -1;
-    return timeA - timeB;
+    
+    return sortOrder === "asc" ? (timeA - timeB) : (timeB - timeA);
   });
 
   return (
@@ -129,32 +131,45 @@ Explore prestigious faculty openings, teaching opportunities, and industrial job
           initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }}
           className="bg-white/80 backdrop-blur-sm rounded-3xl border border-white/60 shadow-[0_20px_40px_-15px_rgba(37,99,235,0.15)] p-6 md:p-8 max-w-5xl mx-auto"
         >
-          <div className="relative w-full group flex flex-col md:flex-row gap-4">
-            <div className="relative w-full flex-1">
-              <Search size={24} className="absolute left-5 top-1/2 -translate-y-1/2 text-blue-600 transition-transform group-focus-within:scale-110" />
-              <input
-                type="text"
-                placeholder="Search jobs by title, institution, area, location..."
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-                className="w-full pl-14 pr-6 py-4 rounded-2xl border-2 border-slate-100 bg-slate-50/50 text-slate-800 text-lg font-medium focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 transition-all placeholder:text-slate-400"
-              />
-            </div>
+          <div className="relative w-full mb-6 group">
+            <Search size={24} className="absolute left-5 top-1/2 -translate-y-1/2 text-blue-600 transition-transform group-focus-within:scale-110" />
+            <input
+              type="text"
+              placeholder="Search jobs by title, institution, area, location..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              className="w-full pl-14 pr-6 py-4 rounded-2xl border-2 border-slate-100 bg-slate-50/50 text-slate-800 text-lg font-medium focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 transition-all placeholder:text-slate-400"
+            />
           </div>
 
-          <div className="flex flex-wrap gap-2 mt-6 no-scrollbar overflow-x-auto pb-2">
-            {JOB_CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setCategoryFilter(cat)}
-                className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 whitespace-nowrap
-                ${categoryFilter === cat 
-                  ? "bg-blue-600 text-white shadow-md shadow-blue-500/30 scale-105 border border-blue-500" 
-                  : "bg-white border-2 border-slate-100 text-slate-600 hover:border-blue-200 hover:text-blue-600"}`}
-              >
-                {cat === "All" ? "All Jobs" : cat}
-              </button>
-            ))}
+          <div className="flex flex-col md:flex-row items-end md:items-center justify-between gap-4">
+            <div className="flex flex-wrap gap-2 w-full md:w-auto no-scrollbar overflow-x-auto pb-2">
+              {JOB_CATEGORIES.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setCategoryFilter(cat)}
+                  className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 whitespace-nowrap
+                  ${categoryFilter === cat 
+                    ? "bg-blue-600 text-white shadow-md shadow-blue-500/30 scale-105 border border-blue-500" 
+                    : "bg-white border-2 border-slate-100 text-slate-600 hover:border-blue-200 hover:text-blue-600"}`}
+                >
+                  {cat === "All" ? "All Jobs" : cat}
+                </button>
+              ))}
+            </div>
+
+            <div className="flex items-center shrink-0 w-full md:w-auto">
+              <div className="relative w-full md:w-auto">
+                <select value={sortOrder} onChange={e => setSortOrder(e.target.value)}
+                  className="w-full md:w-auto appearance-none bg-white text-slate-600 text-sm font-semibold py-2.5 pl-4 pr-10 rounded-lg border border-slate-200 hover:border-blue-300 hover:text-blue-600 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 cursor-pointer shadow-sm transition-all">
+                  <option value="asc">Deadline: Soonest First</option>
+                  <option value="desc">Deadline: Latest First</option>
+                </select>
+                <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none text-slate-400">
+                  <Calendar size={14} />
+                </div>
+              </div>
+            </div>
           </div>
         </motion.div>
       </section>

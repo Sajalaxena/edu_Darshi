@@ -50,6 +50,7 @@ export default function AllEvents() {
   const [typeFilter, setTypeFilter] = useState("All");
   const [levelFilter, setLevelFilter] = useState("All");
   const [subFilter, setSubFilter] = useState("All");
+  const [sortOrder, setSortOrder] = useState("asc");
 
   useEffect(() => {
     async function fetchEvents() {
@@ -87,7 +88,8 @@ export default function AllEvents() {
     if (isCrossedA !== isCrossedB) return isCrossedA ? 1 : -1;
     if (timeA === 0 && timeB !== 0) return 1;
     if (timeB === 0 && timeA !== 0) return -1;
-    return timeA - timeB;
+    
+    return sortOrder === "asc" ? (timeA - timeB) : (timeB - timeA);
   });
 
   return (
@@ -189,9 +191,24 @@ export default function AllEvents() {
                 </div>
               </div>
             </div>
-            <div className="hidden md:flex flex-col items-end shrink-0 pl-4 border-l border-slate-200">
-              <span className="text-3xl font-black text-blue-600 leading-none">{filtered.length}</span>
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Found</span>
+            
+            <div className="flex flex-col md:flex-row items-end md:items-center gap-4 w-full md:w-auto mt-4 md:mt-0">
+              {/* Sort Order (Small) */}
+              <div className="relative w-full md:w-auto">
+                <select value={sortOrder} onChange={e => setSortOrder(e.target.value)}
+                  className="w-full md:w-auto appearance-none bg-white text-slate-600 text-sm font-semibold py-2.5 pl-4 pr-10 rounded-lg border border-slate-200 hover:border-blue-300 hover:text-blue-600 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 cursor-pointer shadow-sm transition-all">
+                  <option value="asc">Deadline: Soonest First</option>
+                  <option value="desc">Deadline: Latest First</option>
+                </select>
+                <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none text-slate-400">
+                  <Calendar size={14} />
+                </div>
+              </div>
+
+              <div className="hidden md:flex flex-col items-end shrink-0 pl-4 border-l border-slate-200">
+                <span className="text-3xl font-black text-blue-600 leading-none">{filtered.length}</span>
+                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Found</span>
+              </div>
             </div>
           </div>
         </motion.div>
