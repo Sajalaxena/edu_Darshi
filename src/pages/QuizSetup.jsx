@@ -1,6 +1,7 @@
 // src/pages/QuizSetup.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const EXAMS = ["NEET", "JEE", "GATE", "JAM", "Other"];
 
@@ -28,7 +29,7 @@ export default function QuizSetup() {
     e.preventDefault();
     // basic validation
     if (!form.name.trim()) {
-      alert("Enter your name");
+      toast.error("Please enter your name");
       return;
     }
     navigate("/quiz", { state: form });

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { UploadCloud, FileSpreadsheet, CheckCircle } from "lucide-react";
+import toast from "react-hot-toast";
 
 const API = import.meta.env.VITE_API_BASE_URL;
 
@@ -8,7 +9,7 @@ export default function BulkQuestionUpload() {
   const [uploading, setUploading] = useState(false);
 
   async function upload() {
-    if (!file) return alert("Select file");
+    if (!file) return toast.error("Please select a file first");
 
     setUploading(true);
     try {
@@ -20,11 +21,11 @@ export default function BulkQuestionUpload() {
         body: formData,
       });
 
-      alert("Questions uploaded successfully");
+      toast.success("Questions uploaded successfully");
       setFile(null);
     } catch (err) {
       console.error(err);
-      alert("Failed to upload");
+      toast.error("Failed to upload. Please try again.");
     } finally {
       setUploading(false);
     }

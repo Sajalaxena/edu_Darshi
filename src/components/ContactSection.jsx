@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PaperPlaneTilt, Clock, Users, CheckCircle } from "phosphor-react";
+import toast from "react-hot-toast";
 
 const PLANS = [
   { id: "free", label: "Free" },
@@ -309,7 +310,7 @@ export default function ContactSectionModern() {
         plan: PLANS[0].id,
       });
     } catch (err) {
-      alert("Failed to send message. Please try again.");
+      toast.error("Failed to send message. Please try again.");
     } finally {
       setSubmitting(false);
     }
