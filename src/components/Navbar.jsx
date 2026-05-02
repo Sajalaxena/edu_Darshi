@@ -21,7 +21,7 @@ export default function Navbar() {
     { to: "/academic-positions", label: "Academic Positions" },
     { to: "/previous-papers", label: "PYQ" },
     // { to: "/blogs", label: "Blogs" },
-    { to: "/plans", label: "Our Services" },
+    // { to: "/plans", label: "Our Services" },
   ];
 
   return (

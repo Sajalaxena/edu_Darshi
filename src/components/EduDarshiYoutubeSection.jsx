@@ -18,9 +18,8 @@ export default function EduDarshiYoutubeSection() {
           >
             <iframe
               className="w-full h-full"
-              src="https://www.youtube.com/embed/KpnyhOJNyAI"
+              src="https://www.youtube.com/embed/BALi_qTQG5c?si=Pt60GeC_jwLa1UMA"
               title="EduDarshi Platform Overview"
-              frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             />

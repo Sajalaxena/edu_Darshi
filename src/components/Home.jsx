@@ -31,9 +31,9 @@ export default function Home() {
         <div className="py-8 bg-white/30 dark:bg-slate-900/30 ">
           <WhyChoose />
         </div>
-        <div className="py-8 bg-gradient-to-r from-blue-50/50 to-purple-50/50 dark:from-slate-900/50 dark:to-indigo-900/50">
+        {/* <div className="py-8 bg-gradient-to-r from-blue-50/50 to-purple-50/50 dark:from-slate-900/50 dark:to-indigo-900/50">
           <PricingCard />
-        </div>
+        </div> */}
         <div className="py-8">
           <TopInstitutes />
         </div>
