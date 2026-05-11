@@ -127,6 +127,21 @@ const mentors = [
     linkedin: "https://scholar.google.com/citations?user=yt-kWkEAAAAJ&hl=en&oi=ao",
     // email: "anurag@example.com",
   },
+  {
+    id: "dr-abhinay-kumar-gupta",
+    name: "Dr. Abhinay Kumar Gupta",
+    title: "Assistant Professor • National P.G. College Barhalganj, Gorakhpur",
+    short: "Ph.D — IIT Delhi",
+    bio: "Dr. Abhinay is an Assistant Professor at National P.G. College Barhalganj, Gorakhpur with 8+ years of experience in teaching, research, and mentoring. His research focuses on Algebra, Group Rings, Unit Groups, and their Applications.",
+    qualifications: [
+      "M.Sc — IIT Delhi",
+      "Ph.D — IIT Delhi",
+      "Assistant Professor — National P.G. College Barhalganj, Gorakhpur",
+    ],
+    tags: ["Mathematics", "Research", "Academia"],
+    img: m2,
+    linkedin: "https://www.linkedin.com/in/abhinay-kumar-gupta-070591245",
+  },
 ];
 
 export default mentors;
